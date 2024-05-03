@@ -1,0 +1,190 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import avatar from "../../../Assets/profile.png";
+import styles from "../../../Styles/AuthStyle.module.css";
+import toast, { Toaster } from "react-hot-toast";
+import { useFormik } from "formik";
+
+import { useNavigate } from "react-router-dom";
+
+//import AuthController from "../../controller/AuthController";
+
+function SignUpPage() {
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const navigate = useNavigate();
+  const resizeWidth = 300; // Width for resizing the image
+  const resizeHeight = 300; // Height for resizing the image
+
+  //const UserCreateController = new UserCreateController();
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      userName: "",
+      password: "",
+      confirmPassword: "",
+      userType: "",
+    },
+
+    onSubmit: async (values) => {
+      values = { ...values, profilePic: file || "" }; // send cropped image to the server
+
+      try {
+        // Register the user
+        const response = "test";
+
+        toast.promise(Promise.resolve(response), {
+          loading: "Creating...",
+          success: <b>Register Successfully...!</b>,
+          error: <b>Could not Register.</b>,
+        });
+
+        console.log(response);
+        if (response) {
+          handleUserTypeNavigation(response.userType);
+        } else {
+          console.error("User information not found in the response");
+        }
+      } catch (error) {
+        console.error("Error during registration:", error);
+        toast.error("Could not register. Please try again.");
+      }
+    },
+  });
+
+  // function to navigate to the respective dashboard based on the user type
+  const handleUserTypeNavigation = (userType) => {
+    const routes = {
+      Admin: "/adminDashboard",
+      realEstateAgent: "/realEstateAgents",
+      seller: "/seller",
+      buyer: "/buyer",
+    };
+
+    if (userType && routes[userType]) {
+      navigate(routes[userType]);
+    } else {
+      console.error("User type not found in the response");
+    }
+  };
+
+  // function to handle the image upload
+  const onUpload = async (e) => {
+    const selectedFile = e.target.files[0];
+
+    // Resize the image
+    const resizedImageBase64 = await resizeImage(selectedFile);
+    setFile(resizedImageBase64);
+    setPreview(URL.createObjectURL(selectedFile));
+  };
+
+  const resizeImage = (file) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.width = resizeWidth;
+          canvas.height = resizeHeight;
+          ctx.drawImage(img, 0, 0, resizeWidth, resizeHeight);
+          resolve(canvas.toDataURL("image/jpeg"));
+        };
+      };
+    });
+  };
+  return (
+    <div className="container mx-auto">
+      <Toaster position="top-center" reverseOrder={false}></Toaster>
+      <div className="flex justify-center items-center h-screen">
+        <div className={styles.glass} style={{ width: "30%" }}>
+          <div className="title flex flex-col items-center">
+            <h4 className="text-5xl font-bold">Register</h4>
+            <span className="py-4 text-xl w-2/3 text-center text-gray-500">
+              Become part of the next gen!
+            </span>
+          </div>
+
+          <form className="py-1" onSubmit={formik.handleSubmit}>
+            <div className="profile flex justify-center py-4">
+              <label htmlFor="profilePic">
+                <img
+                  src={preview || avatar} // Display preview of the selected file
+                  className={styles.profile_img}
+                  alt="Avatar pic"
+                />
+              </label>
+              <input
+                onChange={onUpload}
+                type="file"
+                id="profilePic"
+                name="profilePic"
+              />
+            </div>
+
+            <div className="textbox flex flex-col items-center gap-6">
+              <div className="name flex w-3/4 gap-7">
+                <input
+                  {...formik.getFieldProps("userName")}
+                  className={styles.textbox}
+                  type="text"
+                  placeholder="Username*"
+                />
+                <input
+                  {...formik.getFieldProps("email")}
+                  className={styles.textbox}
+                  type="text"
+                  placeholder="Email*"
+                />
+              </div>
+
+              <div className="name flex w-3/4 gap-7">
+                <input
+                  {...formik.getFieldProps("password")}
+                  className={styles.textbox}
+                  type="password"
+                  placeholder="Password*"
+                />
+                <input
+                  {...formik.getFieldProps("confirmPassword")}
+                  className={styles.textbox}
+                  type="password"
+                  placeholder="Confirm Password*"
+                />
+              </div>
+
+              <select
+                {...formik.getFieldProps("userType")}
+                className={styles.textbox}
+              >
+                <option value="">Select User Type</option>
+                <option value="realEstateAgent">Real Estate Agent</option>
+                <option value="buyer">Buyer</option>
+                <option value="seller">Seller</option>
+              </select>
+
+              <button className={styles.btn} type="submit">
+                Sign Up
+              </button>
+            </div>
+
+            <div className="text-center py-4">
+              <span className="text-gray-500">
+                Already registered?{" "}
+                <Link className="text-red-500" to="/signin">
+                  Login
+                </Link>
+              </span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default SignUpPage;
