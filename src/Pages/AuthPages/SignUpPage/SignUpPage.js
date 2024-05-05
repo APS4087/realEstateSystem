@@ -7,16 +7,17 @@ import { useFormik } from "formik";
 
 import { useNavigate } from "react-router-dom";
 
-//import AuthController from "../../controller/AuthController";
+import SignUpController from "../../../Controllers/AuthControllers/SignUpController";
 
 function SignUpPage() {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
+
   const navigate = useNavigate();
   const resizeWidth = 300; // Width for resizing the image
   const resizeHeight = 300; // Height for resizing the image
 
-  //const UserCreateController = new UserCreateController();
+  const signUpController = new SignUpController();
 
   const formik = useFormik({
     initialValues: {
@@ -25,27 +26,25 @@ function SignUpPage() {
       password: "",
       confirmPassword: "",
       userType: "",
+      licenses: "",
     },
+    validate: signUpController.registerValidation.bind(signUpController), // Bind the method to the instance
+    validateOnBlur: false,
+    validateOnChange: false,
 
     onSubmit: async (values) => {
       values = { ...values, profilePic: file || "" }; // send cropped image to the server
 
       try {
+        //const response = "test";
         // Register the user
-        const response = "test";
+        const response = await signUpController.registerUser(values);
 
         toast.promise(Promise.resolve(response), {
-          loading: "Creating...",
+          loading: <b>Creating...</b>,
           success: <b>Register Successfully...!</b>,
           error: <b>Could not Register.</b>,
         });
-
-        console.log(response);
-        if (response) {
-          handleUserTypeNavigation(response.userType);
-        } else {
-          console.error("User information not found in the response");
-        }
       } catch (error) {
         console.error("Error during registration:", error);
         toast.error("Could not register. Please try again.");
@@ -103,10 +102,7 @@ function SignUpPage() {
       <div className="flex justify-center items-center h-screen">
         <div className={styles.glass} style={{ width: "30%" }}>
           <div className="title flex flex-col items-center">
-            <h4 className="text-5xl font-bold">Register</h4>
-            <span className="py-4 text-xl w-2/3 text-center text-gray-500">
-              Become part of the next gen!
-            </span>
+            <h4 className="py-1 text-5xl font-bold">Sign Up Now !</h4>
           </div>
 
           <form className="py-1" onSubmit={formik.handleSubmit}>
@@ -166,6 +162,16 @@ function SignUpPage() {
                 <option value="buyer">Buyer</option>
                 <option value="seller">Seller</option>
               </select>
+
+              {/* Additional field for real estate agents */}
+              {formik.values.userType === "realEstateAgent" && (
+                <input
+                  {...formik.getFieldProps("licenses")}
+                  className={styles.textbox}
+                  type="text"
+                  placeholder="Licenses*"
+                />
+              )}
 
               <button className={styles.btn} type="submit">
                 Sign Up

@@ -1,4 +1,3 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
@@ -6,13 +5,13 @@ import { getFirestore } from "firebase/firestore";
 
 // firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.apiKey,
-  authDomain: process.env.authDomain,
-  projectId: process.env.projectId,
-  storageBucket: process.env.storageBucket,
-  messagingSenderId: process.env.messagingSenderId,
-  appId: process.env.appId,
-  measurementId: process.env.measurementId,
+  apiKey: "AIzaSyD10o1c7a1aZoqOl0fZRGMQvm1OkzMzajY",
+  authDomain: "realestatesystem4087.firebaseapp.com",
+  projectId: "realestatesystem4087",
+  storageBucket: "realestatesystem4087.appspot.com",
+  messagingSenderId: "707369772470",
+  appId: "1:707369772470:web:4c96ff3a33cd25294b0d17",
+  measurementId: "G-M7HQSBT1WM",
 };
 
 // Initialize Firebase
