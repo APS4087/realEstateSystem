@@ -8,10 +8,10 @@ class SignInController {
   async signInUser(email, password) {
     try {
       // Call the UserEntity method to sign in the user
-      await this.userEntity.signInUser(email, password);
+      const response = await this.userEntity.signInUser(email, password);
 
       // Return user information if needed
-      return Promise.resolve("Successfully Logged In!");
+      return response;
     } catch (error) {
       console.error("Error signing in user:", error);
       return Promise.reject({

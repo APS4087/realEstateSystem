@@ -1,6 +1,6 @@
 import { auth, db } from "../Firebase/firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc, getDoc } from "firebase/firestore";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 // UserEntity.js
@@ -22,6 +22,7 @@ class UserEntity {
         email: email,
         userName: userName,
         profilePicture: profilePic,
+        userType: userType,
       });
 
       return res.user.uid; // Return the ID of the created user document
@@ -40,7 +41,26 @@ class UserEntity {
         password
       );
 
+      const user = userCredential.user;
       // Return user information if needed
+      if (user) {
+        try {
+          const userDocRef = doc(db, "users", user.uid);
+          const userDocSnap = await getDoc(userDocRef);
+          if (userDocSnap.exists()) {
+            const userData = userDocSnap.data();
+
+            return {
+              ...user,
+              username: userData.userName,
+              profilePic: userData.profilePicture,
+              userType: userData.userType,
+            };
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
       return userCredential.user;
     } catch (error) {
       console.error("Error signing in user:", error);

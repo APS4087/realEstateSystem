@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import avatar from "../../../Assets/profile.png";
 import styles from "../../../Styles/AuthStyle.module.css";
 import toast, { Toaster } from "react-hot-toast";
 import { useFormik } from "formik";
-
+import { AuthContext } from "../../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import SignInController from "../../../Controllers/AuthControllers/SignInController";
 
@@ -13,6 +13,7 @@ function SignInPage() {
   const navigate = useNavigate();
 
   const signInController = new SignInController();
+  const { currentUser } = useContext(AuthContext);
 
   const formik = useFormik({
     initialValues: {
@@ -32,14 +33,32 @@ function SignInPage() {
           success: <b>SignIn Successfully...!</b>,
           error: <b>Could not SignIn. Invalid credentials</b>,
         });
+        console.log("Response from entity: ", response);
+        const userType = response.userType;
 
-        navigate("/BuyerHomePage");
+        handleUserTypeNavigation(userType);
       } catch (error) {
         console.error("Error during SignIn:", error);
         toast.error("Could not Sign In. Please try again.");
       }
     },
   });
+
+  // function to navigate to the respective dashboard based on the user type
+  const handleUserTypeNavigation = (userType) => {
+    const routes = {
+      Admin: "/systemAdminHomePage",
+      realEstateAgent: "/realEstateAgentHomePage",
+      seller: "/sellerHomePage",
+      buyer: "/buyerHomePage",
+    };
+
+    if (userType && routes[userType]) {
+      navigate(routes[userType]);
+    } else {
+      console.error("User type not found in the response");
+    }
+  };
 
   return (
     <div className="container mx-auto">

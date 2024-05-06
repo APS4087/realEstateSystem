@@ -1,18 +1,19 @@
-import React, { useEffect } from "react";
+import React from "react";
 import LogoutBtn from "../../Utils/logoutBtn";
 import { useContext } from "react";
 import { AuthContext } from "../../Context/AuthContext";
 import avatar from "../../Assets/profile.png";
 import { Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-const BuyerHomePage = () => {
+const RealEsateAgentHomePage = () => {
   const { currentUser } = useContext(AuthContext);
   /* const userType = currentUser ? currentUser.userType : null;
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userType !== "buyer") {
+    if (userType !== "realEstateAgent") {
       navigate("..");
     }
   }, [userType, navigate]); */
@@ -21,7 +22,7 @@ const BuyerHomePage = () => {
 
   return (
     <>
-      <div>BuyerHomePage</div>
+      <div>Real Esate Agent Home Page</div>
       <div>Welcome, {currentUser ? currentUser.username : ""}</div>
       {customProfilePic ? (
         <Avatar alt="Profile Picture" src={customProfilePic} />
@@ -36,4 +37,4 @@ const BuyerHomePage = () => {
   );
 };
 
-export default BuyerHomePage;
+export default RealEsateAgentHomePage;

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import avatar from "../../../Assets/profile.png";
 import styles from "../../../Styles/AuthStyle.module.css";
 import toast, { Toaster } from "react-hot-toast";
 import { useFormik } from "formik";
-
+import { AuthContext } from "../../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 import SignUpController from "../../../Controllers/AuthControllers/SignUpController";
@@ -12,7 +12,7 @@ import SignUpController from "../../../Controllers/AuthControllers/SignUpControl
 function SignUpPage() {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
-
+  const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const resizeWidth = 300; // Width for resizing the image
   const resizeHeight = 300; // Height for resizing the image
@@ -36,8 +36,6 @@ function SignUpPage() {
       values = { ...values, profilePic: file || "" }; // send cropped image to the server
 
       try {
-        //const response = "test";
-        // Register the user
         const response = await signUpController.registerUser(values);
 
         toast.promise(Promise.resolve(response), {
@@ -46,7 +44,8 @@ function SignUpPage() {
           error: <b>Could not Register.</b>,
         });
 
-        navigate("/BuyerHomePage");
+        const userType = values.userType;
+        handleUserTypeNavigation(userType);
       } catch (error) {
         console.error("Error during registration:", error);
         toast.error("Could not register. Please try again.");
@@ -57,10 +56,10 @@ function SignUpPage() {
   // function to navigate to the respective dashboard based on the user type
   const handleUserTypeNavigation = (userType) => {
     const routes = {
-      Admin: "/adminDashboard",
-      realEstateAgent: "/realEstateAgents",
-      seller: "/seller",
-      buyer: "/buyer",
+      Admin: "/systemAdminHomePage",
+      realEstateAgent: "/realEstateAgentHomePage",
+      seller: "/sellerHomePage",
+      buyer: "/buyerHomePage",
     };
 
     if (userType && routes[userType]) {

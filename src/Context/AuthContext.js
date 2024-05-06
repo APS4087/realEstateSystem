@@ -18,10 +18,12 @@ export const AuthContextProvider = ({ children }) => {
           const userDocSnap = await getDoc(userDocRef);
           if (userDocSnap.exists()) {
             const userData = userDocSnap.data();
+
             setCurrentUser({
               ...user,
               username: userData.userName,
               profilePic: userData.profilePicture,
+              userType: userData.userType,
             });
           }
         } catch (error) {

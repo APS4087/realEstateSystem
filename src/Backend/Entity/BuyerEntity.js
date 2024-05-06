@@ -12,7 +12,7 @@ class BuyerEntity extends UserEntity {
       // Create user document in 'users' collection
       const userId = await super.createUser(userData);
 
-      // save the user data to the firestore
+      // Create buyer document in 'buyers' collection
       await setDoc(doc(db, "buyers", userId), {
         uid: userId,
         shortlistedProperties: [],
