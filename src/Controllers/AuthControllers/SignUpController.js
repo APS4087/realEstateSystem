@@ -2,17 +2,34 @@ import { db } from "../../Backend/Firebase/firebaseConfig";
 import UserEntity from "../../Backend/Entity/UserEntity";
 import toast from "react-hot-toast";
 import { getDocs, query, collection, where } from "firebase/firestore";
+import BuyerEntity from "../../Backend/Entity/BuyerEntity";
+import SellerEntity from "../../Backend/Entity/SellerEntity";
+import RealEstateAgentEntity from "../../Backend/Entity/RealEstateAgentEntity";
+import SystemAdminEntity from "../../Backend/Entity/SystemAdminEntity";
 
 class SignUpController {
   constructor() {
-    this.entity = new UserEntity(db);
+    this.buyerEntity = new BuyerEntity();
+    this.sellerEntity = new SellerEntity();
+    this.realEstateAgentEntity = new RealEstateAgentEntity();
+    this.systemAdminEntity = new SystemAdminEntity();
   }
 
   async registerUser(userData) {
     try {
-      // set loading status to true while registering the user
+      const userType = userData.userType;
 
-      await this.entity.createUser(userData);
+      if (userType === "buyer") {
+        await this.buyerEntity.createUser(userData);
+      } else if (userType === "seller") {
+        await this.sellerEntity.createUser(userData);
+      } else if (userType === "realEstateAgent") {
+        await this.realEstateAgentEntity.createUser(userData);
+      } else if (userType === "systemAdmin") {
+        await this.systemAdminEntity.createUser(userData);
+      } else {
+        throw new Error("Invalid user type");
+      }
 
       return Promise.resolve("Successfully registered user"); // Return a success message
     } catch (error) {

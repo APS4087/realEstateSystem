@@ -26,7 +26,7 @@ function SignUpPage() {
       password: "",
       confirmPassword: "",
       userType: "",
-      licenses: "",
+      license: "",
     },
     validate: signUpController.registerValidation.bind(signUpController), // Bind the method to the instance
     validateOnBlur: false,
@@ -45,6 +45,8 @@ function SignUpPage() {
           success: <b>Register Successfully...!</b>,
           error: <b>Could not Register.</b>,
         });
+
+        navigate("/BuyerHomePage");
       } catch (error) {
         console.error("Error during registration:", error);
         toast.error("Could not register. Please try again.");
@@ -166,7 +168,7 @@ function SignUpPage() {
               {/* Additional field for real estate agents */}
               {formik.values.userType === "realEstateAgent" && (
                 <input
-                  {...formik.getFieldProps("licenses")}
+                  {...formik.getFieldProps("license")}
                   className={styles.textbox}
                   type="text"
                   placeholder="Licenses*"

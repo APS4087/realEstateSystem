@@ -1,6 +1,6 @@
 import LandingPage from "./Pages/LandingPage/LandingPage";
 import SignUpPage from "./Pages/AuthPages/SignUpPage/SignUpPage";
-import SignInPage from "./Pages/AuthPages/SignUpPage/SignInPage";
+import SignInPage from "./Pages/AuthPages/SignInPage/SignInPage";
 import { useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AuthContext } from "./Context/AuthContext";
@@ -13,6 +13,7 @@ const App = () => {
     if (!currentUser) {
       return <Navigate to="/signin" />;
     }
+    return children;
   };
 
   return (
