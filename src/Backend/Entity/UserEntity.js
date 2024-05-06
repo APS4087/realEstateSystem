@@ -1,5 +1,6 @@
-import { auth } from "../Firebase/firebaseConfig";
+import { auth, db } from "../Firebase/firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 // UserEntity.js
 class UserEntity {
@@ -16,15 +17,23 @@ class UserEntity {
         userType,
         userName,
         phoneNumber,
-        profilePicture,
+        profilePic,
         licenses,
       } = userData;
 
+      // for firebase authentication
       const res = await createUserWithEmailAndPassword(auth, email, password);
+      console.log("profilePicture: ", profilePic);
 
-      console.log(res);
+      // save the user data to the firestore
+      await setDoc(doc(db, "users", res.user.uid), {
+        uid: res.user.uid,
+        email: email,
+        userName: userName,
+        profilePicture: profilePic,
+      });
 
-      return 1; // Return the ID of the created user document
+      return res.user.uid; // Return the ID of the created user document
     } catch (error) {
       console.error("Error creating user:", error);
       throw error;
