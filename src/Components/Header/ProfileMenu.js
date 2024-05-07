@@ -6,7 +6,6 @@ import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import "./styles.css";
 import { Link } from "react-router-dom";
 import { Avatar } from "@mui/material";
-import defaultAvatar from "../../Assets/profile.png";
 import { AuthContext } from "../../Context/AuthContext";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
@@ -16,8 +15,10 @@ import { auth } from "../../Backend/Firebase/firebaseConfig";
 export default function BasicMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { currentUser } = useContext(AuthContext);
+  const userType = currentUser ? currentUser.userType : null;
   const customProfilePic = currentUser ? currentUser.profilePic : null;
   const navigate = useNavigate();
+
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -69,47 +70,76 @@ export default function BasicMenu() {
         }}
       >
         {currentUser
-          ? [
-              <MenuItem
-                key="airbnb"
-                onClick={handleClose}
-                className="menu-items"
-              >
-                Airbnb Your Home
-              </MenuItem>,
-              <MenuItem key="host" onClick={handleClose} className="menu-items">
-                Host an experience
-              </MenuItem>,
-              <MenuItem key="help" onClick={handleClose} className="menu-items">
-                Help
-              </MenuItem>,
-              <MenuItem
-                key="logout"
-                onClick={handleLogout}
-                className="menu-items"
-              >
-                Logout
-              </MenuItem>,
-            ]
+          ? userType === "buyer"
+            ? [
+                <MenuItem
+                  key="saved"
+                  onClick={handleClose}
+                  className="menu-items"
+                >
+                  Saved Properties
+                </MenuItem>,
+                <MenuItem
+                  key="bought"
+                  onClick={handleClose}
+                  className="menu-items"
+                >
+                  Bought Properties
+                </MenuItem>,
+                <MenuItem
+                  key="logout"
+                  onClick={handleLogout}
+                  className="menu-items"
+                >
+                  Logout
+                </MenuItem>,
+              ]
+            : userType === "seller"
+            ? [
+                <MenuItem
+                  key="listed"
+                  onClick={handleClose}
+                  className="menu-items"
+                >
+                  Listed Properties
+                </MenuItem>,
+                <Link to={"/createListingPage"}>
+                  <MenuItem
+                    key="list-your-property"
+                    onClick={handleClose}
+                    className="menu-items"
+                  >
+                    List Your Property
+                  </MenuItem>
+                </Link>,
+                <MenuItem
+                  key="logout"
+                  onClick={handleLogout}
+                  className="menu-items"
+                >
+                  Logout
+                </MenuItem>,
+              ]
+            : null
           : [
-              <MenuItem
-                key="signup"
-                className="menu-items"
-                onClick={handleClose}
-              >
-                <Link to="/signup" className="menu-link">
+              <Link to="/signup" className="menu-link">
+                <MenuItem
+                  key="signup"
+                  className="menu-items"
+                  onClick={handleClose}
+                >
                   Signup
-                </Link>
-              </MenuItem>,
-              <MenuItem
-                key="login"
-                onClick={handleClose}
-                className="menu-items"
-              >
-                <Link to="/signin" className="menu-link">
+                </MenuItem>
+              </Link>,
+              <Link to="/signin" className="menu-link">
+                <MenuItem
+                  key="login"
+                  onClick={handleClose}
+                  className="menu-items"
+                >
                   Login
-                </Link>
-              </MenuItem>,
+                </MenuItem>
+              </Link>,
             ]}
       </Menu>
     </div>

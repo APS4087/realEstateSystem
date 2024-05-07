@@ -8,6 +8,7 @@ import BuyerHomePage from "./Pages/HomePages/BuyerHomePage";
 import RealEsateAgentHomePage from "./Pages/HomePages/RealEsateAgentHomePage";
 import SellerHomePage from "./Pages/HomePages/SellerHomePage";
 import SystemAdminHomePage from "./Pages/HomePages/SystemAdminHomePage";
+import CreateListingPage from "./Pages/AdditionalPages/createListingPage";
 
 const App = () => {
   const { currentUser } = useContext(AuthContext);
@@ -42,6 +43,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <SellerHomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/createListingPage"
+          element={
+            <ProtectedRoute>
+              <CreateListingPage />
             </ProtectedRoute>
           }
         />
