@@ -1,13 +1,32 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import "./styles.css";
+import { Link } from "react-router-dom";
+import { Avatar } from "@mui/material";
+import defaultAvatar from "../../Assets/profile.png";
+import { AuthContext } from "../../Context/AuthContext";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../../Backend/Firebase/firebaseConfig";
 
 export default function BasicMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const { currentUser } = useContext(AuthContext);
+  const customProfilePic = currentUser ? currentUser.profilePic : null;
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate("/");
+    } catch (error) {
+      console.error("Failed to logout:", error);
+    }
+  };
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -27,7 +46,11 @@ export default function BasicMenu() {
         className="profile-menu-flex"
       >
         <MenuRoundedIcon />
-        <AccountCircleRoundedIcon />
+        {customProfilePic ? (
+          <Avatar alt="Profile Picture" src={customProfilePic} />
+        ) : (
+          <AccountCircleRoundedIcon />
+        )}
       </div>
       <Menu
         id="basic-menu"
@@ -45,28 +68,49 @@ export default function BasicMenu() {
           },
         }}
       >
-        <MenuItem className="menu-items" onClick={handleClose}>
-          Signup
-        </MenuItem>
-        <MenuItem onClick={handleClose} className="menu-items">
-          Login
-        </MenuItem>
-        <div
-          style={{
-            height: "1px",
-            backgroundColor: "var(--grey)",
-            width: "100%",
-          }}
-        />
-        <MenuItem onClick={handleClose} className="menu-items">
-          Airbnb Your Home
-        </MenuItem>
-        <MenuItem onClick={handleClose} className="menu-items">
-          Host an experience
-        </MenuItem>
-        <MenuItem onClick={handleClose} className="menu-items">
-          Help
-        </MenuItem>
+        {currentUser
+          ? [
+              <MenuItem
+                key="airbnb"
+                onClick={handleClose}
+                className="menu-items"
+              >
+                Airbnb Your Home
+              </MenuItem>,
+              <MenuItem key="host" onClick={handleClose} className="menu-items">
+                Host an experience
+              </MenuItem>,
+              <MenuItem key="help" onClick={handleClose} className="menu-items">
+                Help
+              </MenuItem>,
+              <MenuItem
+                key="logout"
+                onClick={handleLogout}
+                className="menu-items"
+              >
+                Logout
+              </MenuItem>,
+            ]
+          : [
+              <MenuItem
+                key="signup"
+                className="menu-items"
+                onClick={handleClose}
+              >
+                <Link to="/signup" className="menu-link">
+                  Signup
+                </Link>
+              </MenuItem>,
+              <MenuItem
+                key="login"
+                onClick={handleClose}
+                className="menu-items"
+              >
+                <Link to="/signin" className="menu-link">
+                  Login
+                </Link>
+              </MenuItem>,
+            ]}
       </Menu>
     </div>
   );
