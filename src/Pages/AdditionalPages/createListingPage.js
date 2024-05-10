@@ -24,6 +24,7 @@ import {
 import { db } from "../../Backend/Firebase/firebaseConfig";
 import { Avatar } from "@mui/material";
 import avatar from "../../Assets/profile.png";
+import RealEstateAgentEntity from "../../Backend/Entity/RealEstateAgentEntity";
 
 const CreateListingPage = () => {
   const { currentUser } = useContext(AuthContext);
@@ -166,25 +167,9 @@ const CreateListingPage = () => {
         listingPhotos: photos,
       };
 
-      console.log(listingData);
-      // Get the selected agent's document
-      const agentDoc = await getDoc(
-        doc(db, "realEstateAgents", selectedAgent.uid)
-      );
-      const agentData = agentDoc.data();
+      const realEstateAgent = new RealEstateAgentEntity();
 
-      // If agentData.pendingProperties is not an array, initialize it as an empty array
-      if (!Array.isArray(agentData.pendingProperties)) {
-        agentData.pendingProperties = [];
-      }
-
-      // Add the listingData to pendingProperties
-      agentData.pendingProperties.push(listingData);
-
-      // Update the agent's document in Firestore
-      await updateDoc(doc(db, "realEstateAgents", selectedAgent.uid), {
-        pendingProperties: agentData.pendingProperties,
-      });
+      await realEstateAgent.addPendingProperty(selectedAgent.uid, listingData);
 
       Swal.fire({
         title: "Success!",
