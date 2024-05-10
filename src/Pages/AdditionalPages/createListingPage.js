@@ -7,7 +7,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { IoIosImages } from "react-icons/io";
 import { useState, useEffect } from "react";
 import { BiTrash } from "react-icons/bi";
-
+import { storage } from "../../Backend/Firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../Context/AuthContext";
@@ -25,6 +25,12 @@ import { db } from "../../Backend/Firebase/firebaseConfig";
 import { Avatar } from "@mui/material";
 import avatar from "../../Assets/profile.png";
 import RealEstateAgentEntity from "../../Backend/Entity/RealEstateAgentEntity";
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 
 const CreateListingPage = () => {
   const { currentUser } = useContext(AuthContext);
@@ -114,15 +120,37 @@ const CreateListingPage = () => {
   /* UPLOAD, DRAG & DROP, REMOVE PHOTOS */
   const [photos, setPhotos] = useState([]);
 
-  const handleUploadPhotos = (e) => {
+  const handleUploadPhotos = async (e) => {
     const newPhotos = e.target.files;
-    setPhotos((prevPhotos) => [...prevPhotos, ...newPhotos]);
+    const photoURLs = [];
+
+    for (let i = 0; i < newPhotos.length; i++) {
+      const date = new Date().getTime();
+      const storageRef = ref(storage, `${sellerId + date + i}`);
+      await uploadBytesResumable(storageRef, newPhotos[i]);
+      const url = await getDownloadURL(storageRef);
+      photoURLs.push(url);
+    }
+
+    setPhotos((prevPhotos) => [...prevPhotos, ...photoURLs]);
   };
 
-  const handleRemovePhoto = (indexToRemove) => {
-    setPhotos((prevPhotos) =>
-      prevPhotos.filter((_, index) => index !== indexToRemove)
-    );
+  const handleRemovePhoto = async (index) => {
+    // Get the URL of the photo to remove
+    const photoURL = photos[index];
+
+    // Create a reference to the file to delete
+    const photoRef = ref(storage, photoURL);
+
+    // Delete the file
+    await deleteObject(photoRef);
+
+    // Remove the photo's URL from the photos array
+    setPhotos((prevPhotos) => {
+      const newPhotos = [...prevPhotos];
+      newPhotos.splice(index, 1);
+      return newPhotos;
+    });
   };
 
   /* DESCRIPTION */
@@ -400,9 +428,9 @@ const CreateListingPage = () => {
 
               {photos.length >= 1 && (
                 <>
-                  {photos.map((photo, index) => (
+                  {photos.map((photoURL, index) => (
                     <div className="photo" key={index}>
-                      <img src={URL.createObjectURL(photo)} alt="place" />
+                      <img src={photoURL} alt="Uploaded" />
                       <button
                         type="button"
                         onClick={() => handleRemovePhoto(index)}
