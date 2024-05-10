@@ -11,9 +11,16 @@ import { BiTrash } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../Context/AuthContext";
+import Swal from "sweetalert2";
 
 import Carousel from "../../Utils/Carousel";
-import { collection, doc, getDocs, getDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../../Backend/Firebase/firebaseConfig";
 import { Avatar } from "@mui/material";
 import avatar from "../../Assets/profile.png";
@@ -132,17 +139,18 @@ const CreateListingPage = () => {
     });
   };
 
-  const creatorId = currentUser ? currentUser.uid : null;
+  const sellerId = currentUser ? currentUser.uid : null;
 
   const navigate = useNavigate();
 
   const handlePost = async (e) => {
     e.preventDefault();
 
+    // TODO: CHANGE TO BCE STRUCTURE
     try {
       /* Create a new object to handle data */
       const listingData = {
-        creator: creatorId,
+        sellerId: sellerId,
         category: category,
         streetAddress: formLocation.streetAddress,
         aptSuite: formLocation.aptSuite,
@@ -159,8 +167,38 @@ const CreateListingPage = () => {
       };
 
       console.log(listingData);
+      // Get the selected agent's document
+      const agentDoc = await getDoc(
+        doc(db, "realEstateAgents", selectedAgent.uid)
+      );
+      const agentData = agentDoc.data();
+
+      // If agentData.pendingProperties is not an array, initialize it as an empty array
+      if (!Array.isArray(agentData.pendingProperties)) {
+        agentData.pendingProperties = [];
+      }
+
+      // Add the listingData to pendingProperties
+      agentData.pendingProperties.push(listingData);
+
+      // Update the agent's document in Firestore
+      await updateDoc(doc(db, "realEstateAgents", selectedAgent.uid), {
+        pendingProperties: agentData.pendingProperties,
+      });
+
+      Swal.fire({
+        title: "Success!",
+        text: `You property info has been sent to ${selectedAgent.userName} for listing !`,
+        icon: "success",
+      });
+      navigate(-1);
     } catch (err) {
       console.log("Publish Listing failed", err.message);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+      });
     }
   };
   return (

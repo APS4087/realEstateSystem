@@ -18,6 +18,7 @@ class RealEstateAgentEntity extends UserEntity {
         uid: userId,
         license: license,
         shortlistedProperties: [],
+        pendingProperties: [],
       });
 
       return userId;
