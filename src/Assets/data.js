@@ -1,4 +1,13 @@
-import { TbBeach, TbMountain, TbPool } from "react-icons/tb";
+import {
+  TbBeach,
+  TbMountain,
+  TbPool,
+  TbNavigationNorth,
+  TbNavigationEast,
+  TbNavigationWest,
+  TbNavigationCode,
+} from "react-icons/tb";
+import { FaHouseCircleXmark } from "react-icons/fa6";
 import {
   GiBarn,
   GiBoatFishing,
@@ -26,7 +35,13 @@ import {
   BiSolidFridge,
   BiWorld,
 } from "react-icons/bi";
-import { BsSnow, BsFillDoorOpenFill, BsPersonWorkspace } from "react-icons/bs";
+import {
+  BsSnow,
+  BsFillDoorOpenFill,
+  BsPersonWorkspace,
+  BsGlobeCentralSouthAsia,
+  BsFillHouseCheckFill,
+} from "react-icons/bs";
 import { IoDiamond } from "react-icons/io5";
 import {
   MdOutlineVilla,
@@ -39,6 +54,9 @@ import {
   PiBathtubFill,
   PiCoatHangerFill,
   PiTelevisionFill,
+  PiHouseLineFill,
+  PiBuildingApartmentFill,
+  PiBuildingsBold,
 } from "react-icons/pi";
 import { TbIroning3 } from "react-icons/tb";
 import {
@@ -169,111 +187,43 @@ export const types = [
 
 export const facilities = [
   {
-    name: "Bath tub",
-    icon: <PiBathtubFill />,
+    name: "Central Area",
+    icon: <BsGlobeCentralSouthAsia />,
   },
   {
-    name: "Personal care products",
-    icon: <FaPumpSoap />,
+    name: "North Area",
+    icon: <TbNavigationNorth />,
   },
   {
-    name: "Outdoor shower",
-    icon: <FaShower />,
+    name: "East Area",
+    icon: <TbNavigationEast />,
   },
   {
-    name: "Washer",
-    icon: <BiSolidWasher />,
+    name: "West Area",
+    icon: <TbNavigationWest />,
   },
   {
-    name: "Dryer",
-    icon: <BiSolidDryer />,
+    name: "North-east Area",
+    icon: <TbNavigationCode />,
   },
   {
-    name: "Hangers",
-    icon: <PiCoatHangerFill />,
+    name: "Landed Property",
+    icon: <PiHouseLineFill />,
   },
   {
-    name: "Iron",
-    icon: <TbIroning3 />,
+    name: "HDB",
+    icon: <PiBuildingApartmentFill />,
   },
   {
-    name: "TV",
-    icon: <PiTelevisionFill />,
+    name: "Condominium",
+    icon: <PiBuildingsBold />,
   },
   {
-    name: "Dedicated workspace",
-    icon: <BsPersonWorkspace />,
+    name: "Available Property",
+    icon: <BsFillHouseCheckFill />,
   },
   {
-    name: "Air Conditioning",
-    icon: <BsSnow />,
-  },
-  {
-    name: "Heating",
-    icon: <GiHeatHaze />,
-  },
-  {
-    name: "Security cameras",
-    icon: <GiCctvCamera />,
-  },
-  {
-    name: "Fire extinguisher",
-    icon: <FaFireExtinguisher />,
-  },
-  {
-    name: "First Aid",
-    icon: <BiSolidFirstAid />,
-  },
-  {
-    name: "Wifi",
-    icon: <BiWifi />,
-  },
-  {
-    name: "Cooking set",
-    icon: <FaKitchenSet />,
-  },
-  {
-    name: "Refrigerator",
-    icon: <BiSolidFridge />,
-  },
-  {
-    name: "Microwave",
-    icon: <MdMicrowave />,
-  },
-  {
-    name: "Stove",
-    icon: <GiToaster />,
-  },
-  {
-    name: "Barbecue grill",
-    icon: <GiBarbecue />,
-  },
-  {
-    name: "Outdoor dining area",
-    icon: <FaUmbrellaBeach />,
-  },
-  {
-    name: "Private patio or Balcony",
-    icon: <MdBalcony />,
-  },
-  {
-    name: "Camp fire",
-    icon: <GiCampfire />,
-  },
-  {
-    name: "Garden",
-    icon: <MdYard />,
-  },
-  {
-    name: "Free parking",
-    icon: <AiFillCar />,
-  },
-  {
-    name: "Self check-in",
-    icon: <FaKey />,
-  },
-  {
-    name: " Pet allowed",
-    icon: <MdPets />,
+    name: "Unavailabe Property",
+    icon: <FaHouseCircleXmark />,
   },
 ];

@@ -93,15 +93,13 @@ const CreateListingPage = () => {
   const [bathroomCount, setBathroomCount] = useState(1);
 
   /* AMENITIES */
-  const [amenities, setAmenities] = useState([]);
+  const [tags, setTags] = useState([]);
 
-  const handleSelectAmenities = (facility) => {
-    if (amenities.includes(facility)) {
-      setAmenities((prevAmenities) =>
-        prevAmenities.filter((option) => option !== facility)
-      );
+  const handleSelectTags = (tag) => {
+    if (tags.includes(tag)) {
+      setTags((prevTag) => prevTag.filter((option) => option !== tag));
     } else {
-      setAmenities((prev) => [...prev, facility]);
+      setTags((prev) => [...prev, tag]);
     }
   };
 
@@ -142,39 +140,25 @@ const CreateListingPage = () => {
     e.preventDefault();
 
     try {
-      /* Create a new FormData onject to handle file uploads */
-      const listingForm = new FormData();
-      listingForm.append("creator", creatorId);
-      listingForm.append("category", category);
-      listingForm.append("streetAddress", formLocation.streetAddress);
-      listingForm.append("aptSuite", formLocation.aptSuite);
-      listingForm.append("city", formLocation.city);
-      listingForm.append("province", formLocation.province);
-      listingForm.append("country", formLocation.country);
-      listingForm.append("bedroomCount", bedroomCount);
-      listingForm.append("bathroomCount", bathroomCount);
-      listingForm.append("amenities", amenities);
-      listingForm.append("title", formDescription.title);
-      listingForm.append("description", formDescription.description);
+      /* Create a new object to handle data */
+      const listingData = {
+        creator: creatorId,
+        category: category,
+        streetAddress: formLocation.streetAddress,
+        aptSuite: formLocation.aptSuite,
+        city: formLocation.city,
+        province: formLocation.province,
+        country: formLocation.country,
+        bedroomCount: bedroomCount,
+        bathroomCount: bathroomCount,
+        tags: tags,
+        title: formDescription.title,
+        description: formDescription.description,
+        price: formDescription.price,
+        listingPhotos: photos,
+      };
 
-      listingForm.append("price", formDescription.price);
-
-      /* Append each selected photos to the FormData object */
-      photos.forEach((photo) => {
-        listingForm.append("listingPhotos", photo);
-      });
-
-      // Log form data to console
-      console.log("Listing Form Data: ", {
-        category,
-        formLocation,
-        bedroomCount,
-        bathroomCount,
-        amenities,
-        photos,
-        formDescription,
-        creatorId,
-      });
+      console.log(listingData);
     } catch (err) {
       console.log("Publish Listing failed", err.message);
     }
@@ -357,10 +341,10 @@ const CreateListingPage = () => {
               {facilities?.map((item, index) => (
                 <div
                   className={`facility ${
-                    amenities.includes(item.name) ? "selected" : ""
+                    tags.includes(item.name) ? "selected" : ""
                   }`}
                   key={index}
-                  onClick={() => handleSelectAmenities(item.name)}
+                  onClick={() => handleSelectTags(item.name)}
                 >
                   <div className="facility_icon">{item.icon}</div>
                   <p>{item.name}</p>
