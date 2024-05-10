@@ -5,17 +5,71 @@ import { RemoveCircleOutline, AddCircleOutline } from "@mui/icons-material";
 import variables from "../../Styles/variables.scss";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { IoIosImages } from "react-icons/io";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BiTrash } from "react-icons/bi";
 
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../Context/AuthContext";
 
+import Carousel from "../../Utils/Carousel";
+import { collection, doc, getDocs, getDoc } from "firebase/firestore";
+import { db } from "../../Backend/Firebase/firebaseConfig";
+import { Avatar } from "@mui/material";
+import avatar from "../../Assets/profile.png";
+
 const CreateListingPage = () => {
   const { currentUser } = useContext(AuthContext);
   const [category, setCategory] = useState("");
-  const [type, setType] = useState("");
+  const [agents, setAgents] = useState([]);
+  const [selectedAgent, setSelectedAgent] = useState(null);
+
+  const handleAgentSelect = (agent) => {
+    setSelectedAgent(agent);
+  };
+
+  useEffect(() => {
+    const fetchAgents = async () => {
+      const agentsCollection = await getDocs(
+        collection(db, "realEstateAgents")
+      );
+      const agentsData = await Promise.all(
+        agentsCollection.docs.map(async (agentDoc) => {
+          const agentData = agentDoc.data();
+          const userDataDoc = await getDoc(doc(db, "users", agentData.uid));
+
+          return { ...agentData, ...userDataDoc.data() };
+        })
+      );
+      setAgents(agentsData);
+    };
+
+    fetchAgents();
+  }, []);
+
+  const Card = ({
+    title,
+    email,
+    license,
+    profilePicture,
+    agent,
+    onSelect,
+    selected,
+  }) => (
+    <div
+      className={`card ${selected ? "selected" : ""}`}
+      onClick={() => onSelect(agent)}
+    >
+      <Avatar
+        alt="Profile Picture"
+        src={profilePicture || avatar}
+        style={{ margin: "0 auto", width: "100px", height: "100px" }}
+      />{" "}
+      <h2>{title}</h2>
+      <p>Email: {email}</p>
+      <p>License: {license}</p>
+    </div>
+  );
 
   /* LOCATION */
   const [formLocation, setFormLocation] = useState({
@@ -35,9 +89,7 @@ const CreateListingPage = () => {
   };
 
   /* BASIC COUNTS */
-  const [guestCount, setGuestCount] = useState(1);
   const [bedroomCount, setBedroomCount] = useState(1);
-  const [bedCount, setBedCount] = useState(1);
   const [bathroomCount, setBathroomCount] = useState(1);
 
   /* AMENITIES */
@@ -71,8 +123,6 @@ const CreateListingPage = () => {
   const [formDescription, setFormDescription] = useState({
     title: "",
     description: "",
-    highlight: "",
-    highlightDesc: "",
     price: 0,
   });
 
@@ -96,21 +146,17 @@ const CreateListingPage = () => {
       const listingForm = new FormData();
       listingForm.append("creator", creatorId);
       listingForm.append("category", category);
-      listingForm.append("type", type);
       listingForm.append("streetAddress", formLocation.streetAddress);
       listingForm.append("aptSuite", formLocation.aptSuite);
       listingForm.append("city", formLocation.city);
       listingForm.append("province", formLocation.province);
       listingForm.append("country", formLocation.country);
-      listingForm.append("guestCount", guestCount);
       listingForm.append("bedroomCount", bedroomCount);
-      listingForm.append("bedCount", bedCount);
       listingForm.append("bathroomCount", bathroomCount);
       listingForm.append("amenities", amenities);
       listingForm.append("title", formDescription.title);
       listingForm.append("description", formDescription.description);
-      listingForm.append("highlight", formDescription.highlight);
-      listingForm.append("highlightDesc", formDescription.highlightDesc);
+
       listingForm.append("price", formDescription.price);
 
       /* Append each selected photos to the FormData object */
@@ -121,11 +167,8 @@ const CreateListingPage = () => {
       // Log form data to console
       console.log("Listing Form Data: ", {
         category,
-        type,
         formLocation,
-        guestCount,
         bedroomCount,
-        bedCount,
         bathroomCount,
         amenities,
         photos,
@@ -174,24 +217,9 @@ const CreateListingPage = () => {
               ))}
             </div>
 
-            <h3>What type of place will guests have?</h3>
-            <div className="type-list">
-              {types?.map((item, index) => (
-                <div
-                  className={`type ${type === item.name ? "selected" : ""}`}
-                  key={index}
-                  onClick={() => setType(item.name)}
-                >
-                  <div className="type_text">
-                    <h4>{item.name}</h4>
-                    <p>{item.description}</p>
-                  </div>
-                  <div className="type_icon">{item.icon}</div>
-                </div>
-              ))}
-            </div>
-
-            <h3>Where's your place located?</h3>
+            <h3 class="text-2xl font-bold dark:text-white">
+              Where's your place located?
+            </h3>
             <div className="full">
               <div className="location">
                 <p>Street Address</p>
@@ -256,35 +284,10 @@ const CreateListingPage = () => {
               </div>
             </div>
 
-            <h3>Share some basics about your place</h3>
+            <h3 class="text-2xl font-bold dark:text-white">
+              Share some basics about your place
+            </h3>
             <div className="basics">
-              <div className="basic">
-                <p>Guests</p>
-                <div className="basic_count">
-                  <RemoveCircleOutline
-                    onClick={() => {
-                      guestCount > 1 && setGuestCount(guestCount - 1);
-                    }}
-                    sx={{
-                      fontSize: "25px",
-                      cursor: "pointer",
-                      "&:hover": { color: variables.pinkred },
-                    }}
-                  />
-                  <p>{guestCount}</p>
-                  <AddCircleOutline
-                    onClick={() => {
-                      setGuestCount(guestCount + 1);
-                    }}
-                    sx={{
-                      fontSize: "25px",
-                      cursor: "pointer",
-                      "&:hover": { color: variables.pinkred },
-                    }}
-                  />
-                </div>
-              </div>
-
               <div className="basic">
                 <p>Bedrooms</p>
                 <div className="basic_count">
@@ -302,33 +305,6 @@ const CreateListingPage = () => {
                   <AddCircleOutline
                     onClick={() => {
                       setBedroomCount(bedroomCount + 1);
-                    }}
-                    sx={{
-                      fontSize: "25px",
-                      cursor: "pointer",
-                      "&:hover": { color: variables.pinkred },
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div className="basic">
-                <p>Beds</p>
-                <div className="basic_count">
-                  <RemoveCircleOutline
-                    onClick={() => {
-                      bedCount > 1 && setBedCount(bedCount - 1);
-                    }}
-                    sx={{
-                      fontSize: "25px",
-                      cursor: "pointer",
-                      "&:hover": { color: variables.pinkred },
-                    }}
-                  />
-                  <p>{bedCount}</p>
-                  <AddCircleOutline
-                    onClick={() => {
-                      setBedCount(bedCount + 1);
                     }}
                     sx={{
                       fontSize: "25px",
@@ -369,10 +345,14 @@ const CreateListingPage = () => {
           </div>
 
           <div className="create-listing_step2">
-            <h2>Step 2: Make your place stand out</h2>
+            <h2 class="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white">
+              Step 2: Make your place stand out
+            </h2>
             <hr />
 
-            <h3>Tell guests what your place has to offer</h3>
+            <h3 class="text-2xl font-bold dark:text-white">
+              Choose tags most suitable for your property
+            </h3>
             <div className="amenities">
               {facilities?.map((item, index) => (
                 <div
@@ -388,7 +368,9 @@ const CreateListingPage = () => {
               ))}
             </div>
 
-            <h3>Add some photos of your place</h3>
+            <h3 class="text-2xl font-bold dark:text-white">
+              Add some photos of your place
+            </h3>
             <div className="photos">
               {photos.length < 1 && (
                 <>
@@ -440,7 +422,9 @@ const CreateListingPage = () => {
               )}
             </div>
 
-            <h3>What make your place attractive and exciting?</h3>
+            <h3 class="text-2xl font-bold dark:text-white">
+              What make your place attractive and exciting?
+            </h3>
             <div className="description">
               <p>Title</p>
               <input
@@ -460,26 +444,9 @@ const CreateListingPage = () => {
                 onChange={handleChangeDescription}
                 required
               />
-              <p>Highlight</p>
-              <input
-                type="text"
-                placeholder="Highlight"
-                name="highlight"
-                value={formDescription.highlight}
-                onChange={handleChangeDescription}
-                required
-              />
-              <p>Highlight details</p>
-              <textarea
-                type="text"
-                placeholder="Highlight details"
-                name="highlightDesc"
-                value={formDescription.highlightDesc}
-                onChange={handleChangeDescription}
-                required
-              />
+
               <p>Now, set your PRICE</p>
-              <span>$</span>
+              <span>S$</span>
               <input
                 type="number"
                 placeholder="100"
@@ -489,6 +456,25 @@ const CreateListingPage = () => {
                 className="price"
                 required
               />
+            </div>
+            <h3 class="text-2xl font-bold dark:text-white">
+              Available Real Estate Agents
+            </h3>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Carousel>
+                {agents.map((agent, i) => (
+                  <Card
+                    key={i}
+                    title={agent.userName}
+                    email={agent.email}
+                    license={agent.license}
+                    profilePicture={agent.profilePicture}
+                    agent={agent}
+                    onSelect={handleAgentSelect}
+                    selected={selectedAgent && selectedAgent.uid === agent.uid}
+                  />
+                ))}
+              </Carousel>
             </div>
           </div>
 

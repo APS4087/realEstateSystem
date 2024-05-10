@@ -1,6 +1,12 @@
 @import "../styles/variables.scss";
 @import "../styles/breakpoints.scss";
 
+
+.card.selected {
+  border: 2px solid #f00; /* This will add a red border to the selected card */
+  //background-color: #eee; /* This will change the background color of the selected card */
+}
+
 .create-listing {
   background-color: $lightgrey;
   padding: 40px 60px 120px;
@@ -201,7 +207,7 @@
     }
 
     h2 {
-      color: $pinkred;
+      color: $darkgrey;
     }
 
     hr {
