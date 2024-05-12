@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import Shortcutbar from "../AdditionalPages/Shortcutbar";
 import Carousel from "../AdditionalPages/carousel";
 import Mortgage from "../AdditionalPages/mortgage";
-import RealEstateAgent from "../AdditionalPages/realEstateAgent";
+import RealEstateAgent from "../../Components/Cards/RealEstateCards/realEstateAgent";
 
 import RatingPopUp from "../AdditionalPages/RatingPopUp";
 import SellerEntity from "../../Backend/Entity/SellerEntity";
@@ -15,62 +15,37 @@ import { useState, useEffect } from "react";
 import RealEstateAgentEntity from "../../Backend/Entity/RealEstateAgentEntity";
 import { useContext } from "react";
 import { AuthContext } from "../../Context/AuthContext";
+import ViewPropertyController from "../../Controllers/PropertyControllers/ViewPropertyController";
 
 const PListPage = () => {
   const agentDetails = {
-    NAME: "John Doe",
-    PROFILEPIC: "https://example.com/profile.jpg",
-    COMPANYLOGO: "https://example.com/logo.jpg",
-    COMPANYNAME: "Doe Real Estate",
-    LICENSE: "License #12345",
-    RATING: "4.5",
-    PHONENUM: "123-456-7890",
-    EMAIL: "johndoe@example.com",
+    userName: "John Doe",
+    profilePicture: "https://example.com/profile.jpg",
+
+    license: "License #12345",
+    rating: "4.5",
+
+    email: "johndoe@example.com",
   };
 
   const { Id } = useParams(); // Retrieve the rental ID from the URL
-  const { currentUser } = useContext(AuthContext);
-  const [pendingRentalData, setPendingRentalData] = useState([]);
-  const [sellerData, setSellerData] = useState([]);
+  const [properties, setProperties] = useState([]);
 
   useEffect(() => {
-    const fetchPendingProperties = async () => {
-      if (currentUser && currentUser.uid) {
-        const realEstateAgentEntity = new RealEstateAgentEntity();
-        const pendingProperties =
-          await realEstateAgentEntity.getPendingProperties(currentUser.uid);
-        setPendingRentalData(pendingProperties);
-      }
+    const fetchProperties = async () => {
+      const viewPropertyController = new ViewPropertyController();
+      const properties = await viewPropertyController.getProperties();
+      setProperties(properties);
     };
 
-    fetchPendingProperties();
-  }, [currentUser]);
+    fetchProperties();
+  }, []);
+  const dataToUse = properties;
+  const rental = dataToUse.find((rental) => rental.id === Id);
 
-  // Use pendingRentalData if currentUser is a realEstateAgent, otherwise use rentalsData
-  const dataToUse =
-    currentUser && currentUser.userType === "realEstateAgent"
-      ? pendingRentalData
-      : rentalsData;
-  const rental = dataToUse.find((rental) => rental.id === Id); // Find the rental in the array
-
-  // if the current user is real estate agent, getting the seller info
-  useEffect(() => {
-    const fetchSellerData = async () => {
-      if (rental && rental.sellerId) {
-        const sellerEntity = new SellerEntity();
-        const seller = await sellerEntity.getSellerData(rental.sellerId);
-        const genericUserData = await sellerEntity.getUserData(rental.sellerId);
-        setSellerData({ ...seller, ...genericUserData });
-      }
-    };
-
-    fetchSellerData();
-  }, [rental]);
-
-  console.log(rental);
-  console.log(sellerData);
-
-  if (!rental) return <div>Rental not found</div>;
+  if (rental) {
+    console.log(rental.sellerId);
+  }
 
   return (
     <div>
@@ -131,13 +106,7 @@ const PListPage = () => {
         <p className="font-bold text-[30px]">Estimated Mortgage</p>
         <Mortgage />
       </div>
-      <RealEstateAgent
-        agentDetails={
-          currentUser && currentUser.userType === "realEstateAgent"
-            ? sellerData
-            : agentDetails
-        }
-      />
+      <RealEstateAgent agentDetails={agentDetails} />
       <RatingPopUp />
     </div>
   );

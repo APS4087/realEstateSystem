@@ -8,9 +8,10 @@ import BuyerHomePage from "./Pages/HomePages/BuyerHomePage";
 import RealEsateAgentHomePage from "./Pages/HomePages/RealEsateAgentHomePage";
 import SellerHomePage from "./Pages/HomePages/SellerHomePage";
 import SystemAdminHomePage from "./Pages/HomePages/SystemAdminHomePage";
-import CreateListingPage from "./Pages/AdditionalPages/createListingPage";
+import CreateListingPage from "./Pages/AdditionalPages/RealEsateAgentPages/createListingPage";
 import PListPage from "./Pages/AdditionalPages/PListPage";
-import PendingPropertiesPage from "./Pages/AdditionalPages/PendingPropertiesPage";
+import PendingPropertiesPage from "./Pages/AdditionalPages/RealEsateAgentPages/PendingPropertiesPage";
+import PendingPropertyListPage from "./Pages/AdditionalPages/RealEsateAgentPages/PendingPropertyListPage";
 
 const App = () => {
   const { currentUser } = useContext(AuthContext);
@@ -85,6 +86,15 @@ const App = () => {
           element={
             <ProtectedRoute>
               <PListPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/pendingProperty/:Id"
+          element={
+            <ProtectedRoute>
+              <PendingPropertyListPage />
             </ProtectedRoute>
           }
         />

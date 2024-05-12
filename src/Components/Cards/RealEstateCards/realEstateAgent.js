@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../Assets/logo/logo-title.png";
+
 import { BsStarFill } from "react-icons/bs";
 
 {
@@ -9,13 +9,9 @@ import { BsStarFill } from "react-icons/bs";
 const realEstateAgent = ({ agentDetails }) => {
   return (
     <div className="w-[65rem] ml-80 pb-10 pt-7" name="realEstate">
-      <p className="font-bold text-[25px] pb-5">Associated Estate Agent</p>
       <div className="h-[32rem] rounded-[1rem] border-2 border-gray-400">
         <div className="flex justify-center gap-4 items-center rounded-t-[1rem] bg-gray-100 py-3">
-          <img
-            src={agentDetails.profilePicture}
-            className="h-[4rem] flex object-cover"
-          />
+          <p className="text-[25px] font-bold">Real Estate Agent Information</p>
         </div>
 
         <div className="flex justify-between border-b-2 px-7 py-9">
@@ -24,15 +20,12 @@ const realEstateAgent = ({ agentDetails }) => {
               src={agentDetails.profilePicture}
               className="h-[4rem] flex object-cover border rounded-[50rem] w-[4.3rem]"
             />
-            <div className="">
-              <p className="mb-3">{agentDetails.userName}</p>
-            </div>
+
+            <p className="mb-3 text-2xl">{agentDetails.userName}</p>
           </div>
           <div className="flex gap-7 items-center h-auto">
             <div className="flex gap-2 items-center">
-              {agentDetails.license && (
-                <p className="text-[20px]">{agentDetails.license}</p>
-              )}
+              <p className="text-[20px]">5</p>
               <BsStarFill />
             </div>
             <div className="text-gray-900 underline hover:no-underline duration-200 py-1 px-3 rounded-full text-[19px]">
