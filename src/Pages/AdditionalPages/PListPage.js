@@ -31,11 +31,14 @@ const PListPage = () => {
   const { Id } = useParams(); // Retrieve the rental ID from the URL
   const [properties, setProperties] = useState([]);
 
+  const [isLoading, setIsLoading] = useState(true); // Add this line
+
   useEffect(() => {
     const fetchProperties = async () => {
       const viewPropertyController = new ViewPropertyController();
       const properties = await viewPropertyController.getProperties();
       setProperties(properties);
+      setIsLoading(false); // Add this line
     };
 
     fetchProperties();
@@ -43,6 +46,10 @@ const PListPage = () => {
   const dataToUse = properties;
   const rental = dataToUse.find((rental) => rental.id === Id);
 
+  if (isLoading) {
+    // Add this block
+    return <div>Loading...</div>;
+  }
   if (rental) {
     console.log(rental.sellerId);
   }

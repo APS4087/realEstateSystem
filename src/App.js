@@ -8,7 +8,7 @@ import BuyerHomePage from "./Pages/HomePages/BuyerHomePage";
 import RealEsateAgentHomePage from "./Pages/HomePages/RealEsateAgentHomePage";
 import SellerHomePage from "./Pages/HomePages/SellerHomePage";
 import SystemAdminHomePage from "./Pages/HomePages/SystemAdminHomePage";
-import CreateListingPage from "./Pages/AdditionalPages/RealEsateAgentPages/createListingPage";
+import CreateListingPage from "./Pages/AdditionalPages/createListingPage";
 import PListPage from "./Pages/AdditionalPages/PListPage";
 import PendingPropertiesPage from "./Pages/AdditionalPages/RealEsateAgentPages/PendingPropertiesPage";
 import PendingPropertyListPage from "./Pages/AdditionalPages/RealEsateAgentPages/PendingPropertyListPage";

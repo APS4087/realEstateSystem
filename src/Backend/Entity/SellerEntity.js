@@ -1,4 +1,11 @@
-import { addDoc, collection, doc, setDoc, getDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../Firebase/firebaseConfig";
 import UserEntity from "./UserEntity";
 

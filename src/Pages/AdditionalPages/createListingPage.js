@@ -1,18 +1,18 @@
-import "../../../Styles/CreateListing.scss";
-import Header from "../../../Components/Header";
-import { categories, types, facilities } from "../../../Assets/data";
+import "../../Styles/CreateListing.scss";
+import Header from "../../Components/Header";
+import { categories, types, facilities } from "../../Assets/data";
 import { RemoveCircleOutline, AddCircleOutline } from "@mui/icons-material";
-import variables from "../../../Styles/variables.scss";
+import variables from "../../Styles/variables.scss";
 import { IoIosImages } from "react-icons/io";
 import { useState, useEffect } from "react";
 import { BiTrash } from "react-icons/bi";
-import { storage, db } from "../../../Backend/Firebase/firebaseConfig";
+import { storage, db } from "../../Backend/Firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../../../Context/AuthContext";
+import { AuthContext } from "../../Context/AuthContext";
 import Swal from "sweetalert2";
 
-import Carousel from "../../../Utils/Carousel";
+import Carousel from "../../Utils/Carousel";
 import {
   collection,
   doc,
@@ -22,8 +22,8 @@ import {
 } from "firebase/firestore";
 
 import { Avatar } from "@mui/material";
-import avatar from "../../../Assets/profile.png";
-import RealEstateAgentEntity from "../../../Backend/Entity/RealEstateAgentEntity";
+import avatar from "../../Assets/profile.png";
+import RealEstateAgentEntity from "../../Backend/Entity/RealEstateAgentEntity";
 import {
   ref,
   uploadBytesResumable,

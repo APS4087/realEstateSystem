@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 import RealEstateAgentEntity from "../../../Backend/Entity/RealEstateAgentEntity";
 import { useContext } from "react";
 import { AuthContext } from "../../../Context/AuthContext";
+import RealEstateAgentController from "../../../Controllers/AgentControllers/realEsateAgentController";
 
 const PendingPropertyListPage = () => {
   const { Id } = useParams(); // Retrieve the rental ID from the URL
@@ -57,9 +58,24 @@ const PendingPropertyListPage = () => {
 
   const createPropertyEntity = async () => {
     try {
+      const oldRentalID = rental.id;
       const propertyController = new CreatePropertyController(currentUser);
       const propertyId = await propertyController.createProperty(rental);
-      console.log("Property created with ID: ", propertyId);
+      //console.log("Property created with ID: ", propertyId);
+
+      const realEstateAgentController = new RealEstateAgentController();
+      // console.log("Updating property ID for agent: ", oldRentalID, propertyId);
+      await realEstateAgentController.updatePropertyId(
+        currentUser.uid,
+        oldRentalID,
+        propertyId
+      );
+
+      // Add the property ID to the listedProperties field for the agent
+      await propertyController.addPropertyToListedProperties(propertyId);
+      // Remove the property ID from the pendingProperties field for the agent
+      await propertyController.removePropertyFromPendingProperties(propertyId);
+
       Swal.fire({
         title: "Success!",
         text: `The property by ${sellerData.userName} has been created !`,

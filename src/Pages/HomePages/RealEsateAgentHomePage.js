@@ -11,28 +11,24 @@ import { Rentals } from "../../Components/Cards/Rentals";
 import Header from "../../Components/Header";
 import RealEstateAgentEntity from "../../Backend/Entity/RealEstateAgentEntity";
 import { rentalsData } from "../../Assets/data";
+import ViewPropertyController from "../../Controllers/PropertyControllers/ViewPropertyController";
 
 // TODO: ADD RENTAL ID
 
 const RealEsateAgentHomePage = () => {
   const { currentUser } = useContext(AuthContext);
-  const [userData, setUserData] = useState([]);
-
-  useEffect(() => {
-    const fetchPendingProperties = async () => {
-      if (currentUser && currentUser.uid) {
-        const realEstateAgentEntity = new RealEstateAgentEntity();
-        const pendingProperties =
-          await realEstateAgentEntity.getPendingProperties(currentUser.uid);
-        setUserData(pendingProperties);
-      }
-    };
-
-    fetchPendingProperties();
-  }, [currentUser]);
+  const [properties, setProperties] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState(0);
 
-  console.log(userData);
+  useEffect(() => {
+    const fetchProperties = async () => {
+      const viewPropertyController = new ViewPropertyController();
+      const properties = await viewPropertyController.getProperties();
+      setProperties(properties);
+    };
+
+    fetchProperties();
+  }, []);
   return (
     <div className="App">
       <Header />
@@ -41,7 +37,7 @@ const RealEsateAgentHomePage = () => {
         setSelectedFilter={setSelectedFilter}
       />
       <div className="sm:mx-6 md:mx-10 lg:mx-12 px-3">
-        <Rentals properties={rentalsData} />
+        <Rentals properties={properties} />
       </div>
     </div>
   );

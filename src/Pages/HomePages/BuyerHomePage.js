@@ -10,21 +10,23 @@ import Filter from "../../Components/Filter";
 import { Rentals } from "../../Components/Cards/Rentals";
 import Header from "../../Components/Header";
 import { rentalsData } from "../../Assets/data";
+import ViewPropertyController from "../../Controllers/PropertyControllers/ViewPropertyController";
 
 const BuyerHomePage = () => {
   const { currentUser } = useContext(AuthContext);
-  /* const userType = currentUser ? currentUser.userType : null;
-  const navigate = useNavigate();
-  
-  useEffect(() => {
-    if (userType !== "buyer") {
-      navigate("..");
-    }
-  }, [userType, navigate]); */
-
-  const customProfilePic = currentUser ? currentUser.profilePic : null;
 
   const [selectedFilter, setSelectedFilter] = useState(0);
+  const [properties, setProperties] = useState([]);
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      const viewPropertyController = new ViewPropertyController();
+      const properties = await viewPropertyController.getProperties();
+      setProperties(properties);
+    };
+
+    fetchProperties();
+  }, []);
   return (
     <div className="App">
       <Header />
@@ -33,7 +35,7 @@ const BuyerHomePage = () => {
         setSelectedFilter={setSelectedFilter}
       />
       <div className="sm:mx-6 md:mx-10 lg:mx-12 px-3">
-        <Rentals properties={rentalsData} />
+        <Rentals properties={properties} />
       </div>
     </div>
   );
