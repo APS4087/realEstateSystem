@@ -5,7 +5,8 @@ import { useState } from "react";
 import { list, list2 } from "../../Assets/cards-list";
 import Filter from "../../Components/Filter";
 import Header from "../../Components/Header";
-import Cards from "../../Components/Cards";
+import { Rentals } from "../../Components/Cards/Rentals";
+import { rentalsData } from "../../Assets/data";
 
 const LandingPage = () => {
   const [selectedFilter, setSelectedFilter] = useState(0);
@@ -16,7 +17,9 @@ const LandingPage = () => {
         selectedFilter={selectedFilter}
         setSelectedFilter={setSelectedFilter}
       />
-      {selectedFilter == 0 ? <Cards list={list} /> : <Cards list={list2} />}
+      <div className="sm:mx-6 md:mx-10 lg:mx-12 px-3">
+        <Rentals properties={rentalsData} />
+      </div>
     </div>
   );
 };

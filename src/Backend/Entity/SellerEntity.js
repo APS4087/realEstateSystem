@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../Firebase/firebaseConfig";
 import UserEntity from "./UserEntity";
 
@@ -21,6 +21,21 @@ class SellerEntity extends UserEntity {
       return userId;
     } catch (error) {
       console.error("Error creating seller: ", error);
+      throw error;
+    }
+  }
+
+  // Method to fetch seller data by id
+  async getSellerData(sellerId) {
+    try {
+      const sellerDoc = await getDoc(doc(db, "sellers", sellerId));
+      if (sellerDoc.exists()) {
+        return sellerDoc.data();
+      } else {
+        throw new Error("No such seller!");
+      }
+    } catch (error) {
+      console.error("Error fetching seller data: ", error);
       throw error;
     }
   }

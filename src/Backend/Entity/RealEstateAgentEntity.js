@@ -57,6 +57,17 @@ class RealEstateAgentEntity extends UserEntity {
       pendingProperties: agentData.pendingProperties,
     });
   }
+
+  async getPendingProperties(realEstateAgentId) {
+    // Get the selected agent's document
+    const agentDoc = await getDoc(
+      doc(db, "realEstateAgents", realEstateAgentId)
+    );
+    const agentData = agentDoc.data();
+
+    // Return the pendingProperties
+    return agentData.pendingProperties;
+  }
 }
 
 export default RealEstateAgentEntity;

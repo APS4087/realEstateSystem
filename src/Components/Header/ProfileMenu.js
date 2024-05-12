@@ -120,6 +120,25 @@ export default function BasicMenu() {
                   Logout
                 </MenuItem>,
               ]
+            : userType === "realEstateAgent"
+            ? [
+                <Link to="/pendingPropertiesPage" className="menu-link">
+                  <MenuItem
+                    key="pending-properties"
+                    onClick={handleClose}
+                    className="menu-items"
+                  >
+                    Pending Properties
+                  </MenuItem>
+                </Link>,
+                <MenuItem
+                  key="logout"
+                  onClick={handleLogout}
+                  className="menu-items"
+                >
+                  Logout
+                </MenuItem>,
+              ]
             : null
           : [
               <Link to="/signup" className="menu-link">

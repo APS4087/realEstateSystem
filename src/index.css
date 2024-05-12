@@ -2,7 +2,3 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
-    background: #dcdce6;
-    background-image: url('./Assets/Background.png');
-}

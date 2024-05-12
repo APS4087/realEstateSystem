@@ -179,6 +179,7 @@ const CreateListingPage = () => {
     try {
       /* Create a new object to handle data */
       const listingData = {
+        id: Math.random().toString(36).substr(2, 9),
         sellerId: sellerId,
         category: category,
         streetAddress: formLocation.streetAddress,

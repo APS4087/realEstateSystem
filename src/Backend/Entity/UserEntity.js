@@ -67,6 +67,21 @@ class UserEntity {
       throw error;
     }
   }
+
+  // Method to fetch user data by id
+  async getUserData(userId) {
+    try {
+      const userDoc = await getDoc(doc(db, "users", userId));
+      if (userDoc.exists()) {
+        return userDoc.data();
+      } else {
+        throw new Error("No such user!");
+      }
+    } catch (error) {
+      console.error("Error fetching user data: ", error);
+      throw error;
+    }
+  }
 }
 
 export default UserEntity;

@@ -98,96 +98,98 @@ function SignUpPage() {
     });
   };
   return (
-    <div className="container mx-auto">
-      <Toaster position="top-center" reverseOrder={false}></Toaster>
-      <div className="flex justify-center items-center h-screen">
-        <div className={styles.glass} style={{ width: "30%" }}>
-          <div className="title flex flex-col items-center">
-            <h4 className="py-1 text-5xl font-bold">Sign Up Now !</h4>
+    <div className={styles.signPage}>
+      <div className="container mx-auto">
+        <Toaster position="top-center" reverseOrder={false}></Toaster>
+        <div className="flex justify-center items-center h-screen">
+          <div className={styles.glass} style={{ width: "30%" }}>
+            <div className="title flex flex-col items-center">
+              <h4 className="py-1 text-5xl font-bold">Sign Up Now !</h4>
+            </div>
+
+            <form className="py-1" onSubmit={formik.handleSubmit}>
+              <div className="profile flex justify-center py-4">
+                <label htmlFor="profilePic">
+                  <img
+                    src={preview || avatar} // Display preview of the selected file
+                    className={styles.profile_img}
+                    alt="Avatar pic"
+                  />
+                </label>
+                <input
+                  onChange={onUpload}
+                  type="file"
+                  id="profilePic"
+                  name="profilePic"
+                />
+              </div>
+
+              <div className="textbox flex flex-col items-center gap-6">
+                <div className="name flex w-3/4 gap-7">
+                  <input
+                    {...formik.getFieldProps("userName")}
+                    className={styles.textbox}
+                    type="text"
+                    placeholder="Username*"
+                  />
+                  <input
+                    {...formik.getFieldProps("email")}
+                    className={styles.textbox}
+                    type="text"
+                    placeholder="Email*"
+                  />
+                </div>
+
+                <div className="name flex w-3/4 gap-7">
+                  <input
+                    {...formik.getFieldProps("password")}
+                    className={styles.textbox}
+                    type="password"
+                    placeholder="Password*"
+                  />
+                  <input
+                    {...formik.getFieldProps("confirmPassword")}
+                    className={styles.textbox}
+                    type="password"
+                    placeholder="Confirm Password*"
+                  />
+                </div>
+
+                <select
+                  {...formik.getFieldProps("userType")}
+                  className={styles.textbox}
+                >
+                  <option value="">Select User Type</option>
+                  <option value="realEstateAgent">Real Estate Agent</option>
+                  <option value="buyer">Buyer</option>
+                  <option value="seller">Seller</option>
+                </select>
+
+                {/* Additional field for real estate agents */}
+                {formik.values.userType === "realEstateAgent" && (
+                  <input
+                    {...formik.getFieldProps("license")}
+                    className={styles.textbox}
+                    type="text"
+                    placeholder="Licenses*"
+                  />
+                )}
+
+                <button className={styles.btn} type="submit">
+                  Sign Up
+                </button>
+              </div>
+
+              <div className="text-center py-4">
+                <span className="text-gray-500">
+                  Already registered?{" "}
+                  <Link className="text-red-500" to="/signin">
+                    Login
+                  </Link>
+                </span>
+              </div>
+            </form>
           </div>
-
-          <form className="py-1" onSubmit={formik.handleSubmit}>
-            <div className="profile flex justify-center py-4">
-              <label htmlFor="profilePic">
-                <img
-                  src={preview || avatar} // Display preview of the selected file
-                  className={styles.profile_img}
-                  alt="Avatar pic"
-                />
-              </label>
-              <input
-                onChange={onUpload}
-                type="file"
-                id="profilePic"
-                name="profilePic"
-              />
-            </div>
-
-            <div className="textbox flex flex-col items-center gap-6">
-              <div className="name flex w-3/4 gap-7">
-                <input
-                  {...formik.getFieldProps("userName")}
-                  className={styles.textbox}
-                  type="text"
-                  placeholder="Username*"
-                />
-                <input
-                  {...formik.getFieldProps("email")}
-                  className={styles.textbox}
-                  type="text"
-                  placeholder="Email*"
-                />
-              </div>
-
-              <div className="name flex w-3/4 gap-7">
-                <input
-                  {...formik.getFieldProps("password")}
-                  className={styles.textbox}
-                  type="password"
-                  placeholder="Password*"
-                />
-                <input
-                  {...formik.getFieldProps("confirmPassword")}
-                  className={styles.textbox}
-                  type="password"
-                  placeholder="Confirm Password*"
-                />
-              </div>
-
-              <select
-                {...formik.getFieldProps("userType")}
-                className={styles.textbox}
-              >
-                <option value="">Select User Type</option>
-                <option value="realEstateAgent">Real Estate Agent</option>
-                <option value="buyer">Buyer</option>
-                <option value="seller">Seller</option>
-              </select>
-
-              {/* Additional field for real estate agents */}
-              {formik.values.userType === "realEstateAgent" && (
-                <input
-                  {...formik.getFieldProps("license")}
-                  className={styles.textbox}
-                  type="text"
-                  placeholder="Licenses*"
-                />
-              )}
-
-              <button className={styles.btn} type="submit">
-                Sign Up
-              </button>
-            </div>
-
-            <div className="text-center py-4">
-              <span className="text-gray-500">
-                Already registered?{" "}
-                <Link className="text-red-500" to="/signin">
-                  Login
-                </Link>
-              </span>
-            </div>
-          </form>
         </div>
       </div>
     </div>
