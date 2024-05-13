@@ -12,6 +12,7 @@ import CreateListingPage from "./Pages/AdditionalPages/createListingPage";
 import PListPage from "./Pages/AdditionalPages/PListPage";
 import PendingPropertiesPage from "./Pages/AdditionalPages/RealEsateAgentPages/PendingPropertiesPage";
 import PendingPropertyListPage from "./Pages/AdditionalPages/RealEsateAgentPages/PendingPropertyListPage";
+import BoughtPropertiesPage from "./Pages/AdditionalPages/BuyerPages/BoughtProperties";
 
 const App = () => {
   const { currentUser } = useContext(AuthContext);
@@ -38,6 +39,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <BuyerHomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/boughtPropertiesPage"
+          element={
+            <ProtectedRoute>
+              <BoughtPropertiesPage />
             </ProtectedRoute>
           }
         />

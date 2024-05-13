@@ -17,11 +17,11 @@ const carousel = ({ images }) => {
       >
         {images.map((property, index) => {
           return (
-            <div key={index} className="w-[10rem] h-[30rem]">
+            <div key={index} className="w-full h-[30rem]">
               <img
                 src={property}
                 alt={`house-${index}`}
-                className="w-[10rem] h-[23rem] rounded-[1.5rem]"
+                className="w-full h-[23rem] rounded-[1.5rem]"
               />
             </div>
           );

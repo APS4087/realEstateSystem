@@ -62,6 +62,23 @@ class BuyerEntity extends UserEntity {
       throw error;
     }
   }
+  async getBoughtProperties(userId) {
+    try {
+      const userRef = doc(db, "buyers", userId);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        return userData.purchasedProperties || [];
+      } else {
+        console.error("User does not exist");
+        return [];
+      }
+    } catch (error) {
+      console.error("Error getting bought properties:", error);
+      throw error;
+    }
+  }
 }
 
 export default BuyerEntity;

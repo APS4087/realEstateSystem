@@ -79,13 +79,15 @@ export default function BasicMenu() {
                 >
                   Saved Properties
                 </MenuItem>,
-                <MenuItem
-                  key="bought"
-                  onClick={handleClose}
-                  className="menu-items"
-                >
-                  Bought Properties
-                </MenuItem>,
+                <Link to={"/boughtPropertiesPage"}>
+                  <MenuItem
+                    key="bought"
+                    onClick={handleClose}
+                    className="menu-items"
+                  >
+                    Bought Properties
+                  </MenuItem>
+                </Link>,
                 <MenuItem
                   key="logout"
                   onClick={handleLogout}
