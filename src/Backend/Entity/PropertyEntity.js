@@ -66,6 +66,23 @@ class PropertyEntity {
       throw error;
     }
   }
+
+  async getProperty(propertyId) {
+    try {
+      const propertyRef = doc(db, "properties", propertyId);
+      const propertySnap = await getDoc(propertyRef);
+
+      if (propertySnap.exists()) {
+        return propertySnap.data();
+      } else {
+        console.error("Property does not exist");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error getting property:", error);
+      throw error;
+    }
+  }
 }
 
 export default PropertyEntity;

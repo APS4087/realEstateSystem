@@ -13,6 +13,7 @@ import PListPage from "./Pages/AdditionalPages/PListPage";
 import PendingPropertiesPage from "./Pages/AdditionalPages/RealEsateAgentPages/PendingPropertiesPage";
 import PendingPropertyListPage from "./Pages/AdditionalPages/RealEsateAgentPages/PendingPropertyListPage";
 import BoughtPropertiesPage from "./Pages/AdditionalPages/BuyerPages/BoughtProperties";
+import UserProfileUpdate from "./Pages/AdditionalPages/UserProfileUpdate";
 
 const App = () => {
   const { currentUser } = useContext(AuthContext);
@@ -34,6 +35,14 @@ const App = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/signin" element={<SignInPage />} />
+        <Route
+          path="/profileUpdatePage"
+          element={
+            <ProtectedRoute>
+              <UserProfileUpdate />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/buyerHomePage"
           element={

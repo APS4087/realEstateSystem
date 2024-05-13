@@ -72,6 +72,15 @@ export default function BasicMenu() {
         {currentUser
           ? userType === "buyer"
             ? [
+                <Link to={"/profileUpdatePage"}>
+                  <MenuItem
+                    key="saved"
+                    onClick={handleClose}
+                    className="menu-items"
+                  >
+                    Profile Page
+                  </MenuItem>
+                </Link>,
                 <MenuItem
                   key="saved"
                   onClick={handleClose}
@@ -98,6 +107,16 @@ export default function BasicMenu() {
               ]
             : userType === "seller"
             ? [
+                <Link to={"/profileUpdatePage"}>
+                  <MenuItem
+                    key="saved"
+                    onClick={handleClose}
+                    className="menu-items"
+                  >
+                    Profile Page
+                  </MenuItem>
+                </Link>,
+
                 <MenuItem
                   key="listed"
                   onClick={handleClose}
@@ -124,6 +143,15 @@ export default function BasicMenu() {
               ]
             : userType === "realEstateAgent"
             ? [
+                <Link to={"/profileUpdatePage"}>
+                  <MenuItem
+                    key="saved"
+                    onClick={handleClose}
+                    className="menu-items"
+                  >
+                    Profile Page
+                  </MenuItem>
+                </Link>,
                 <Link to="/pendingPropertiesPage" className="menu-link">
                   <MenuItem
                     key="pending-properties"

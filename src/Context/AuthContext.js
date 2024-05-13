@@ -24,6 +24,7 @@ export const AuthContextProvider = ({ children }) => {
               username: userData.userName,
               profilePic: userData.profilePicture,
               userType: userData.userType,
+              phone: userData.phone,
             });
           }
         } catch (error) {

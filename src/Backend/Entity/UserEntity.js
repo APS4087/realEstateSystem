@@ -1,7 +1,22 @@
 import { auth, db } from "../Firebase/firebaseConfig";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { addDoc, collection, doc, setDoc, getDoc } from "firebase/firestore";
+import { reauthenticateWithCredential } from "firebase/auth";
+import { EmailAuthProvider, getAuth } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  updatePassword,
+  updateEmail,
+} from "firebase/auth";
+
+import {
+  addDoc,
+  collection,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { Phone } from "@mui/icons-material";
 
 // UserEntity.js
 class UserEntity {
@@ -79,6 +94,49 @@ class UserEntity {
       }
     } catch (error) {
       console.error("Error fetching user data: ", error);
+      throw error;
+    }
+  }
+
+  async updateUser(userId, userData) {
+    try {
+      // Get a reference to the user document
+      console.log(userData);
+      const userDocRef = doc(db, "users", userId);
+
+      const updateData = {
+        userName: userData.userName,
+        phone: userData.phone,
+      };
+
+      // Update the user document
+      await updateDoc(userDocRef, updateData);
+
+      // Get the current user
+      const auth = getAuth();
+      const user = auth.currentUser;
+
+      // Reauthenticate the user before updating email or password
+      if (userData.currentEmail || userData.currentPassword) {
+        const credential = EmailAuthProvider.credential(
+          userData.currentEmail,
+          userData.currentPassword // The current password entered by the user
+        );
+        await reauthenticateWithCredential(user, credential);
+      }
+
+      // Check if the email needs to be updated
+      if (userData.newEmail) {
+        await updateEmail(user, userData.newEmail);
+        await updateDoc(userDocRef, { email: userData.newEmail });
+      }
+
+      // Check if the password needs to be updated
+      if (userData.newPassword) {
+        await updatePassword(user, userData.newPassword);
+      }
+    } catch (error) {
+      console.error("Error updating user:", error);
       throw error;
     }
   }

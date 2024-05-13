@@ -53,7 +53,7 @@ const PListPage = () => {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Something went wrong! Property not purchased.",
+        text: "Something went wrong! Property Already Purchase.",
       });
     }
   };
