@@ -5,6 +5,7 @@ import {
   setDoc,
   getDoc,
   updateDoc,
+  arrayUnion,
 } from "firebase/firestore";
 import { db } from "../Firebase/firebaseConfig";
 import UserEntity from "./UserEntity";
@@ -77,6 +78,42 @@ class BuyerEntity extends UserEntity {
     } catch (error) {
       console.error("Error getting bought properties:", error);
       throw error;
+    }
+  }
+
+  async addToShortlist(userId, propertyId) {
+    try {
+      const userRef = doc(db, "buyers", userId);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        // Add the propertyId to the shortlistedProperties field
+        await updateDoc(userRef, {
+          shortlistedProperties: arrayUnion(propertyId),
+        });
+      } else {
+        console.error("User does not exist");
+      }
+    } catch (error) {
+      console.error("Error adding property to shortlist:", error);
+      throw error;
+    }
+  }
+  async isShortlisted(userId, propertyId) {
+    try {
+      const userRef = doc(db, "buyers", userId);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        return userData.shortlistedProperties.includes(propertyId);
+      } else {
+        console.error("User does not exist");
+        return false;
+      }
+    } catch (error) {
+      console.error("Error checking if property is shortlisted:", error);
+      return false;
     }
   }
 }

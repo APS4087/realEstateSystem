@@ -7,6 +7,13 @@ import RealEstateAgent from "../../Components/Cards/RealEstateCards/realEstateAg
 import Button from "@mui/material/Button";
 import RatingPopUp from "../AdditionalPages/RatingPopUp";
 
+import { Link } from "react-router-dom";
+import { BsFlag } from "react-icons/bs";
+
+import { AiOutlineSend, AiOutlineUser } from "react-icons/ai";
+import { Link as LinkScroll } from "react-scroll";
+import BasicMenu from "../../Components/Header/ProfileMenu";
+
 import { Checkbox, Label, Modal, TextInput } from "flowbite-react";
 
 import logo from "../../Assets/logo/logo-title.png";
@@ -16,7 +23,7 @@ import { BsFillEyeFill } from "react-icons/bs";
 import { rentalsData } from "../../Assets/data";
 import { useState, useEffect } from "react";
 import RealEstateAgentEntity from "../../Backend/Entity/RealEstateAgentEntity";
-
+import BuyerShortListController from "../../Controllers/BuyerControllers/BuyerShortListController";
 import ViewPropertyController from "../../Controllers/PropertyControllers/ViewPropertyController";
 import RealEstateAgentController from "../../Controllers/AgentControllers/realEsateAgentController";
 import { useContext } from "react";
@@ -33,12 +40,35 @@ const PListPage = () => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
   const [email, setEmail] = useState("");
+  const [isShortlisted, setIsShortlisted] = useState(false);
 
   // for popup review on click
   const onCloseModal = () => {
     setOpenModal(false);
     setEmail("");
   };
+  const buyerController = new BuyerShortListController();
+  async function addToShortlist(propertyId) {
+    try {
+      await buyerController.addToShortlist(currentUser.uid, propertyId);
+
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "The Property has been shortlisted!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      console.log("Property added to shortlist!");
+    } catch (error) {
+      console.error("Error adding property to shortlist:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Property was not shortlisted!",
+      });
+    }
+  }
 
   // for popup review on click
   const purchaseProperty = async (buyerID, propertyId) => {
@@ -57,6 +87,26 @@ const PListPage = () => {
       });
     }
   };
+  async function checkIsShortlisted(propertyId) {
+    if (currentUser.userType !== "buyer") {
+      console.log(`User is not a buyer.`);
+      return false;
+    }
+    try {
+      console.log(`Checking if property ${propertyId} is shortlisted.`);
+      const isShortlisted = await buyerController.isShortlisted(
+        currentUser.uid,
+        propertyId
+      );
+      console.log(
+        `Property ${propertyId} is ${isShortlisted ? "" : "not"} shortlisted.`
+      );
+
+      return isShortlisted;
+    } catch (error) {
+      console.error("Error checking if property is shortlisted:", error);
+    }
+  }
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -85,6 +135,18 @@ const PListPage = () => {
 
     fetchAgentData();
   }, [rental]);
+  useEffect(() => {
+    if (!rental) {
+      return; // Exit the effect if rental is not defined
+    }
+
+    const fetchIsShortlisted = async () => {
+      const result = await checkIsShortlisted(rental.id);
+      setIsShortlisted(result);
+    };
+
+    fetchIsShortlisted();
+  }, [rental]);
   if (isLoading) {
     // Add this block
     return <div>Loading...</div>;
@@ -92,7 +154,60 @@ const PListPage = () => {
 
   return (
     <div>
-      <Shortcutbar />
+      <div className="sticky top-0 z-50 bg-white shadow-lg shadow-gray-200">
+        <div className="flex justify-between items-center sm:mx-6 md:mx-12 lg:mx-12">
+          {/* Left */}
+          <div className=" h-[4rem] flex">
+            <Link to="/">
+              <img src={logo} className="h-[4rem] flex object-cover" />
+            </Link>
+          </div>
+          {/* Middle Left */}
+          <div className="lg:flex gap-5">
+            <LinkScroll to="carousel" smooth={true} duration={500}>
+              <button>Overview</button>
+            </LinkScroll>
+            <LinkScroll to="about" smooth={true} duration={500}>
+              <button>About</button>
+            </LinkScroll>
+            <LinkScroll to="location" smooth={true} duration={500}>
+              <button>Location</button>
+            </LinkScroll>
+            <LinkScroll to="mortgage" smooth={true} duration={500}>
+              <button>Mortgage</button>
+            </LinkScroll>
+            <LinkScroll to="realEstate" smooth={true} duration={500}>
+              <button>RE Agent</button>
+            </LinkScroll>
+          </div>
+          {/* Middle Right */}
+          <div className="flex text-gray-600">
+            {currentUser && currentUser.userType === "buyer" && (
+              <button
+                className="flex items-center hover:bg-gray-200 duration-200 gap-2 py-1 px-3 sm:px-4 rounded-full text-[14px] sm:text-[16px]"
+                onClick={() => addToShortlist(rental.id)}
+              >
+                <TiBookmark className="" />
+                <div className="">Shortlist</div>
+              </button>
+            )}
+            <div className="flex items-center hover:bg-gray-200 duration-200 gap-2 sm:px-4 rounded-full text-[14px] sm:text-[16px]">
+              <AiOutlineSend className="" />
+              <div className="">Share</div>
+            </div>
+            <div className="flex items-center hover:bg-gray-200 duration-200 gap-2 sm:px-4 rounded-full text-[14px] sm:text-[16px]">
+              <BsFlag className="" />
+              <div className="">Report</div>
+            </div>
+          </div>
+          {/* Right */}
+          <div className="flex items-center pr-2 font-semibold text-gray-600">
+            <div className="profile-div">
+              <BasicMenu />
+            </div>
+          </div>
+        </div>
+      </div>
       <div>
         <Carousel images={rental.listingPhotos} />
       </div>
@@ -116,7 +231,12 @@ const PListPage = () => {
         </div>
       </div>
       <div className="w-[65rem] ml-80 items-center pb-4 font-bold text-[30px] border-b-2">
-        <p className="pb-1">{rental.title}</p>
+        <p className="pb-1">
+          {rental.title}
+          {isShortlisted && (
+            <span className="ml-2 text-green-500">(Shortlisted)</span>
+          )}
+        </p>
         <div className="w-{$p.length*2} py-2 px-3 inline-block bg-gray-600 text-white border rounded-full">
           <p className="font-semibold text-[15px]">{rental.tags[1]}</p>
         </div>
