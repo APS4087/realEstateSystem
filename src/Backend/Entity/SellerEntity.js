@@ -5,6 +5,7 @@ import {
   setDoc,
   getDoc,
   updateDoc,
+  arrayUnion,
 } from "firebase/firestore";
 import { db } from "../Firebase/firebaseConfig";
 import UserEntity from "./UserEntity";
@@ -45,6 +46,66 @@ class SellerEntity extends UserEntity {
       console.error("Error fetching seller data: ", error);
       throw error;
     }
+  }
+
+  async addPropertyToListedProperties(sellerId, propertyId) {
+    try {
+      const sellerRef = doc(db, "sellers", sellerId);
+
+      // Add the property ID to the listedProperties field
+      await updateDoc(sellerRef, {
+        listedProperties: arrayUnion(propertyId),
+      });
+      console.log(
+        "Property ID added to listed properties for seller: ",
+        propertyId
+      );
+    } catch (error) {
+      console.error("Error adding property to listed properties: ", error);
+      throw error;
+    }
+  }
+  async getListedProperties(sellerId) {
+    // Get the selected agent's document
+    const sellerDoc = await getDoc(doc(db, "sellers", sellerId));
+    const sellerData = sellerDoc.data();
+
+    // Return the pendingProperties
+    return sellerData.listedProperties;
+  }
+
+  async soldProperty(userId, propertyId) {
+    try {
+      const userRef = doc(db, "sellers", userId);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+
+        // Check if purchasedProperties exists, if not, initialize it as an empty array
+        if (!userData.soldProperties) {
+          userData.soldProperties = [];
+        }
+
+        userData.soldProperties.push(propertyId);
+
+        await updateDoc(userRef, userData);
+        console.log("Property has been added to sold properties: ", propertyId);
+      } else {
+        console.error("User does not exist");
+      }
+    } catch (error) {
+      console.error("Error purchasing property:", error);
+      throw error;
+    }
+  }
+  async getSoldProperties(sellerId) {
+    // Get the selected agent's document
+    const sellerDoc = await getDoc(doc(db, "sellers", sellerId));
+    const sellerData = sellerDoc.data();
+
+    // Return the pendingProperties
+    return sellerData.soldProperties;
   }
 }
 

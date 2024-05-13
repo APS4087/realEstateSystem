@@ -1,10 +1,12 @@
 import PropertyEntity from "../../Backend/Entity/PropertyEntity";
 import RealEstateAgentEntity from "../../Backend/Entity/RealEstateAgentEntity";
+import SellerEntity from "../../Backend/Entity/SellerEntity";
 
 class CreatePropertyController {
   constructor(currentUser) {
     this.propertyEntity = new PropertyEntity();
     this.realEstateAgentEntity = new RealEstateAgentEntity();
+    this.sellerEntity = new SellerEntity();
     this.currentUser = currentUser;
   }
 
@@ -23,10 +25,23 @@ class CreatePropertyController {
     }
   }
 
-  async addPropertyToListedProperties(propertyId) {
+  async addPropertyToListedProperties_Agent(propertyId) {
     try {
       await this.realEstateAgentEntity.addPropertyToListedProperties(
         this.currentUser.uid,
+        propertyId
+      );
+      console.log("Property ID added to listed properties: ", propertyId);
+    } catch (error) {
+      console.error("Error adding property to listed properties: ", error);
+      throw error;
+    }
+  }
+
+  async addPropertyToListedProperties_Seller(propertyId, sellerId) {
+    try {
+      await this.sellerEntity.addPropertyToListedProperties(
+        sellerId,
         propertyId
       );
       console.log("Property ID added to listed properties: ", propertyId);

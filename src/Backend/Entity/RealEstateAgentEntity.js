@@ -190,6 +190,31 @@ class RealEstateAgentEntity extends UserEntity {
       throw error;
     }
   }
+  async addRatingAndReview(agentId, reviewData) {
+    try {
+      // Get the agent's document
+      const agentRef = doc(db, "realEstateAgents", agentId);
+      const agentDoc = await getDoc(agentRef);
+      const agentData = agentDoc.data();
+
+      // If agentData.reviews is not an array, initialize it as an empty array
+      if (!Array.isArray(agentData.reviewDatas)) {
+        agentData.reviewDatas = [];
+      }
+
+      // Add the review data to the reviews array
+      agentData.reviewDatas.push(reviewData);
+
+      // Update the agent's document in the database with the new review data
+      await updateDoc(agentRef, { reviewDatas: agentData.reviewDatas });
+
+      console.log("Review added in entity: ", reviewData);
+      return true;
+    } catch (error) {
+      console.error("Error adding review: ", error);
+      return false;
+    }
+  }
 }
 
 export default RealEstateAgentEntity;

@@ -1,31 +1,23 @@
 import React, { useEffect, useState } from "react";
-
 import { useContext } from "react";
 import { AuthContext } from "../../../Context/AuthContext";
-import { Rentals } from "../../../Components/Cards/Rentals";
-
 import Filter from "../../../Components/Filter";
-
 import Header from "../../../Components/Header";
+import SoldRentals from "../../../Components/Cards/SoldRentals/SoldRentals";
+import ViewSoldPropertiesController from "../../../Controllers/SellerControllers.js/ViewSoldPropertiesController";
 
-import RealEstateAgentEntity from "../../../Backend/Entity/RealEstateAgentEntity";
-
-import { doc, db, getDoc } from "firebase/firestore";
-import PropertyController from "../../../Controllers/PropertyControllers/PropertyController";
-import UpdateRentals from "../../../Components/Cards/RealEstateCards/UpdateRentals";
-
-const ListedAgentPropertiesPage = () => {
+const SellerSoldPropertiesPage = () => {
   const { currentUser } = useContext(AuthContext);
   const [userData, setUserData] = useState([]);
+  const sellerViewSoldProperties = new ViewSoldPropertiesController();
 
   useEffect(() => {
     const fetchBoughtProperties = async () => {
       if (currentUser && currentUser.uid) {
-        const propertyController = new PropertyController();
-        const listedProperties = await propertyController.getListingProperties(
+        const soldProperties = await sellerViewSoldProperties.getSoldProperties(
           currentUser.uid
         );
-        setUserData(listedProperties);
+        setUserData(soldProperties);
       }
     };
 
@@ -34,7 +26,6 @@ const ListedAgentPropertiesPage = () => {
 
   const [selectedFilter, setSelectedFilter] = useState(0);
 
-  console.log(userData);
   return (
     <div className="App">
       <Header />
@@ -43,10 +34,10 @@ const ListedAgentPropertiesPage = () => {
         setSelectedFilter={setSelectedFilter}
       />
       <div className="sm:mx-6 md:mx-10 lg:mx-12 px-3">
-        <UpdateRentals properties={userData} />
+        <SoldRentals properties={userData} />
       </div>
     </div>
   );
 };
 
-export default ListedAgentPropertiesPage;
+export default SellerSoldPropertiesPage;

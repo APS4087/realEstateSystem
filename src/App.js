@@ -15,6 +15,12 @@ import PendingPropertyListPage from "./Pages/AdditionalPages/RealEsateAgentPages
 import BoughtPropertiesPage from "./Pages/AdditionalPages/BuyerPages/BoughtProperties";
 import UserProfileUpdate from "./Pages/AdditionalPages/UserProfileUpdate";
 import ListedAgentPropertiesPage from "./Pages/AdditionalPages/RealEsateAgentPages/ListedAgentPropertiesPage";
+import SavedPropertiesPage from "./Pages/AdditionalPages/BuyerPages/SavedPropertiesPage";
+import SellerListedPropertiesPage from "./Pages/AdditionalPages/SellerPages/SellerListedPropertiesPage";
+import SellerSoldPropertiesPage from "./Pages/AdditionalPages/SellerPages/SellerSoldPropertiesPage";
+import SellerSoldPropertiesListPage from "./Pages/AdditionalPages/SellerPages/SellerSoldPropertiesListPage";
+import AgentListedPropertiesDetails from "./Pages/AdditionalPages/RealEsateAgentPages/AgentListedPropertiesDetails";
+import UpdateListingPage from "./Pages/AdditionalPages/RealEsateAgentPages/UpdateListingPage";
 
 const App = () => {
   const { currentUser } = useContext(AuthContext);
@@ -61,6 +67,14 @@ const App = () => {
           }
         />
         <Route
+          path="/savedPropertiesPage"
+          element={
+            <ProtectedRoute>
+              <SavedPropertiesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/boughtPropertiesPage"
           element={
             <ProtectedRoute>
@@ -73,6 +87,22 @@ const App = () => {
           element={
             <ProtectedRoute>
               <SellerHomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/sellerSoldPropertiesPage"
+          element={
+            <ProtectedRoute>
+              <SellerSoldPropertiesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/sellerListedPropertiesPage"
+          element={
+            <ProtectedRoute>
+              <SellerListedPropertiesPage />
             </ProtectedRoute>
           }
         />
@@ -115,6 +145,30 @@ const App = () => {
           element={
             <ProtectedRoute>
               <PendingPropertyListPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/soldProperty/:Id"
+          element={
+            <ProtectedRoute>
+              <SellerSoldPropertiesListPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/updateProperty/:Id"
+          element={
+            <ProtectedRoute>
+              <AgentListedPropertiesDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/updateListingPage/:Id"
+          element={
+            <ProtectedRoute>
+              <UpdateListingPage />
             </ProtectedRoute>
           }
         />

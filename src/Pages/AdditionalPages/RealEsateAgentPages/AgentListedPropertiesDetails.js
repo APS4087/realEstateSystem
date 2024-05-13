@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Shortcutbar from "../Shortcutbar";
 import Carousel from "../carousel";
 import Mortgage from "../mortgage";
@@ -16,87 +16,50 @@ import RealEstateAgentEntity from "../../../Backend/Entity/RealEstateAgentEntity
 import { useContext } from "react";
 import { AuthContext } from "../../../Context/AuthContext";
 import RealEstateAgentController from "../../../Controllers/AgentControllers/realEsateAgentController";
+import PropertyEntity from "../../../Backend/Entity/PropertyEntity";
+import { Button, Checkbox, Label, Modal, TextInput } from "flowbite-react";
+import avatar from "../../../Assets/profile.png";
+import { Create } from "@mui/icons-material";
+import CreateReviewController from "../../../Controllers/ReviewControllers/CreateReviewController";
+import ViewPropertyController from "../../../Controllers/PropertyControllers/ViewPropertyController";
 
-const PendingPropertyListPage = () => {
+const AgentListedPropertiesDetails = () => {
   const { Id } = useParams(); // Retrieve the rental ID from the URL
+  const navigate = useNavigate();
+  const [properties, setProperties] = useState([]);
   const { currentUser } = useContext(AuthContext);
-  const [pendingRentalData, setPendingRentalData] = useState([]);
-  const [sellerData, setSellerData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [agentData, setAgentData] = useState(""); // State to store the agent data
 
   useEffect(() => {
-    const fetchPendingProperties = async () => {
-      if (currentUser && currentUser.uid) {
-        const realEstateAgentEntity = new RealEstateAgentEntity();
-        const pendingProperties =
-          await realEstateAgentEntity.getPendingProperties(currentUser.uid);
-        setPendingRentalData(pendingProperties);
-      }
+    const fetchProperties = async () => {
+      const viewPropertyController = new ViewPropertyController();
+      const properties = await viewPropertyController.getProperties();
+      setProperties(properties);
+      setIsLoading(false); // Add this line
     };
 
-    fetchPendingProperties();
-  }, [currentUser]);
+    fetchProperties();
+  }, []);
+  const dataToUse = properties;
+  const rental = dataToUse.find((rental) => rental.id === Id);
 
-  // Use pendingRentalData if currentUser is a realEstateAgent, otherwise use rentalsData
-  const dataToUse = pendingRentalData;
-  const rental = dataToUse.find((rental) => rental.id === Id); // Find the rental in the array
-
-  // if the current user is real estate agent, getting the seller info
   useEffect(() => {
-    const fetchSellerData = async () => {
-      if (rental && rental.sellerId) {
-        const sellerEntity = new SellerEntity();
-        const seller = await sellerEntity.getSellerData(rental.sellerId);
-        const genericUserData = await sellerEntity.getUserData(rental.sellerId);
-        setSellerData({ ...seller, ...genericUserData });
+    const fetchAgentData = async () => {
+      if (!rental || !rental.agentID) {
+        return; // Return early if rental or rental.agentID is not defined
       }
+
+      const agentController = new RealEstateAgentController();
+
+      const agentData = await agentController.getAgentData(rental.agentID);
+      setAgentData(agentData);
     };
 
-    fetchSellerData();
+    fetchAgentData();
   }, [rental]);
 
   if (!rental) return <div>Rental not found</div>;
-
-  const createPropertyEntity = async () => {
-    try {
-      const oldRentalID = rental.id;
-      const propertyController = new CreatePropertyController(currentUser);
-      const propertyId = await propertyController.createProperty(rental);
-      //console.log("Property created with ID: ", propertyId);
-
-      const realEstateAgentController = new RealEstateAgentController();
-      // console.log("Updating property ID for agent: ", oldRentalID, propertyId);
-      await realEstateAgentController.updatePropertyId(
-        currentUser.uid,
-        oldRentalID,
-        propertyId
-      );
-
-      // Add the property ID to the listedProperties field for the agent
-      await propertyController.addPropertyToListedProperties_Agent(propertyId);
-      // Add the property ID to the listedProperties field for the seller
-      console.log(rental.sellerId);
-      console.log(propertyId);
-      await propertyController.addPropertyToListedProperties_Seller(
-        propertyId,
-        rental.sellerId
-      );
-      // Remove the property ID from the pendingProperties field for the agent
-      await propertyController.removePropertyFromPendingProperties(propertyId);
-
-      Swal.fire({
-        title: "Success!",
-        text: `The property by ${sellerData.userName} has been created !`,
-        icon: "success",
-      });
-    } catch (error) {
-      console.error("Error creating property: ", error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Something went wrong!",
-      });
-    }
-  };
 
   return (
     <div>
@@ -157,17 +120,19 @@ const PendingPropertyListPage = () => {
         <p className="font-bold text-[30px]">Estimated Mortgage</p>
         <Mortgage />
       </div>
-      <RealEstateAgent agentDetails={sellerData} />
+      <RealEstateAgent agentDetails={agentData} />
       <div className="flex justify-center">
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={createPropertyEntity}
-        >
-          Create Property
-        </button>
+        {/*Review Button*/}
+        <>
+          <div className="ml-[50rem] pb-6">
+            <Button onClick={navigate(`/updateListingPage/${Id}`)}>
+              Update
+            </Button>
+          </div>
+        </>
       </div>
     </div>
   );
 };
 
-export default PendingPropertyListPage;
+export default AgentListedPropertiesDetails;

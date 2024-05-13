@@ -81,13 +81,15 @@ export default function BasicMenu() {
                     Profile Page
                   </MenuItem>
                 </Link>,
-                <MenuItem
-                  key="saved"
-                  onClick={handleClose}
-                  className="menu-items"
-                >
-                  Saved Properties
-                </MenuItem>,
+                <Link to={"/savedPropertiesPage"}>
+                  <MenuItem
+                    key="saved"
+                    onClick={handleClose}
+                    className="menu-items"
+                  >
+                    Saved Properties
+                  </MenuItem>
+                </Link>,
                 <Link to={"/boughtPropertiesPage"}>
                   <MenuItem
                     key="bought"
@@ -116,14 +118,24 @@ export default function BasicMenu() {
                     Profile Page
                   </MenuItem>
                 </Link>,
-
-                <MenuItem
-                  key="listed"
-                  onClick={handleClose}
-                  className="menu-items"
-                >
-                  Listed Properties
-                </MenuItem>,
+                <Link to={"/sellerListedPropertiesPage"}>
+                  <MenuItem
+                    key="listed"
+                    onClick={handleClose}
+                    className="menu-items"
+                  >
+                    Listed Properties (seller)
+                  </MenuItem>
+                </Link>,
+                <Link to={"/sellerSoldPropertiesPage"}>
+                  <MenuItem
+                    key="listed"
+                    onClick={handleClose}
+                    className="menu-items"
+                  >
+                    Sold Properties
+                  </MenuItem>
+                </Link>,
                 <Link to={"/createListingPage"}>
                   <MenuItem
                     key="list-your-property"

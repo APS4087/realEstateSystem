@@ -7,12 +7,32 @@ import BasicMenu from "./ProfileMenu";
 import SimpleBottomNavigation from "./BottomNav";
 import MobileSearchBar from "../MobileSearchBar";
 import { AuthContext } from "../../Context/AuthContext";
+import { Link } from "react-router-dom";
 
 function Header() {
   const { currentUser } = useContext(AuthContext);
+  const userType = currentUser ? currentUser.userType : null;
   return (
     <div className="navbar">
-      <img src={logo} alt="logo" className="navbar-logo bigger" />
+      <div className=" h-[4rem] flex">
+        {userType === "buyer" ? (
+          <Link to="/buyerHomePage">
+            <img src={logo} alt="logo" className="h-[4rem] flex object-cover" />
+          </Link>
+        ) : userType === "seller" ? (
+          <Link to="/sellerHomePage">
+            <img src={logo} alt="logo" className="h-[4rem] flex object-cover" />
+          </Link>
+        ) : userType === "realEstateAgent" ? (
+          <Link to="/realEstateAgentHomePage">
+            <img src={logo} alt="logo" className="h-[4rem] flex object-cover" />
+          </Link>
+        ) : (
+          <Link to="/">
+            <img src={logo} alt="logo" className="h-[4rem] flex object-cover" />
+          </Link>
+        )}
+      </div>
       <div className="search-bar">
         <div className="search-bar-text">Anywhere</div>
         <div className="search-bar-text">Any Week</div>

@@ -80,6 +80,23 @@ class BuyerEntity extends UserEntity {
       throw error;
     }
   }
+  async getShortListedProperties(userId) {
+    try {
+      const userRef = doc(db, "buyers", userId);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        return userData.shortlistedProperties || [];
+      } else {
+        console.error("User does not exist");
+        return [];
+      }
+    } catch (error) {
+      console.error("Error getting shortListed properties:", error);
+      throw error;
+    }
+  }
 
   async addToShortlist(userId, propertyId) {
     try {

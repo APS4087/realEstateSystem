@@ -8,24 +8,25 @@ import Filter from "../../../Components/Filter";
 
 import Header from "../../../Components/Header";
 
-import RealEstateAgentEntity from "../../../Backend/Entity/RealEstateAgentEntity";
+import BuyerEntity from "../../../Backend/Entity/BuyerEntity";
 
 import { doc, db, getDoc } from "firebase/firestore";
 import PropertyController from "../../../Controllers/PropertyControllers/PropertyController";
-import UpdateRentals from "../../../Components/Cards/RealEstateCards/UpdateRentals";
+import ViewListedPropertiesController from "../../../Controllers/SellerControllers.js/ViewListedPropertiesController";
 
-const ListedAgentPropertiesPage = () => {
+const SellerListedPropertiesPage = () => {
   const { currentUser } = useContext(AuthContext);
   const [userData, setUserData] = useState([]);
+  const sellerViewListedProperties = new ViewListedPropertiesController();
 
   useEffect(() => {
     const fetchBoughtProperties = async () => {
       if (currentUser && currentUser.uid) {
-        const propertyController = new PropertyController();
-        const listedProperties = await propertyController.getListingProperties(
-          currentUser.uid
-        );
-        setUserData(listedProperties);
+        const sellerListedProperties =
+          await sellerViewListedProperties.getListingProperties(
+            currentUser.uid
+          );
+        setUserData(sellerListedProperties);
       }
     };
 
@@ -43,10 +44,10 @@ const ListedAgentPropertiesPage = () => {
         setSelectedFilter={setSelectedFilter}
       />
       <div className="sm:mx-6 md:mx-10 lg:mx-12 px-3">
-        <UpdateRentals properties={userData} />
+        <Rentals properties={userData} />
       </div>
     </div>
   );
 };
 
-export default ListedAgentPropertiesPage;
+export default SellerListedPropertiesPage;

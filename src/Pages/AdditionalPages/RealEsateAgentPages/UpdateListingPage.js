@@ -1,29 +1,22 @@
-import "../../Styles/CreateListing.scss";
-import Header from "../../Components/Header";
-import { categories, types, facilities } from "../../Assets/data";
+import "../../../Styles/CreateListing.scss";
+import Header from "../../../Components/Header";
+import { categories, types, facilities } from "../../../Assets/data";
 import { RemoveCircleOutline, AddCircleOutline } from "@mui/icons-material";
-import variables from "../../Styles/variables.scss";
+import variables from "../../../Styles/variables.scss";
 import { IoIosImages } from "react-icons/io";
 import { useState, useEffect } from "react";
 import { BiTrash } from "react-icons/bi";
-import { storage, db } from "../../Backend/Firebase/firebaseConfig";
-import { useNavigate, useParams } from "react-router-dom";
+import { storage, db } from "../../../Backend/Firebase/firebaseConfig";
+import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../../Context/AuthContext";
+import { AuthContext } from "../../../Context/AuthContext";
 import Swal from "sweetalert2";
+import UpdatePropertyController from "../../../Controllers/PropertyControllers/UpdatePropertyController";
 
-import Carousel from "../../Utils/Carousel";
-import {
-  collection,
-  doc,
-  getDocs,
-  getDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { useParams } from "react-router-dom";
 
-import { Avatar } from "@mui/material";
-import avatar from "../../Assets/profile.png";
-import RealEstateAgentEntity from "../../Backend/Entity/RealEstateAgentEntity";
+import RealEstateAgentController from "../../../Controllers/AgentControllers/realEsateAgentController";
+import ViewPropertyController from "../../../Controllers/PropertyControllers/ViewPropertyController";
 import {
   ref,
   uploadBytesResumable,
@@ -31,60 +24,29 @@ import {
   deleteObject,
 } from "firebase/storage";
 
-const CreateListingPage = () => {
+const UpdateListingPage = () => {
+  const navigate = useNavigate();
+  const { Id } = useParams(); // Retrieve the rental ID from the URL
   const { currentUser } = useContext(AuthContext);
   const [category, setCategory] = useState("");
   const [agents, setAgents] = useState([]);
   const [selectedAgent, setSelectedAgent] = useState(null);
+  const [properties, setProperties] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [agentData, setAgentData] = useState(""); // State to store the agent data
+  /* BASIC COUNTS */
+  const [bedroomCount, setBedroomCount] = useState(1);
+  const [bathroomCount, setBathroomCount] = useState(1);
+  const [sellerId, setSellerId] = useState("");
 
-  const handleAgentSelect = (agent) => {
-    setSelectedAgent(agent);
-  };
-
-  useEffect(() => {
-    const fetchAgents = async () => {
-      const agentsCollection = await getDocs(
-        collection(db, "realEstateAgents")
-      );
-      const agentsData = await Promise.all(
-        agentsCollection.docs.map(async (agentDoc) => {
-          const agentData = agentDoc.data();
-          const userDataDoc = await getDoc(doc(db, "users", agentData.uid));
-
-          return { ...agentData, ...userDataDoc.data() };
-        })
-      );
-      setAgents(agentsData);
-    };
-
-    fetchAgents();
-  }, []);
-
-  const Card = ({
-    title,
-    email,
-    license,
-    profilePicture,
-    agent,
-    onSelect,
-    selected,
-  }) => (
-    <div
-      className={`card ${selected ? "selected" : ""}`}
-      onClick={() => onSelect(agent)}
-    >
-      <Avatar
-        alt="Profile Picture"
-        src={profilePicture || avatar}
-        style={{ margin: "0 auto", width: "100px", height: "100px" }}
-      />{" "}
-      <h2>{title}</h2>
-      <p>Email: {email}</p>
-      <p>License: {license}</p>
-    </div>
-  );
-
-  /* LOCATION */
+  /* UPLOAD, DRAG & DROP, REMOVE PHOTOS */
+  const [photos, setPhotos] = useState([]);
+  // Initialize formDescription and formLocation with empty values
+  const [formDescription, setFormDescription] = useState({
+    title: "",
+    description: "",
+    price: 0,
+  });
   const [formLocation, setFormLocation] = useState({
     streetAddress: "",
     aptSuite: "",
@@ -92,6 +54,63 @@ const CreateListingPage = () => {
     province: "",
     country: "",
   });
+
+  /* AMENITIES */
+  const [tags, setTags] = useState([]);
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      const viewPropertyController = new ViewPropertyController();
+      const properties = await viewPropertyController.getProperties();
+      setProperties(properties);
+      setIsLoading(false); // Add this line
+    };
+
+    fetchProperties();
+  }, []);
+  const dataToUse = properties;
+  const rental = dataToUse.find((rental) => rental.id === Id);
+  // Update formDescription and formLocation when rental data becomes available
+  useEffect(() => {
+    if (rental) {
+      setFormDescription({
+        title: rental.title,
+        description: rental.description,
+        price: rental.price,
+      });
+      setFormLocation({
+        streetAddress: rental.streetAddress,
+        aptSuite: rental.aptSuite,
+        city: rental.city,
+        province: rental.province,
+        country: rental.country,
+      });
+      setPhotos(rental.listingPhotos);
+      setCategory(rental.category);
+      setBathroomCount(rental.bathroomCount);
+      setBedroomCount(rental.bedroomCount);
+      setSelectedAgent(rental.agentID);
+      setSellerId(rental.sellerId);
+      setTags(rental.tags);
+    }
+  }, [rental]);
+
+  useEffect(() => {
+    const fetchAgentData = async () => {
+      if (!rental || !rental.agentID) {
+        return; // Return early if rental or rental.agentID is not defined
+      }
+
+      const agentController = new RealEstateAgentController();
+
+      const agentData = await agentController.getAgentData(rental.agentID);
+      setAgentData(agentData);
+    };
+
+    fetchAgentData();
+  }, [rental]);
+
+  if (!rental) return <div>Rental not found</div>;
 
   const handleChangeLocation = (e) => {
     const { name, value } = e.target;
@@ -101,13 +120,6 @@ const CreateListingPage = () => {
     });
   };
 
-  /* BASIC COUNTS */
-  const [bedroomCount, setBedroomCount] = useState(1);
-  const [bathroomCount, setBathroomCount] = useState(1);
-
-  /* AMENITIES */
-  const [tags, setTags] = useState([]);
-
   const handleSelectTags = (tag) => {
     if (tags.includes(tag)) {
       setTags((prevTag) => prevTag.filter((option) => option !== tag));
@@ -115,9 +127,6 @@ const CreateListingPage = () => {
       setTags((prev) => [...prev, tag]);
     }
   };
-
-  /* UPLOAD, DRAG & DROP, REMOVE PHOTOS */
-  const [photos, setPhotos] = useState([]);
 
   const handleUploadPhotos = async (e) => {
     const newPhotos = e.target.files;
@@ -152,13 +161,6 @@ const CreateListingPage = () => {
     });
   };
 
-  /* DESCRIPTION */
-  const [formDescription, setFormDescription] = useState({
-    title: "",
-    description: "",
-    price: 0,
-  });
-
   const handleChangeDescription = (e) => {
     const { name, value } = e.target;
     setFormDescription({
@@ -167,18 +169,14 @@ const CreateListingPage = () => {
     });
   };
 
-  const sellerId = currentUser ? currentUser.uid : null;
-
-  const navigate = useNavigate();
-
   const handlePost = async (e) => {
     e.preventDefault();
 
     // TODO: CHANGE TO BCE STRUCTURE
     try {
       /* Create a new object to handle data */
-      const listingData = {
-        id: Math.random().toString(36).substr(2, 9),
+      const newlistingData = {
+        id: Id,
         sellerId: sellerId,
         category: category,
         streetAddress: formLocation.streetAddress,
@@ -195,13 +193,14 @@ const CreateListingPage = () => {
         listingPhotos: photos,
       };
 
-      const realEstateAgent = new RealEstateAgentEntity();
+      const updatePropertyController = new UpdatePropertyController();
 
-      await realEstateAgent.addPendingProperty(selectedAgent.uid, listingData);
+      // Call the updateProperty method of the controller
+      await updatePropertyController.updateProperty(Id, newlistingData);
 
       Swal.fire({
         title: "Success!",
-        text: `You property info has been sent to ${selectedAgent.userName} for listing !`,
+        text: `The Property has been Updated !`,
         icon: "success",
       });
       navigate(-1);
@@ -214,6 +213,7 @@ const CreateListingPage = () => {
       });
     }
   };
+
   return (
     <>
       <div>
@@ -221,7 +221,7 @@ const CreateListingPage = () => {
       </div>
       <div className="create-listing">
         <h1 class="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
-          Create{" "}
+          Update{" "}
           <span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
             Property Listing !
           </span>
@@ -230,7 +230,7 @@ const CreateListingPage = () => {
         <form onSubmit={handlePost}>
           <div className="create-listing_step1">
             <h2 class="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white">
-              Step 1: Tell us about your place
+              Step 1: Update the Categories
             </h2>
             <hr />
 
@@ -253,14 +253,14 @@ const CreateListingPage = () => {
             </div>
 
             <h3 class="text-2xl font-bold dark:text-white">
-              Where's your place located?
+              Update Location of property
             </h3>
             <div className="full">
               <div className="location">
                 <p>Street Address</p>
                 <input
                   type="text"
-                  placeholder="Street Address"
+                  placeholder={rental.streetAddress}
                   name="streetAddress"
                   value={formLocation.streetAddress}
                   onChange={handleChangeLocation}
@@ -274,7 +274,7 @@ const CreateListingPage = () => {
                 <p>Apartment, Suite, etc. (if applicable)</p>
                 <input
                   type="text"
-                  placeholder="Apt, Suite, etc. (if applicable)"
+                  placeholder={rental.aptSuite}
                   name="aptSuite"
                   value={formLocation.aptSuite}
                   onChange={handleChangeLocation}
@@ -285,7 +285,7 @@ const CreateListingPage = () => {
                 <p>City</p>
                 <input
                   type="text"
-                  placeholder="City"
+                  placeholder={rental.city}
                   name="city"
                   value={formLocation.city}
                   onChange={handleChangeLocation}
@@ -299,7 +299,7 @@ const CreateListingPage = () => {
                 <p>Province</p>
                 <input
                   type="text"
-                  placeholder="Province"
+                  placeholder={rental.province}
                   name="province"
                   value={formLocation.province}
                   onChange={handleChangeLocation}
@@ -310,7 +310,7 @@ const CreateListingPage = () => {
                 <p>Country</p>
                 <input
                   type="text"
-                  placeholder="Country"
+                  placeholder={rental.country}
                   name="country"
                   value={formLocation.country}
                   onChange={handleChangeLocation}
@@ -385,9 +385,7 @@ const CreateListingPage = () => {
             </h2>
             <hr />
 
-            <h3 class="text-2xl font-bold dark:text-white">
-              Choose tags most suitable for your property
-            </h3>
+            <h3 class="text-2xl font-bold dark:text-white">Update Tags</h3>
             <div className="amenities">
               {facilities?.map((item, index) => (
                 <div
@@ -402,7 +400,6 @@ const CreateListingPage = () => {
                 </div>
               ))}
             </div>
-
             <h3 class="text-2xl font-bold dark:text-white">
               Add some photos of your place
             </h3>
@@ -456,7 +453,6 @@ const CreateListingPage = () => {
                 </>
               )}
             </div>
-
             <h3 class="text-2xl font-bold dark:text-white">
               What make your place attractive and exciting?
             </h3>
@@ -464,7 +460,7 @@ const CreateListingPage = () => {
               <p>Title</p>
               <input
                 type="text"
-                placeholder="Title"
+                placeholder={rental.title}
                 name="title"
                 value={formDescription.title}
                 onChange={handleChangeDescription}
@@ -473,7 +469,7 @@ const CreateListingPage = () => {
               <p>Description</p>
               <textarea
                 type="text"
-                placeholder="Description"
+                placeholder={rental.description}
                 name="description"
                 value={formDescription.description}
                 onChange={handleChangeDescription}
@@ -484,7 +480,7 @@ const CreateListingPage = () => {
               <span>S$</span>
               <input
                 type="number"
-                placeholder="100"
+                placeholder={rental.price}
                 name="price"
                 value={formDescription.price}
                 onChange={handleChangeDescription}
@@ -492,29 +488,10 @@ const CreateListingPage = () => {
                 required
               />
             </div>
-            <h3 class="text-2xl font-bold dark:text-white">
-              Available Real Estate Agents
-            </h3>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <Carousel>
-                {agents.map((agent, i) => (
-                  <Card
-                    key={i}
-                    title={agent.userName}
-                    email={agent.email}
-                    license={agent.license}
-                    profilePicture={agent.profilePicture}
-                    agent={agent}
-                    onSelect={handleAgentSelect}
-                    selected={selectedAgent && selectedAgent.uid === agent.uid}
-                  />
-                ))}
-              </Carousel>
-            </div>
           </div>
 
           <button className="submit_btn" type="submit">
-            CREATE YOUR LISTING
+            Update Listing
           </button>
         </form>
       </div>
@@ -522,4 +499,4 @@ const CreateListingPage = () => {
   );
 };
 
-export default CreateListingPage;
+export default UpdateListingPage;

@@ -83,6 +83,20 @@ class PropertyEntity {
       throw error;
     }
   }
+  async updateProperty(propertyId, newPropertyData) {
+    try {
+      // Get a reference to the property document
+      const propertyRef = doc(db, "properties", propertyId);
+
+      // Update the property document with the new data
+      await updateDoc(propertyRef, newPropertyData);
+
+      console.log("Property updated successfully");
+    } catch (error) {
+      console.error("Error updating property: ", error);
+      throw error;
+    }
+  }
 }
 
 export default PropertyEntity;
