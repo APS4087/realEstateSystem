@@ -14,6 +14,7 @@ import PendingPropertiesPage from "./Pages/AdditionalPages/RealEsateAgentPages/P
 import PendingPropertyListPage from "./Pages/AdditionalPages/RealEsateAgentPages/PendingPropertyListPage";
 import BoughtPropertiesPage from "./Pages/AdditionalPages/BuyerPages/BoughtProperties";
 import UserProfileUpdate from "./Pages/AdditionalPages/UserProfileUpdate";
+import ListedAgentPropertiesPage from "./Pages/AdditionalPages/RealEsateAgentPages/ListedAgentPropertiesPage";
 
 const App = () => {
   const { currentUser } = useContext(AuthContext);
@@ -40,6 +41,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <UserProfileUpdate />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/agentPropertiesListedPage"
+          element={
+            <ProtectedRoute>
+              <ListedAgentPropertiesPage />
             </ProtectedRoute>
           }
         />

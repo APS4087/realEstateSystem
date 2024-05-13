@@ -152,6 +152,15 @@ export default function BasicMenu() {
                     Profile Page
                   </MenuItem>
                 </Link>,
+                <Link to="/agentPropertiesListedPage" className="menu-link">
+                  <MenuItem
+                    key="pending-properties"
+                    onClick={handleClose}
+                    className="menu-items"
+                  >
+                    Listed Properties (Agent)
+                  </MenuItem>
+                </Link>,
                 <Link to="/pendingPropertiesPage" className="menu-link">
                   <MenuItem
                     key="pending-properties"

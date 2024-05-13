@@ -88,7 +88,7 @@ const PListPage = () => {
     }
   };
   async function checkIsShortlisted(propertyId) {
-    if (currentUser.userType !== "buyer") {
+    if (currentUser && currentUser.userType !== "buyer") {
       console.log(`User is not a buyer.`);
       return false;
     }
