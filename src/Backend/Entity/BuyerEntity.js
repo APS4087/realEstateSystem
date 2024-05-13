@@ -1,4 +1,11 @@
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../Firebase/firebaseConfig";
 import UserEntity from "./UserEntity";
 
@@ -16,11 +23,42 @@ class BuyerEntity extends UserEntity {
       await setDoc(doc(db, "buyers", userId), {
         uid: userId,
         shortlistedProperties: [],
+        purchasedProperties: [], // Initialize purchasedProperties as an empty array
       });
 
       return userId;
     } catch (error) {
       console.error("Error creating buyer:", error);
+      throw error;
+    }
+  }
+
+  async purchaseProperty(userId, propertyId) {
+    try {
+      const userRef = doc(db, "buyers", userId);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+
+        // Check if purchasedProperties exists, if not, initialize it as an empty array
+        if (!userData.purchasedProperties) {
+          userData.purchasedProperties = [];
+        }
+
+        // Check if the property has already been purchased
+        if (userData.purchasedProperties.includes(propertyId)) {
+          throw new Error("Property already purchased!");
+        }
+
+        userData.purchasedProperties.push(propertyId);
+
+        await updateDoc(userRef, userData);
+      } else {
+        console.error("User does not exist");
+      }
+    } catch (error) {
+      console.error("Error purchasing property:", error);
       throw error;
     }
   }

@@ -1,4 +1,12 @@
-import { addDoc, collection, setDoc, doc, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  setDoc,
+  doc,
+  getDocs,
+  updateDoc,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "../Firebase/firebaseConfig";
 
 class PropertyEntity {
@@ -29,6 +37,32 @@ class PropertyEntity {
       return querySnapshot.docs.map((doc) => doc.data());
     } catch (error) {
       console.error("Error fetching properties: ", error);
+      throw error;
+    }
+  }
+  async markAsSold(propertyId) {
+    try {
+      const propertyRef = doc(db, "properties", propertyId);
+      const propertySnap = await getDoc(propertyRef);
+
+      if (propertySnap.exists()) {
+        const propertyData = propertySnap.data();
+        const tagIndex = propertyData.tags.indexOf("Available Property");
+
+        if (tagIndex !== -1) {
+          // If "Available Property" tag is found, replace it with "Not Available"
+          propertyData.tags[tagIndex] = "Not Available";
+        } else {
+          // If "Available Property" tag is not found, add "Not Available" tag
+          propertyData.tags.push("Not Available");
+        }
+
+        await updateDoc(propertyRef, propertyData);
+      } else {
+        console.error("Property does not exist");
+      }
+    } catch (error) {
+      console.error("Error marking property as sold:", error);
       throw error;
     }
   }

@@ -17,6 +17,15 @@ class RealEstateAgentController {
       throw error;
     }
   }
+
+  async getAgentData(agentID) {
+    const agent = await this.realEstateAgentEntity.getAgentDetails(agentID);
+    const genericUserData = await this.realEstateAgentEntity.getUserData(
+      agentID
+    );
+
+    return { ...agent, ...genericUserData };
+  }
 }
 
 export default RealEstateAgentController;

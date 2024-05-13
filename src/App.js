@@ -81,14 +81,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/property/:Id"
-          element={
-            <ProtectedRoute>
-              <PListPage />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/property/:Id" element={<PListPage />} />
 
         <Route
           path="/pendingProperty/:Id"

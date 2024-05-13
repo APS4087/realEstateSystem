@@ -1,12 +1,10 @@
+import { avatarClasses } from "@mui/material";
 import React from "react";
-
+import avatar from "../../../Assets/profile.png";
 import { BsStarFill } from "react-icons/bs";
 
-{
-  /* NAME, PROFILEPIC, COMPANYLOGO, COMPANYNAME, LICENSE, RATING, PHONENUM, EMAIL */
-}
-
 const realEstateAgent = ({ agentDetails }) => {
+  //console.log(agentDetails, "agentDetails");
   return (
     <div className="w-[65rem] ml-80 pb-10 pt-7" name="realEstate">
       <div className="h-[32rem] rounded-[1rem] border-2 border-gray-400">
@@ -17,7 +15,7 @@ const realEstateAgent = ({ agentDetails }) => {
         <div className="flex justify-between border-b-2 px-7 py-9">
           <div className="flex gap-5">
             <img
-              src={agentDetails.profilePicture}
+              src={agentDetails.profilePicture || avatar}
               className="h-[4rem] flex object-cover border rounded-[50rem] w-[4.3rem]"
             />
 
