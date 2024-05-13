@@ -33,7 +33,9 @@ const realEstateAgent = ({ agentDetails }) => {
         </div>
         <div className="border-b-2 px-7 py-7">
           <p className="text-[17px] mb-4">Phone Number</p>
-          <p className="text-[25px] font-bold">+65 some number here</p>
+          <p className="text-[25px] font-bold">
+            {agentDetails.phone ? agentDetails.phone : "+65 "}
+          </p>
         </div>
         <div className="px-7 py-7">
           <p className="text-[17px] mb-4">Email address</p>
