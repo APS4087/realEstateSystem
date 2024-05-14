@@ -171,6 +171,45 @@ class PropertyEntity {
       throw error;
     }
   }
+
+  // Add a method to increment the shortlist count
+  async incrementShortlistCount(propertyId) {
+    try {
+      const propertyRef = doc(db, "properties", propertyId);
+      const propertySnap = await getDoc(propertyRef);
+
+      if (propertySnap.exists()) {
+        const propertyData = propertySnap.data();
+        // If numberOfShortlist is undefined, initialize it to 1, otherwise increment it
+        propertyData.numberOfShortlist = propertyData.numberOfShortlist
+          ? propertyData.numberOfShortlist + 1
+          : 1;
+        await updateDoc(propertyRef, propertyData);
+      } else {
+        console.error("Property does not exist");
+      }
+    } catch (error) {
+      console.error("Error incrementing shortlist count:", error);
+      throw error;
+    }
+  }
+  async getNumberOfShortlist(propertyId) {
+    try {
+      const propertyRef = doc(db, "properties", propertyId);
+      const propertySnap = await getDoc(propertyRef);
+
+      if (propertySnap.exists()) {
+        const propertyData = propertySnap.data();
+        return propertyData.numberOfShortlist || 0; // Return the view count
+      } else {
+        console.error("Property does not exist");
+        return 0; // Return 0 if the property does not exist
+      }
+    } catch (error) {
+      console.error("Error getting shortlist Count: ", error);
+      throw error;
+    }
+  }
 }
 
 export default PropertyEntity;

@@ -9,7 +9,7 @@ class ViewReviewController {
     try {
       console.log("In getReviews controller", agentId);
       const reviews = await this.realEstateAgentEntity.getAgentReviews(agentId);
-      return reviews;
+      return reviews || []; // If reviews is undefined, return an empty array
     } catch (error) {
       console.error("Error getting reviews:", error);
       throw error;

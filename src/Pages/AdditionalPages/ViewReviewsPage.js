@@ -51,7 +51,7 @@ const ViewReviewsPage = () => {
     fetchReviews();
   }, []);
 
-  const Card = ({ title, rating, review, reply, profilePic }) => (
+  const Card = ({ title, rating, review, profilePic }) => (
     <div className="card">
       <Avatar
         alt="Profile Picture"
@@ -63,8 +63,7 @@ const ViewReviewsPage = () => {
       <p>Review: {review}</p>
     </div>
   );
-  console.log("AGENTDATA", agentData);
-  console.log("reviewerDATA", reviewerData);
+
   if (isLoading) {
     return <p>Loading...</p>;
   }

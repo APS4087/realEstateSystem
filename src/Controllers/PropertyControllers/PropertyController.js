@@ -83,6 +83,26 @@ class PropertyController {
       throw error;
     }
   }
+  async incrementShortlistCount(propertyId) {
+    try {
+      await this.propertyEntity.incrementShortlistCount(propertyId);
+      console.log("Property added to shortlist!");
+    } catch (error) {
+      console.error("Error in PropertyController: ", error);
+      throw error;
+    }
+  }
+  async getNumberOfShortlist(propertyId) {
+    try {
+      const shortlistCount = await this.propertyEntity.getNumberOfShortlist(
+        propertyId
+      );
+      return shortlistCount;
+    } catch (error) {
+      console.error("Error in PropertyController: ", error);
+      throw error;
+    }
+  }
 }
 
 export default PropertyController;

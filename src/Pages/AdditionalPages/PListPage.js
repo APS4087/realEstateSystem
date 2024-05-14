@@ -46,7 +46,7 @@ const PListPage = () => {
   const [rating, setRating] = useState("");
   const [review, setReview] = useState("");
   const [viewCount, setViewCount] = useState(0);
-
+  const [shortListCount, setShortListCount] = useState(0);
   const propertyController = new PropertyController();
   useEffect(() => {
     // If a property ID is present, increment the view count
@@ -95,6 +95,7 @@ const PListPage = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+
         onCloseModal();
       } else {
         Swal.fire({
@@ -111,6 +112,7 @@ const PListPage = () => {
   async function addToShortlist(propertyId) {
     try {
       await buyerController.addToShortlist(currentUser.uid, propertyId);
+      await propertyController.incrementShortlistCount(propertyId);
 
       Swal.fire({
         position: "top-end",
@@ -120,6 +122,11 @@ const PListPage = () => {
         timer: 1500,
       });
       console.log("Property added to shortlist!");
+
+      const shortListCount = await propertyController.getNumberOfShortlist(
+        propertyId
+      );
+      setShortListCount(shortListCount);
     } catch (error) {
       console.error("Error adding property to shortlist:", error);
       Swal.fire({
@@ -286,14 +293,12 @@ const PListPage = () => {
         <div className="flex">
           <div className="flex items-center w-{$p.length*2} gap-2 py-1 px-3">
             <BsFillEyeFill className="" />
-            <p className="font-semibold text-[19px]">
-              Views: {rental.viewCount}
-            </p>
+            <p className="font-semibold text-[19px]">Views: {viewCount}</p>
           </div>
           <div className="flex items-center w-{$p.length*2} gap-2 py-1 px-3">
             <TiBookmark className="" />
             <p className="font-semibold text-[19px]">
-              Shortlists: {rental.shortCount}
+              Shortlists: {shortListCount}
             </p>
           </div>
         </div>
