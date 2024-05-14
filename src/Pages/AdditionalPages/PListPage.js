@@ -32,6 +32,7 @@ import PurchasePropertyController from "../../Controllers/BuyerControllers/Purch
 import Swal from "sweetalert2";
 import CreateReviewController from "../../Controllers/ReviewControllers/CreateReviewController";
 import PropertyController from "../../Controllers/PropertyControllers/PropertyController";
+import LoadingAnimation from "../../Components/LoadingAnimation";
 
 const PListPage = () => {
   const { Id } = useParams(); // Retrieve the rental ID from the URL
@@ -222,8 +223,7 @@ const PListPage = () => {
     fetchIsShortlisted();
   }, [rental]);
   if (isLoading) {
-    // Add this block
-    return <div>Loading...</div>;
+    return <LoadingAnimation />;
   }
   console.log("View count:", rental.viewCount);
 

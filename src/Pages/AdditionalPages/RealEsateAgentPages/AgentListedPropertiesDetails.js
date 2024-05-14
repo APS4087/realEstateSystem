@@ -23,6 +23,7 @@ import { Create } from "@mui/icons-material";
 import CreateReviewController from "../../../Controllers/ReviewControllers/CreateReviewController";
 import ViewPropertyController from "../../../Controllers/PropertyControllers/ViewPropertyController";
 import PropertyController from "../../../Controllers/PropertyControllers/PropertyController";
+import LoadingAnimation from "../../../Components/LoadingAnimation";
 
 const AgentListedPropertiesDetails = () => {
   const { Id } = useParams(); // Retrieve the rental ID from the URL
@@ -106,7 +107,9 @@ const AgentListedPropertiesDetails = () => {
       });
     }
   };
-
+  if (isLoading) {
+    return <LoadingAnimation />;
+  }
   if (!rental) return <div>Rental not found</div>;
 
   return (
