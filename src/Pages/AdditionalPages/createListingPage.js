@@ -497,7 +497,7 @@ const CreateListingPage = () => {
               Available Real Estate Agents
             </h3>
             <div
-              className="justify-center items-center"
+              className="justify-center items-center ml-[23rem] mt-[5rem]"
               style={{
                 display: "flex",
                 justifyContent: "center",
