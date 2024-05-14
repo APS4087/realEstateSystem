@@ -295,7 +295,9 @@ const PListPage = () => {
         name="about"
       >
         <p className="font-bold text-[30px]">About this property</p>
-        <p className="font-semibold text-[17px] py-3">{rental.description}</p>
+        <p className="font-semibold text-[17px] py-3">
+          Description: {rental.description}
+        </p>
       </div>
       <div
         className="w-[65rem] ml-80 items-center pt-10 pb-5 border-b-2"
@@ -303,7 +305,12 @@ const PListPage = () => {
       >
         <p className="font-bold text-[30px]">Location</p>
         <p className="font-semibold text-[18px] py-3 pb-4">
-          Singapore Institute of management, idk
+          <p className="font-semibold text-[17px] py-3">
+            StreetAddress: {rental.streetAddress} <br />
+            Province: {rental.province} <br />
+            City: {rental.city} <br />
+            Country: {rental.country}
+          </p>
         </p>
         <div className="w-{$p.length*2} py-2 px-3 inline-block bg-gray-600 text-white border rounded-full">
           <p className="font-semibold text-[15px]">{rental.tags[2]}</p>
@@ -405,7 +412,7 @@ const PListPage = () => {
       ) : (
         <div className="ml-[50rem] pb-6">
           <Button variant="contained" onClick={() => navigate(-1)}>
-            Return to Home Page
+            Return
           </Button>
         </div>
       )}

@@ -492,10 +492,18 @@ const CreateListingPage = () => {
                 required
               />
             </div>
+
             <h3 class="text-2xl font-bold dark:text-white">
               Available Real Estate Agents
             </h3>
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            <div
+              className="justify-center items-center"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                width: "50%",
+              }}
+            >
               <Carousel>
                 {agents.map((agent, i) => (
                   <Card

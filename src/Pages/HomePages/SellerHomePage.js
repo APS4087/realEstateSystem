@@ -11,6 +11,7 @@ import { Rentals } from "../../Components/Cards/Rentals";
 import Header from "../../Components/Header";
 import { rentalsData } from "../../Assets/data";
 import ViewPropertyController from "../../Controllers/PropertyControllers/ViewPropertyController";
+import Footer from "../../Components/Footer";
 
 const SellerHomePage = () => {
   const { currentUser } = useContext(AuthContext);
@@ -28,7 +29,9 @@ const SellerHomePage = () => {
   }, []);
   return (
     <div className="App">
-      <Header />
+      <div>
+        <Header />
+      </div>
       <Filter
         selectedFilter={selectedFilter}
         setSelectedFilter={setSelectedFilter}
@@ -36,6 +39,7 @@ const SellerHomePage = () => {
       <div className="sm:mx-6 md:mx-10 lg:mx-12 px-3">
         <Rentals properties={properties} />
       </div>
+      <Footer />
     </div>
   );
 };
