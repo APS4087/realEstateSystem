@@ -1,0 +1,64 @@
+/* app.css */
+
+/* Style for Button component */
+.button {
+    height: 40px;
+    padding: 0 20px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Style for image above the button */
+.foto,
+.pict {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.foto img,
+.pict img {
+    width: 100px; /* Adjust the width and height as needed */
+    height: 100px;
+    margin-bottom: 10px; /* Adjust the margin as needed */
+}
+
+/* Style for different button variants */
+.green {
+    background-color: #94D29A;
+    color: hsl(0, 14%, 4%);
+}
+
+.red {
+    background-color: #b03434;
+    color: hsl(0, 14%, 4%);
+}
+
+/* Style for App component */
+.container {
+    display: flex;
+    justify-content: center;
+    background-color: #eceff3;
+    min-height: 100vh;
+    align-items: center;
+}
+
+.buttons-wrapper {
+    display: flex;
+    flex-direction: column; /* Set to column to ensure red button is in a column */
+    align-items: center; /* Align the buttons to the center */
+}
+
+.green-buttons {
+    display: flex;
+    gap: 20px; /* Add gap between green buttons */
+}
+
+.red-button {
+    margin-top: 20px; /* Add margin top to separate red button from green buttons */
+}
+
+
+  

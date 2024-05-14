@@ -483,7 +483,7 @@ const CreateListingPage = () => {
               <p>Now, set your PRICE</p>
               <span>S$</span>
               <input
-                type="number"
+                type="text"
                 placeholder="100"
                 name="price"
                 value={formDescription.price}
@@ -497,7 +497,7 @@ const CreateListingPage = () => {
               Available Real Estate Agents
             </h3>
             <div
-              className="justify-center items-center"
+              className="justify-center items-center ml-[23rem] mt-[5rem]"
               style={{
                 display: "flex",
                 justifyContent: "center",

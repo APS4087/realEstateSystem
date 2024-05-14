@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import logo from "../../Assets/logo/logo-title.png";
+import logo from "../../Assets/logo/logo-title.jpg";
 import "./styles.css";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import LanguageIcon from "@mui/icons-material/Language";

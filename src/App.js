@@ -23,6 +23,16 @@ import AgentListedPropertiesDetails from "./Pages/AdditionalPages/RealEsateAgent
 import UpdateListingPage from "./Pages/AdditionalPages/RealEsateAgentPages/UpdateListingPage";
 import SearchPropertyPage from "./Pages/AdditionalPages/SearchPropertyPage";
 import ViewReviewsPage from "./Pages/AdditionalPages/ViewReviewsPage";
+import AdminUserAccountPage from "./Pages/AdditionalPages/AdminPages/AdminUserAccountPage";
+import AdminUserProfilePage from "./Pages/AdditionalPages/AdminPages/AdminUserProfilePage";
+import CreateUserAccoutPage from "./Pages/AdditionalPages/AdminPages/CreateUserAccoutPage";
+import ViewUserAccountPage from "./Pages/AdditionalPages/AdminPages/ViewUserAccountPage";
+import SearchUserAccountPage from "./Pages/AdditionalPages/AdminPages/SearchUserAccountPage";
+import SuspendUserAccountPage from "./Pages/AdditionalPages/AdminPages/SuspendUserAccountPage";
+import CreateUserProfilePage from "./Pages/AdditionalPages/AdminPages/CreateUserProfilePage";
+import SearchUserProfilePage from "./Pages/AdditionalPages/AdminPages/SearchUserProfilePage";
+import SuspendUserProfilePage from "./Pages/AdditionalPages/AdminPages/SuspendUserProfilePage";
+import ViewUserProfilePage from "./Pages/AdditionalPages/AdminPages/ViewUserProfilePage";
 
 const App = () => {
   const { currentUser } = useContext(AuthContext);
@@ -57,6 +67,87 @@ const App = () => {
           element={
             <ProtectedRoute>
               <ListedAgentPropertiesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/adminUserAccountPage"
+          element={
+            <ProtectedRoute>
+              <AdminUserAccountPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/adminCreateUserAccountPage"
+          element={
+            <ProtectedRoute>
+              <CreateUserAccoutPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/adminCreateUserProfilePage"
+          element={
+            <ProtectedRoute>
+              <CreateUserProfilePage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/adminViewUserAccountPage"
+          element={
+            <ProtectedRoute>
+              <ViewUserAccountPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/adminViewUserProfilePage"
+          element={
+            <ProtectedRoute>
+              <ViewUserProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/adminSearchUserAccountPage"
+          element={
+            <ProtectedRoute>
+              <SearchUserAccountPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/adminSearchUserProfilPage"
+          element={
+            <ProtectedRoute>
+              <SearchUserProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/adminSuspendUserAccountPage"
+          element={
+            <ProtectedRoute>
+              <SuspendUserAccountPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/adminSuspendUserProfilePage"
+          element={
+            <ProtectedRoute>
+              <SuspendUserProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/adminUserProfilePage"
+          element={
+            <ProtectedRoute>
+              <AdminUserProfilePage />
             </ProtectedRoute>
           }
         />
