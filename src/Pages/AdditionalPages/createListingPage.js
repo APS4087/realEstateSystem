@@ -105,8 +105,8 @@ const CreateListingPage = () => {
   const [bedroomCount, setBedroomCount] = useState(1);
   const [bathroomCount, setBathroomCount] = useState(1);
 
-  /* AMENITIES */
-  const [tags, setTags] = useState([]);
+  // Initialize tags with "Available Property"
+  const [tags, setTags] = useState(["Available Property"]);
 
   const handleSelectTags = (tag) => {
     if (tags.includes(tag)) {

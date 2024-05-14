@@ -10,7 +10,7 @@ import BasicMenu from "../../Components/Header/ProfileMenu";
 import SimpleBottomNavigation from "../../Components/Header/BottomNav";
 import MobileSearchBar from "../../Components/MobileSearchBar";
 import { Link } from "react-router-dom";
-import logo from "../../Assets/logo.png";
+import logo from "../../Assets/logo/logo-title.jpg";
 import { Button } from "react-scroll";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -20,6 +20,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { facilities } from "../../Assets/data";
 import { Rentals } from "../../Components/Cards/Rentals";
+import { FaHouseCircleXmark } from "react-icons/fa6";
+import { BsFillHouseCheckFill } from "react-icons/bs";
 
 const SearchPropertyPage = () => {
   const { currentUser } = useContext(AuthContext);
@@ -30,10 +32,23 @@ const SearchPropertyPage = () => {
   const [foundProperties, setFoundProperties] = useState([]);
 
   const [open, setOpen] = useState(false);
-  const tags = ["Tag1", "Tag2", "Tag3"];
+
   const userType = currentUser ? currentUser.userType : null;
 
   const [selectedTags, setSelectedTags] = useState([]);
+
+  const defaultTags = [
+    {
+      name: "Available Property",
+      icon: <BsFillHouseCheckFill />,
+    },
+    {
+      name: "Sold Property",
+      icon: <FaHouseCircleXmark />,
+    },
+  ];
+  // Combine default tags with facilities
+  const allFacilities = [...defaultTags, ...facilities];
 
   const handleTagClick = (tag) => {
     setSelectedTags((prevTags) => {
@@ -141,7 +156,7 @@ const SearchPropertyPage = () => {
               },
             }}
           >
-            {facilities.map((facility, index) => (
+            {allFacilities.map((facility, index) => (
               <MenuItem
                 key={index}
                 onClick={() => {

@@ -251,13 +251,14 @@ const App = () => {
           }
         />
         <Route
-          path="/updateProperty/:Id"
+          path="/updatePropertyDetail/:Id"
           element={
             <ProtectedRoute>
               <AgentListedPropertiesDetails />
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/updateListingPage/:Id"
           element={

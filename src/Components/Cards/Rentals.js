@@ -16,7 +16,11 @@ const Rentals = ({ properties }) => {
             image={rental.listingPhotos[0]}
             price={rental.price}
             views={rental.viewCount || 0}
-            tag={rental.tags[0]}
+            tag={
+              rental.tags.includes("Available Property")
+                ? "Available Property"
+                : "Sold Property"
+            }
           />
         ))}
       </div>

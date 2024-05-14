@@ -221,14 +221,6 @@ export const facilities = [
     name: "Condominium",
     icon: <PiBuildingsBold />,
   },
-  {
-    name: "Available Property",
-    icon: <BsFillHouseCheckFill />,
-  },
-  {
-    name: "Unavailabe Property",
-    icon: <FaHouseCircleXmark />,
-  },
 ];
 
 export const rentalsData = [

@@ -8,6 +8,7 @@ import {
   getDoc,
   query,
   where,
+  deleteDoc,
 } from "firebase/firestore";
 import { db } from "../Firebase/firebaseConfig";
 
@@ -56,7 +57,7 @@ class PropertyEntity {
           propertyData.tags[tagIndex] = "Not Available";
         } else {
           // If "Available Property" tag is not found, add "Not Available" tag
-          propertyData.tags.push("Not Available");
+          propertyData.tags.push("Sold Property");
         }
 
         await updateDoc(propertyRef, propertyData);
@@ -207,6 +208,17 @@ class PropertyEntity {
       }
     } catch (error) {
       console.error("Error getting shortlist Count: ", error);
+      throw error;
+    }
+  }
+
+  async deleteProperty(propertyId) {
+    try {
+      const propertyRef = doc(db, "properties", propertyId);
+      await deleteDoc(propertyRef);
+      console.log("Property deleted successfully");
+    } catch (error) {
+      console.error("Error deleting property: ", error);
       throw error;
     }
   }

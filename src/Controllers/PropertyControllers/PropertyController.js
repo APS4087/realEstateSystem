@@ -103,6 +103,15 @@ class PropertyController {
       throw error;
     }
   }
+  async deleteProperty(propertyId) {
+    try {
+      await this.propertyEntity.deleteProperty(propertyId);
+      console.log("Property deleted successfully");
+    } catch (error) {
+      console.error("Error deleting property: ", error);
+      throw error;
+    }
+  }
 }
 
 export default PropertyController;
