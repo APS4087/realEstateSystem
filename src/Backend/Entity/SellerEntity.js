@@ -105,7 +105,7 @@ class SellerEntity extends UserEntity {
     const sellerData = sellerDoc.data();
 
     // Return the pendingProperties
-    return sellerData.soldProperties;
+    return sellerData.soldProperties || [];
   }
 }
 
