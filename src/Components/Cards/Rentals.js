@@ -15,7 +15,7 @@ const Rentals = ({ properties }) => {
             title={rental.title}
             image={rental.listingPhotos[0]}
             price={rental.price}
-            views={12}
+            views={rental.viewCount || 0}
             tag={rental.tags[0]}
           />
         ))}

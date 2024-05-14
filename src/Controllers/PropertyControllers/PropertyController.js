@@ -66,6 +66,23 @@ class PropertyController {
       throw error;
     }
   }
+  async incrementViewCount(propertyId) {
+    try {
+      await this.propertyEntity.incrementViewCount(propertyId);
+    } catch (error) {
+      console.error("Error in PropertyViewController: ", error);
+      throw error;
+    }
+  }
+  async getViewCount(propertyId) {
+    try {
+      const viewCount = await this.propertyEntity.getViewCount(propertyId);
+      return viewCount;
+    } catch (error) {
+      console.error("Error in PropertyController: ", error);
+      throw error;
+    }
+  }
 }
 
 export default PropertyController;

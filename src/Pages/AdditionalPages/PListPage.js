@@ -31,6 +31,7 @@ import { AuthContext } from "../../Context/AuthContext";
 import PurchasePropertyController from "../../Controllers/BuyerControllers/PurchasePropertyController";
 import Swal from "sweetalert2";
 import CreateReviewController from "../../Controllers/ReviewControllers/CreateReviewController";
+import PropertyController from "../../Controllers/PropertyControllers/PropertyController";
 
 const PListPage = () => {
   const { Id } = useParams(); // Retrieve the rental ID from the URL
@@ -44,6 +45,26 @@ const PListPage = () => {
   const [isShortlisted, setIsShortlisted] = useState(false);
   const [rating, setRating] = useState("");
   const [review, setReview] = useState("");
+  const [viewCount, setViewCount] = useState(0);
+
+  const propertyController = new PropertyController();
+  useEffect(() => {
+    // If a property ID is present, increment the view count
+    if (Id) {
+      propertyController.incrementViewCount(Id);
+    }
+  }, [Id]);
+  useEffect(() => {
+    // If a property ID is present, get the view count
+    if (Id) {
+      const fetchViewCount = async () => {
+        const count = await propertyController.getViewCount(Id);
+        setViewCount(count);
+      };
+
+      fetchViewCount();
+    }
+  }, [Id]);
 
   // for popup review on click
   const onCloseModal = () => {
@@ -59,6 +80,7 @@ const PListPage = () => {
     const reviewerId = currentUser.uid;
     const reviewData = { rating, review, reviewerId };
     const createReviewController = new CreateReviewController();
+
     console.log(agentId, reviewData);
     try {
       const result = await createReviewController.addRatingAndReview(
@@ -196,6 +218,7 @@ const PListPage = () => {
     // Add this block
     return <div>Loading...</div>;
   }
+  console.log("View count:", rental.viewCount);
 
   return (
     <div>

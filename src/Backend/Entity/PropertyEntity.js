@@ -130,6 +130,47 @@ class PropertyEntity {
       throw error;
     }
   }
+
+  // Add a method to increment the view count
+  async incrementViewCount(propertyId) {
+    try {
+      const propertyRef = doc(db, "properties", propertyId);
+      const propertySnap = await getDoc(propertyRef);
+
+      if (propertySnap.exists()) {
+        const propertyData = propertySnap.data();
+        // If viewCount is undefined, initialize it to 1, otherwise increment it
+        propertyData.viewCount = propertyData.viewCount
+          ? propertyData.viewCount + 1
+          : 1;
+        await updateDoc(propertyRef, propertyData);
+      } else {
+        console.error("Property does not exist");
+      }
+    } catch (error) {
+      console.error("Error incrementing view count:", error);
+      throw error;
+    }
+  }
+
+  // Add a method to get the view count
+  async getViewCount(propertyId) {
+    try {
+      const propertyRef = doc(db, "properties", propertyId);
+      const propertySnap = await getDoc(propertyRef);
+
+      if (propertySnap.exists()) {
+        const propertyData = propertySnap.data();
+        return propertyData.viewCount || 0; // Return the view count
+      } else {
+        console.error("Property does not exist");
+        return 0; // Return 0 if the property does not exist
+      }
+    } catch (error) {
+      console.error("Error getting view count:", error);
+      throw error;
+    }
+  }
 }
 
 export default PropertyEntity;
