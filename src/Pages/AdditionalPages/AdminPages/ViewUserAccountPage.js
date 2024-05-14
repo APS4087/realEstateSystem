@@ -69,45 +69,40 @@ const ViewUserAccountPage = () => {
       <div>
         <Header />
       </div>
-      <div>Admin user account VIEW page</div>
+      <div className="ml-[44rem] text-[20px] font-bold py-8">Admin user account VIEW page</div>
       <div>
-        <h2>User Account List</h2>
-        <div className="displayAcctResult">
-          <table>
-            <thead>
-              <tr>
-                <th>User ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>License ID</th>
-                <th>Phone Number</th>
-                <th>Role</th>
-                <th>Status</th>
+        <h2 className="pb-7">User Account List</h2>
+        <div className="ml-[24rem]">
+          <table className="border border-gray-900">
+            <thead className="border border-gray-900">
+              <tr className="">
+                <th className="border border-gray-900 px-4">User ID</th>
+                <th className="border border-gray-900">Name</th>
+                <th className="border border-gray-900">Email</th>
+                <th className="border border-gray-900 px-4">License ID</th>
+                <th className="border border-gray-900 px-4">Phone Number</th>
+                <th className="border border-gray-900">Role</th>
+                <th className="border border-gray-900">Status</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody >
               {userAccounts.map((userAcct, index) => (
-                <tr key={index}>
-                  <td>{userAcct.User_ID}</td>
-                  <td>{userAcct.Name}</td>
-                  <td>{userAcct.Email}</td>
-                  <td>{userAcct.License_ID}</td>
-                  <td>{userAcct.Phone_Number}</td>
-                  <td>{userAcct.Role}</td>
-                  <td>{userAcct.Status}</td>
+                <tr key={index} className="border border-gray-900 justify-center">
+                  <td className="border border-gray-900 py-2 px-10">{userAcct.User_ID}</td>
+                  <td className="border border-gray-900 py-2 px-3">{userAcct.Name}</td>
+                  <td className="border border-gray-900 py-2 px-3">{userAcct.Email}</td>
+                  <td className="border border-gray-900 py-2 px-3">{userAcct.License_ID}</td>
+                  <td className="border border-gray-900 py-2 px-3">{userAcct.Phone_Number}</td>
+                  <td className="border border-gray-900 py-2 px-3">{userAcct.Role}</td>
+                  <td className="border border-gray-900 py-2 px-3">{userAcct.Status}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <div className="buttons-container">
-          <form method="post" name="logout" onSubmit={handleLogout}>
-            <button className="logOutButtonView" type="submit" name="logout">
-              Logout
-            </button>
-          </form>
-          <Link to={"/systemAdminHomePage"}>
-            <button className="back-button-view">Back</button>
+        <div className="ml-[51rem] pt-10">
+          <Link to={"/adminUserAccountPage"}>
+            <button className="px-3 py-2 border border-gray-900 rounded-full bg-red-500 text-[20px] text-white hover:bg-red-700">Back</button>
           </Link>
         </div>
       </div>

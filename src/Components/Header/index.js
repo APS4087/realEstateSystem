@@ -27,7 +27,13 @@ function Header() {
           <Link to="/realEstateAgentHomePage">
             <img src={logo} alt="logo" className="h-[4rem] flex object-cover" />
           </Link>
-        ) : (
+        ) 
+        : userType === "Admin" ? (
+          <Link to="/systemAdminHomePage">
+            <img src={logo} alt="logo" className="h-[4rem] flex object-cover" />
+          </Link>
+        ) 
+        : (
           <Link to="/">
             <img src={logo} alt="logo" className="h-[4rem] flex object-cover" />
           </Link>

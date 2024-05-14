@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import "../../../Styles/adminCreateUserAccount.css";
+//import "../../../Styles/adminCreateUserAccount.css";
 import { useContext } from "react";
 import { AuthContext } from "../../../Context/AuthContext";
 
@@ -39,81 +39,93 @@ const CreateUserAccountPage = () => {
       <div>
         <Header />
       </div>
-      <div>Admin user account CREATE page</div>
-      <div className="form-container">
-        <h2>Create User Account</h2>
+      <div className="ml-[43rem] text-[20px] font-bold py-8">Admin user account CREATE page</div>
+      <div className="">
+        <h2 className="pb-5">Create User Account</h2>
         <form onSubmit={handleSubmit}>
-          <div className="form-create">
-            <label>Choose role:</label>
-            <select
-              id="form"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              required
-            >
-              <option value="">Select Role</option>
-              <option value="system_admin">System Admin</option>
-              <option value="buyer">Buyer</option>
-              <option value="seller">Seller</option>
-              <option value="property_agent">Property Agent</option>
-            </select>
+          <div className=" ml-[30rem]">
+            <label className="ml-[0.5rem]">Choose role:</label>
+            <div className="py-5">
+              <select
+                id=""
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                required
+                className="w-[50rem] rounded-full"
+              >
+                <option value="">Select Role</option>
+                <option value="system_admin">System Admin</option>
+                <option value="buyer">Buyer</option>
+                <option value="seller">Seller</option>
+                <option value="property_agent">Property Agent</option>
+              </select>
+            </div>
           </div>
-          <div className="form-create">
-            <label>Input username:</label>
-            <input
-              id="form"
+          <div className=" ml-[30rem]">
+            <label className="ml-[0.5rem]">Input username:</label>
+            <div className="py-5">
+              <input
+              id=""
               type="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
+              className="w-[50rem] border border-gray-900 py-2 px-3 rounded-full"
             />
+            </div>
+            
           </div>
-          <div className="form-create">
-            <label>Input password:</label>
-            <input
-              id="form"
+          <div className=" ml-[30rem]">
+            <label className="ml-[0.5rem]">Input password:</label>
+            <div className="py-5">
+              <input
+              id=""
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              className="w-[50rem] rounded-full"
             />
+            </div>
+            
           </div>
-          <div className="form-create">
-            <label>Input license id:</label>
-            <input
-              id="form"
+          <div className=" ml-[30rem]">
+            <label className="ml-[0.5rem]">Input license id:</label>
+            <div className="py-5">
+              <input
+              id=""
               type="license"
               value={license}
               onChange={(e) => setLicense(e.target.value)}
+              className="w-[50rem] border border-gray-900 py-2 px-3 rounded-full"
             />
+            </div>
+            
           </div>
-          <div className="form-create">
-            <label>Email:</label>
-            <input
-              id="form"
+          <div className=" ml-[30rem]">
+            <label className="ml-[0.5rem]">Email:</label>
+            <div className="py-5">
+              <input
+              id=""
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              className="w-[50rem] rounded-full"
             />
+            </div>
+            
           </div>
           <div className="button-container">
             <button className="createButton" type="submit">
               Create
             </button>
+            <Link to={"/adminUserAccountPage"}>
+              <button className="go-back-button">Back</button>
+            </Link>
           </div>
         </form>
 
-        <div className="button-container">
-          <form method="post" name="logout">
-            <button className="logOutButton" name="logout">
-              Logout
-            </button>
-          </form>
-          <Link to={"/userAccount"}>
-            <button className="go-back-button">Back</button>
-          </Link>
-        </div>
       </div>
     </div>
   );

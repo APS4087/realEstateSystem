@@ -60,42 +60,49 @@ const SearchUserAccountPage = () => {
       <div>
         <Header />
       </div>
-      <div>Admin user account Search page</div>
+      <div className="ml-[44rem] text-[20px] font-bold py-8">Admin user account Search page</div>
       <div>
         <h2>Search Users</h2>
-        <div className="searchForm">
+        <div className="w-[100rem] ml-[15rem] py-10">
           <form onSubmit={handleSubmit}>
-            <label>ID:</label>
-            <input
-              type="text"
-              value={searchID}
-              onChange={(e) => setSearchID(e.target.value)}
-            />
-            <label>Name:</label>
-            <input
-              type="text"
-              value={searchName}
-              onChange={(e) => setSearchName(e.target.value)}
-            />
-            <label>Role:</label>
-            <input
-              type="text"
-              value={searchRole}
-              onChange={(e) => setSearchRole(e.target.value)}
-            />
-            <label>Email:</label>
-            <input
-              type="text"
-              value={searchEmail}
-              onChange={(e) => setSearchEmail(e.target.value)}
-            />
-            <button id="search" type="submit">
-              Search
-            </button>
+            <div className="flex gap-5 items-center">
+              <label>ID:</label>
+              <input
+                type="text"
+                value={searchID}
+                onChange={(e) => setSearchID(e.target.value)}
+                className='rounded-xl'
+              />
+              <label>Name:</label>
+              <input
+                type="text"
+                value={searchName}
+                onChange={(e) => setSearchName(e.target.value)}
+                className='rounded-xl'
+              />
+              <label>Role:</label>
+              <input
+                type="text"
+                value={searchRole}
+                onChange={(e) => setSearchRole(e.target.value)}
+                className='rounded-xl'
+              />
+              <label>Email:</label>
+              <input
+                type="text"
+                value={searchEmail}
+                onChange={(e) => setSearchEmail(e.target.value)}
+                className='rounded-xl'
+              />
+              <button className="px-3 py-2 border border-gray-900 rounded-full bg-green-500 text-[20px] text-white hover:bg-green-700" type="submit">
+                Search
+              </button>
+            </div>
+
           </form>
         </div>
 
-        <div className="displayResult">
+        <div className="displayResult w-[100rem] ml-[4rem]">
           {searchResults.length > 0 ? (
             <div className="searchResults">
               <table>
@@ -130,16 +137,12 @@ const SearchUserAccountPage = () => {
           )}
         </div>
 
-        <div className="buttons-container">
-          <form method="post" name="logout">
-            <button className="logOutButtonSearch" name="logout">
-              Logout
-            </button>
-          </form>
-          <Link to={"/systemAdminHomePage"}>
-            <button className="back-button-search">Back</button>
+        <div className="button-container pt-5">
+          <Link to={"/adminUserAccountPage"}>
+            <button className="go-back-button">Back</button>
           </Link>
         </div>
+
       </div>
     </div>
   );
