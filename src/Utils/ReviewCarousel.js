@@ -4,10 +4,18 @@ import React from "react";
 import "../Styles/Carousel.scss";
 import { useEffect } from "react";
 
-const Carousel = ({ children }) => {
+const ReviewCarousel = ({ children }) => {
   const [active, setActive] = useState(1);
   const count = React.Children.count(children);
   const MAX_VISIBILITY = 3;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActive((prevActive) => (prevActive + 1) % count);
+    }, 4000); // Change slide every 4 seconds
+
+    return () => clearInterval(interval); // Clean up on component unmount
+  }, [count]);
 
   return (
     <div className="carousel">
@@ -49,4 +57,4 @@ const Carousel = ({ children }) => {
   );
 };
 
-export default Carousel;
+export default ReviewCarousel;

@@ -2,9 +2,12 @@ import { avatarClasses } from "@mui/material";
 import React from "react";
 import avatar from "../../../Assets/profile.png";
 import { BsStarFill } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const realEstateAgent = ({ agentDetails }) => {
   //console.log(agentDetails, "agentDetails");
+  const Id = agentDetails.uid;
+  //console.log(Id, "Id");
   return (
     <div className="w-[65rem] ml-80 pb-10 pt-7" name="realEstate">
       <div className="h-[32rem] rounded-[1rem] border-2 border-gray-400">
@@ -26,9 +29,12 @@ const realEstateAgent = ({ agentDetails }) => {
               <p className="text-[20px]">5</p>
               <BsStarFill />
             </div>
-            <div className="text-gray-900 underline hover:no-underline duration-200 py-1 px-3 rounded-full text-[19px]">
-              <p>Reviews</p>
-            </div>
+
+            <Link to={`/viewReviewsPage/${Id}`}>
+              <div className="text-gray-900 underline hover:no-underline duration-200 py-1 px-3 rounded-full text-[19px]">
+                <p>Reviews</p>
+              </div>
+            </Link>
           </div>
         </div>
         <div className="border-b-2 px-7 py-7">

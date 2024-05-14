@@ -21,6 +21,8 @@ import SellerSoldPropertiesPage from "./Pages/AdditionalPages/SellerPages/Seller
 import SellerSoldPropertiesListPage from "./Pages/AdditionalPages/SellerPages/SellerSoldPropertiesListPage";
 import AgentListedPropertiesDetails from "./Pages/AdditionalPages/RealEsateAgentPages/AgentListedPropertiesDetails";
 import UpdateListingPage from "./Pages/AdditionalPages/RealEsateAgentPages/UpdateListingPage";
+import SearchPropertyPage from "./Pages/AdditionalPages/SearchPropertyPage";
+import ViewReviewsPage from "./Pages/AdditionalPages/ViewReviewsPage";
 
 const App = () => {
   const { currentUser } = useContext(AuthContext);
@@ -139,7 +141,8 @@ const App = () => {
           }
         />
         <Route path="/property/:Id" element={<PListPage />} />
-
+        <Route path="/searchPropertyPage" element={<SearchPropertyPage />} />
+        <Route path="/viewReviewsPage/:Id" element={<ViewReviewsPage />} />
         <Route
           path="/pendingProperty/:Id"
           element={

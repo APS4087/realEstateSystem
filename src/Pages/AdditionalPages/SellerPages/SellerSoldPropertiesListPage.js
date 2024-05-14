@@ -219,10 +219,10 @@ const SellerSoldPropertiesListPage = () => {
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     >
                       <option selected="">5</option>
-                      <option value="FOUR">4</option>
-                      <option value="THREE">3</option>
-                      <option value="TWO">2</option>
-                      <option value="ONE">1</option>
+                      <option selected="">4</option>
+                      <option selected="">3</option>
+                      <option selected="">2</option>
+                      <option selected="">1</option>
                     </select>
                   </div>
                   <div className="col-span-2">

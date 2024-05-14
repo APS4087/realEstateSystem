@@ -6,6 +6,8 @@ import {
   getDocs,
   updateDoc,
   getDoc,
+  query,
+  where,
 } from "firebase/firestore";
 import { db } from "../Firebase/firebaseConfig";
 
@@ -94,6 +96,37 @@ class PropertyEntity {
       console.log("Property updated successfully");
     } catch (error) {
       console.error("Error updating property: ", error);
+      throw error;
+    }
+  }
+
+  async getPropertiesByTags(tags) {
+    try {
+      let properties = [];
+
+      for (let tag of tags) {
+        const q = query(
+          this.collectionRef,
+          where("tags", "array-contains", tag)
+        );
+        const querySnapshot = await getDocs(q);
+
+        // Merge the results
+        properties = [
+          ...properties,
+          ...querySnapshot.docs.map((doc) => doc.data()),
+        ];
+      }
+
+      // Remove duplicates
+      properties = properties.filter(
+        (property, index, self) =>
+          index === self.findIndex((p) => p.id === property.id)
+      );
+
+      return properties;
+    } catch (error) {
+      console.error("Error fetching properties by tags: ", error);
       throw error;
     }
   }

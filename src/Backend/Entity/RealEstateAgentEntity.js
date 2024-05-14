@@ -176,6 +176,28 @@ class RealEstateAgentEntity extends UserEntity {
       throw error;
     }
   }
+
+  async getAgentReviews(agentId) {
+    try {
+      // Get the agent's document
+
+      const agentDoc = await getDoc(doc(db, "realEstateAgents", agentId));
+
+      if (agentDoc.exists()) {
+        const agentData = agentDoc.data();
+
+        // Return the agent's reviews data
+        console.log("Agent data", agentData.reviewDatas);
+        return agentData.reviewDatas;
+      } else {
+        console.error("No such agent!");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error getting agent reviews: ", error);
+      throw error;
+    }
+  }
   // Method to fetch user data by id
   async getUserData(userId) {
     try {
@@ -208,7 +230,6 @@ class RealEstateAgentEntity extends UserEntity {
       // Update the agent's document in the database with the new review data
       await updateDoc(agentRef, { reviewDatas: agentData.reviewDatas });
 
-      console.log("Review added in entity: ", reviewData);
       return true;
     } catch (error) {
       console.error("Error adding review: ", error);

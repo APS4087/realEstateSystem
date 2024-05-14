@@ -33,14 +33,16 @@ function Header() {
           </Link>
         )}
       </div>
-      <div className="search-bar">
-        <div className="search-bar-text">Anywhere</div>
-        <div className="search-bar-text">Any Week</div>
-        <div className="search-bar-text2">Add guests</div>
-        <div className="search-icon-div">
-          <SearchRoundedIcon className="search-icon" />
+      <Link to="/searchPropertyPage">
+        <div className="search-bar">
+          <div className="search-bar-text">Anywhere</div>
+          <div className="search-bar-text">Any Type</div>
+          <div className="search-bar-text2">Search</div>
+          <div className="search-icon-div">
+            <SearchRoundedIcon className="search-icon" />
+          </div>
         </div>
-      </div>
+      </Link>
       <div className="profile-container">
         <div className="showUserName">
           Welcome {currentUser ? currentUser.username : ""}
