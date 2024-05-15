@@ -30,6 +30,7 @@ const ViewUserAccountPage = () => {
       Phone_Number: "123-456-7890",
       Status: "Active",
       Role: "System Admin",
+      img: "https://docs.material-tailwind.com/img/logos/logo-spotify.svg",
     },
     {
       User_ID: "2",
@@ -39,6 +40,7 @@ const ViewUserAccountPage = () => {
       Phone_Number: "987-654-3210",
       Status: "Suspended",
       Role: "Real Estate Agent",
+      img: "https://docs.material-tailwind.com/img/logos/logo-spotify.svg",
     },
     {
       User_ID: "3",
@@ -48,6 +50,7 @@ const ViewUserAccountPage = () => {
       Phone_Number: "555-123-4567",
       Status: "Active",
       Role: "Seller",
+      img: "https://docs.material-tailwind.com/img/logos/logo-spotify.svg",
     },
     {
       User_ID: "4",
@@ -57,6 +60,7 @@ const ViewUserAccountPage = () => {
       Phone_Number: "444-567-8901",
       Status: "Active",
       Role: "Buyer",
+      img: "https://docs.material-tailwind.com/img/logos/logo-spotify.svg",
     },
   ]);
 

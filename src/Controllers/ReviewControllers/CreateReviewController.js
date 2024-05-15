@@ -13,7 +13,6 @@ class CreateReviewController {
       );
 
       if (result) {
-        console.log("Review added successfully.");
         return true;
       } else {
         console.log("Failed to add review.");
