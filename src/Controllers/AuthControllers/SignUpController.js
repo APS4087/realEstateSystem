@@ -25,7 +25,7 @@ class SignUpController {
         await this.sellerEntity.createUser(userData);
       } else if (userType === "realEstateAgent") {
         await this.realEstateAgentEntity.createUser(userData);
-      } else if (userType === "systemAdmin") {
+      } else if (userType === "Admin") {
         await this.systemAdminEntity.createUser(userData);
       } else {
         throw new Error("Invalid user type");

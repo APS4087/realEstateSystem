@@ -45,24 +45,37 @@ const SuspendUserAccountPage = () => {
         <Header />
       </div>
 
-      <div>Admin user account SUSPEND page</div>
+      <div className="ml-[44rem] text-[20px] font-bold py-8">
+        Admin user account SUSPEND page
+      </div>
       <div className="box">
-        <h2>User Suspension</h2>
-        <div>
-          <label>Select user to suspend:</label>
-          <select value={selectedUser} onChange={handleSelectUser} required>
+        <h2 className="pb-7">User Suspension</h2>
+        <div className="ml-[43rem] pb-7">
+          <label className="pr-7">Select user to suspend:</label>
+          <select
+            value={selectedUser}
+            onChange={handleSelectUser}
+            required
+            className="rounded-full px-10"
+          >
             <option value="">Select User</option>
             <option value="user1">User 1</option>
             <option value="user2">User 2</option>
             {/* Tambahkan opsi pengguna lainnya di sini */}
           </select>
         </div>
-        <div className="button-container">
-          <button onClick={handleSuspendUser} className="suspend-button">
-            Suspend User
+
+        <div className="ml-[47rem] gap-7 flex py-10">
+          <button
+            onClick={handleSuspendUser}
+            className="px-4 py-2 border border-gray-900 rounded-full bg-green-500 text-[20px] text-white hover:bg-green-700"
+          >
+            Suspend
           </button>
-          <Link to={"/systemAdminHomePage"}>
-            <button className="back-button">Back</button>
+          <Link to={"/adminUserAccountPage"}>
+            <button className="px-4 py-2 border border-gray-900 rounded-full bg-red-500 text-[20px] text-white hover:bg-red-700">
+              Back
+            </button>
           </Link>
         </div>
       </div>

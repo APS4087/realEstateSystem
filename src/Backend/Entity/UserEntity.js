@@ -14,6 +14,7 @@ import {
   setDoc,
   getDoc,
   updateDoc,
+  getDocs,
 } from "firebase/firestore";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Phone } from "@mui/icons-material";
@@ -146,6 +147,15 @@ class UserEntity {
       }
     } catch (error) {
       console.error("Error updating user:", error);
+      throw error;
+    }
+  }
+  async getAllUsers() {
+    try {
+      const querySnapshot = await getDocs(collection(db, "users"));
+      return querySnapshot.docs.map((doc) => doc.data());
+    } catch (error) {
+      console.error("Error fetching all users:", error);
       throw error;
     }
   }

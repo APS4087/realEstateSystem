@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import "../../../Styles/adminUserAccount.css";
 import { useContext } from "react";
 import { AuthContext } from "../../../Context/AuthContext";
 
@@ -26,7 +25,9 @@ const AdminUserAccountPage = () => {
       <div>
         <Header />
       </div>
-      <div>Admin user account page</div>
+      <div className="w-[17rem] ml-[45rem] text-[20px] font-bold py-9">
+        Admin user account page
+      </div>
       <div>
         <div className="UserAcctFeat">
           <div className="AcctFeat">

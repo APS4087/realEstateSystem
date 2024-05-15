@@ -406,11 +406,11 @@ const PListPage = () => {
                           onChange={(event) => setRating(event.target.value)}
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         >
-                          <option selected="">5</option>
-                          <option selected="">4</option>
-                          <option selected="">3</option>
-                          <option selected="">2</option>
-                          <option selected="">1</option>
+                          <option selected="5">5</option>
+                          <option selected="4">4</option>
+                          <option selected="3">3</option>
+                          <option selected="2">2</option>
+                          <option selected="1">1</option>
                         </select>
                       </div>
                       <div className="col-span-2">

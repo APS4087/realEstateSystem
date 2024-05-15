@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import "../../../Styles/adminSearchUserAccount.css";
 import { useContext } from "react";
 import { AuthContext } from "../../../Context/AuthContext";
 
@@ -38,7 +37,7 @@ const SearchUserProfilePage = () => {
         <Header />
       </div>
       <div>Admin user account Search page</div>
-      <div className="user-profile-list">
+      <div className="user-profile-list1">
         <h1 className="title">User Profiles</h1>
         <input
           type="text"
@@ -46,7 +45,7 @@ const SearchUserProfilePage = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search by name..."
         />
-        <ul className="profile-list">
+        <ul className="profile-list1">
           {filteredUserProfiles.map((profile) => (
             <li key={profile.id} className="profile-item">
               {profile.name}
