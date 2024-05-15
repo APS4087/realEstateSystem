@@ -1,0 +1,90 @@
+/* searchAccount.css */
+
+.searchForm {
+    margin-bottom: 20px;
+    margin-top: 60px;
+  }
+  
+  .searchForm form {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .searchForm label {
+    margin-right: 5px;
+  }
+  
+  .searchForm input {
+    margin-right: 5px;
+  }
+  
+  .searchForm [id="search"] {
+    margin-top: 10px;
+    padding: 0px 40px;  /* Match padding of back-button */
+  }
+  
+  
+  
+  .searchForm {
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  
+  .searchForm input[type="text"],
+  .searchForm button {
+    margin-right: 15px;
+    margin-left: 20px;
+  }
+  
+  .searchResults table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px; /* Increase margin bottom */
+    background-color: #fff; /* White background */
+    border-radius: 8px; /* Slightly rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  }
+  
+  .searchResults th,
+  .searchResults td {
+    border: 1px solid #ddd; /* Light border */
+    padding: 15px; /* Larger padding */
+    text-align: left;
+  }
+  
+  .searchResults th {
+    background-color: #f2f2f2; /* Light gray background for header */
+    font-weight: bold;
+  }
+  
+  .buttons-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px; /* Increase margin top */
+  }
+  
+  .buttons-container button {
+    margin: 0 10px; /* Add space between buttons */
+    padding: 12px 24px; /* Larger padding */
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .buttons-container button.logOutButtonSearch {
+    background-color: #343a40;
+    color: white;
+  }
+  
+  .buttons-container button.back-button-search {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .displayResult {
+    text-align: center;
+  }

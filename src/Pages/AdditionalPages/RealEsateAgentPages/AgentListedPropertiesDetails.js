@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Shortcutbar from "../Shortcutbar";
 import Carousel from "../carousel";
 import Mortgage from "../mortgage";
@@ -22,6 +22,8 @@ import avatar from "../../../Assets/profile.png";
 import { Create } from "@mui/icons-material";
 import CreateReviewController from "../../../Controllers/ReviewControllers/CreateReviewController";
 import ViewPropertyController from "../../../Controllers/PropertyControllers/ViewPropertyController";
+import PropertyController from "../../../Controllers/PropertyControllers/PropertyController";
+import LoadingAnimation from "../../../Components/LoadingAnimation";
 
 const AgentListedPropertiesDetails = () => {
   const { Id } = useParams(); // Retrieve the rental ID from the URL
@@ -30,6 +32,34 @@ const AgentListedPropertiesDetails = () => {
   const { currentUser } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
   const [agentData, setAgentData] = useState(""); // State to store the agent data
+  const [viewCount, setViewCount] = useState(0);
+  const [shortListCount, setShortListCount] = useState(0);
+
+  const propertyController = new PropertyController();
+
+  // for viewCount
+  useEffect(() => {
+    // If a property ID is present, increment the view count
+    if (Id) {
+      propertyController.incrementViewCount(Id);
+    }
+  }, [Id]);
+
+  useEffect(() => {
+    // If a property ID is present, get the view count
+    if (Id) {
+      const fetchViewAndShortListCount = async () => {
+        const count = await propertyController.getViewCount(Id);
+        const shortListCount = await propertyController.getNumberOfShortlist(
+          Id
+        );
+        setShortListCount(shortListCount);
+        setViewCount(count);
+      };
+
+      fetchViewAndShortListCount();
+    }
+  }, [Id]);
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -59,6 +89,27 @@ const AgentListedPropertiesDetails = () => {
     fetchAgentData();
   }, [rental]);
 
+  const handleDelete = async () => {
+    try {
+      const response = await propertyController.deleteProperty(Id);
+      Swal.fire({
+        title: "Property Deleted",
+        text: "Property has been deleted successfully",
+        icon: "success",
+      });
+      navigate("/agentPropertiesListedPage");
+    } catch (error) {
+      console.error("Error deleting property", error);
+      Swal.fire({
+        title: "Error",
+        text: "An error occurred while deleting the property",
+        icon: "error",
+      });
+    }
+  };
+  if (isLoading) {
+    return <LoadingAnimation />;
+  }
   if (!rental) return <div>Rental not found</div>;
 
   return (
@@ -67,28 +118,34 @@ const AgentListedPropertiesDetails = () => {
       <Carousel images={rental.listingPhotos} />
       <div className="ml-[20rem] w-[65rem] justify-between flex gap-8 pb-5">
         <div className="w-{$p.length*2} px-4 inline-block text-green-400 border-green-300 border-2 rounded-lg">
-          <p className="font-semibold text-[25px] pb-1">{rental.tags[0]}</p>
+          {rental.tags.includes("Available Property")
+            ? "Available Property"
+            : "Sold Property"}
         </div>
         <div className="flex">
           <div className="flex items-center w-{$p.length*2} gap-2 py-1 px-3">
             <BsFillEyeFill className="" />
-            <p className="font-semibold text-[19px]">
-              Views: {rental.viewCount}
-            </p>
+
+            <p className="font-semibold text-[19px]">Views: {viewCount}</p>
           </div>
           <div className="flex items-center w-{$p.length*2} gap-2 py-1 px-3">
             <TiBookmark className="" />
             <p className="font-semibold text-[19px]">
-              Shortlists: {rental.shortCount}
+              Shortlists: {shortListCount}
             </p>
           </div>
         </div>
       </div>
       <div className="w-[65rem] ml-80 items-center pb-4 font-bold text-[30px] border-b-2">
         <p className="pb-1">{rental.title}</p>
-        <div className="w-{$p.length*2} py-2 px-3 inline-block bg-gray-600 text-white border rounded-full">
-          <p className="font-semibold text-[15px]">{rental.tags[1]}</p>
-        </div>
+        {rental.tags.map((tag, index) => (
+          <div
+            key={index}
+            className="w-{$p.length*2} py-2 px-3 inline-block bg-gray-600 text-white border rounded-full display:flex mr-2"
+          >
+            <p className="font-semibold text-[15px]">{tag}</p>
+          </div>
+        ))}
       </div>
       <div className="w-[65rem] ml-80 items-center py-7 border-b-2">
         <p className="font-semibold text-[17px]">Price starts from:</p>
@@ -106,12 +163,12 @@ const AgentListedPropertiesDetails = () => {
         name="location"
       >
         <p className="font-bold text-[30px]">Location</p>
-        <p className="font-semibold text-[18px] py-3 pb-4">
-          Singapore Institute of management, idk
+        <p className="font-semibold text-[17px] py-3">
+          StreetAddress: {rental.streetAddress} <br />
+          Province: {rental.province} <br />
+          City: {rental.city} <br />
+          Country: {rental.country}
         </p>
-        <div className="w-{$p.length*2} py-2 px-3 inline-block bg-gray-600 text-white border rounded-full">
-          <p className="font-semibold text-[15px]">{rental.tags[2]}</p>
-        </div>
       </div>
       <div
         className="w-[65rem] ml-80 items-center pt-10 pb-5 border-b-2"
@@ -122,12 +179,20 @@ const AgentListedPropertiesDetails = () => {
       </div>
       <RealEstateAgent agentDetails={agentData} />
       <div className="flex justify-center">
-        {/*Review Button*/}
+        {/*Update and delete Button*/}
         <>
-          <div className="ml-[50rem] pb-6">
-            <Button onClick={navigate(`/updateListingPage/${Id}`)}>
-              Update
-            </Button>
+          <div className=" ml-[45rem] flex gap-10 text-[20px] py-5">
+            <Link to={`/updateListingPage/${Id}`}>
+              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 pb-2 px-3 rounded-full">
+                Update
+              </button>
+            </Link>
+            <button
+              onClick={handleDelete}
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 pb-2 px-3 rounded-full"
+            >
+              Delete
+            </button>
           </div>
         </>
       </div>

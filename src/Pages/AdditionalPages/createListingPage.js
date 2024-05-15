@@ -105,8 +105,8 @@ const CreateListingPage = () => {
   const [bedroomCount, setBedroomCount] = useState(1);
   const [bathroomCount, setBathroomCount] = useState(1);
 
-  /* AMENITIES */
-  const [tags, setTags] = useState([]);
+  // Initialize tags with "Available Property"
+  const [tags, setTags] = useState(["Available Property"]);
 
   const handleSelectTags = (tag) => {
     if (tags.includes(tag)) {
@@ -483,7 +483,7 @@ const CreateListingPage = () => {
               <p>Now, set your PRICE</p>
               <span>S$</span>
               <input
-                type="number"
+                type="text"
                 placeholder="100"
                 name="price"
                 value={formDescription.price}

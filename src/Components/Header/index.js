@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import logo from "../../Assets/logo/logo-title.png";
+import logo from "../../Assets/logo/logo-title.jpg";
 import "./styles.css";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import LanguageIcon from "@mui/icons-material/Language";
@@ -21,6 +21,10 @@ function Header() {
           </Link>
         ) : userType === "seller" ? (
           <Link to="/sellerHomePage">
+            <img src={logo} alt="logo" className="h-[4rem] flex object-cover" />
+          </Link>
+        ) : userType === "Admin" ? (
+          <Link to="/systemAdminHomePage">
             <img src={logo} alt="logo" className="h-[4rem] flex object-cover" />
           </Link>
         ) : userType === "realEstateAgent" ? (
@@ -45,7 +49,8 @@ function Header() {
       </Link>
       <div className="profile-container">
         <div className="showUserName">
-          Welcome {currentUser ? currentUser.username : ""}
+          Welcome {currentUser ? currentUser.username : ""} ({" "}
+          {currentUser ? currentUser.userType : ""} )
         </div>
         <div className="showUserName">
           <LanguageIcon sx={{ fontSize: "1.3rem" }} />

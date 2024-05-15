@@ -31,6 +31,8 @@ import { AuthContext } from "../../Context/AuthContext";
 import PurchasePropertyController from "../../Controllers/BuyerControllers/PurchasePropertyController";
 import Swal from "sweetalert2";
 import CreateReviewController from "../../Controllers/ReviewControllers/CreateReviewController";
+import PropertyController from "../../Controllers/PropertyControllers/PropertyController";
+import LoadingAnimation from "../../Components/LoadingAnimation";
 
 const PListPage = () => {
   const { Id } = useParams(); // Retrieve the rental ID from the URL
@@ -44,6 +46,26 @@ const PListPage = () => {
   const [isShortlisted, setIsShortlisted] = useState(false);
   const [rating, setRating] = useState("");
   const [review, setReview] = useState("");
+  const [viewCount, setViewCount] = useState(0);
+  const [shortListCount, setShortListCount] = useState(0);
+  const propertyController = new PropertyController();
+  useEffect(() => {
+    // If a property ID is present, increment the view count
+    if (Id) {
+      propertyController.incrementViewCount(Id);
+    }
+  }, [Id]);
+  useEffect(() => {
+    // If a property ID is present, get the view count
+    if (Id) {
+      const fetchViewCount = async () => {
+        const count = await propertyController.getViewCount(Id);
+        setViewCount(count);
+      };
+
+      fetchViewCount();
+    }
+  }, [Id]);
 
   // for popup review on click
   const onCloseModal = () => {
@@ -59,6 +81,7 @@ const PListPage = () => {
     const reviewerId = currentUser.uid;
     const reviewData = { rating, review, reviewerId };
     const createReviewController = new CreateReviewController();
+
     console.log(agentId, reviewData);
     try {
       const result = await createReviewController.addRatingAndReview(
@@ -73,6 +96,7 @@ const PListPage = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+
         onCloseModal();
       } else {
         Swal.fire({
@@ -89,6 +113,7 @@ const PListPage = () => {
   async function addToShortlist(propertyId) {
     try {
       await buyerController.addToShortlist(currentUser.uid, propertyId);
+      await propertyController.incrementShortlistCount(propertyId);
 
       Swal.fire({
         position: "top-end",
@@ -98,6 +123,11 @@ const PListPage = () => {
         timer: 1500,
       });
       console.log("Property added to shortlist!");
+
+      const shortListCount = await propertyController.getNumberOfShortlist(
+        propertyId
+      );
+      setShortListCount(shortListCount);
     } catch (error) {
       console.error("Error adding property to shortlist:", error);
       Swal.fire({
@@ -193,9 +223,9 @@ const PListPage = () => {
     fetchIsShortlisted();
   }, [rental]);
   if (isLoading) {
-    // Add this block
-    return <div>Loading...</div>;
+    return <LoadingAnimation />;
   }
+  console.log("View count:", rental.viewCount);
 
   return (
     <div>
@@ -258,19 +288,21 @@ const PListPage = () => {
       </div>
       <div className="ml-[20rem] w-[65rem] justify-between flex gap-8 pb-5">
         <div className="w-{$p.length*2} px-4 inline-block text-green-400 border-green-300 border-2 rounded-lg">
-          <p className="font-semibold text-[25px] pb-1">{rental.tags[0]}</p>
+          <p className="font-semibold text-[25px] pb-1">
+            {rental.tags.includes("Available Property")
+              ? "Available Property"
+              : "Sold Property"}
+          </p>
         </div>
         <div className="flex">
           <div className="flex items-center w-{$p.length*2} gap-2 py-1 px-3">
             <BsFillEyeFill className="" />
-            <p className="font-semibold text-[19px]">
-              Views: {rental.viewCount}
-            </p>
+            <p className="font-semibold text-[19px]">Views: {viewCount}</p>
           </div>
           <div className="flex items-center w-{$p.length*2} gap-2 py-1 px-3">
             <TiBookmark className="" />
             <p className="font-semibold text-[19px]">
-              Shortlists: {rental.shortCount}
+              Shortlists: {shortListCount}
             </p>
           </div>
         </div>
@@ -282,9 +314,14 @@ const PListPage = () => {
             <span className="ml-2 text-green-500">(Shortlisted)</span>
           )}
         </p>
-        <div className="w-{$p.length*2} py-2 px-3 inline-block bg-gray-600 text-white border rounded-full">
-          <p className="font-semibold text-[15px]">{rental.tags[1]}</p>
-        </div>
+        {rental.tags.map((tag, index) => (
+          <div
+            key={index}
+            className="w-{$p.length*2} py-2 px-3 inline-block bg-gray-600 text-white border rounded-full display:flex mr-2"
+          >
+            <p className="font-semibold text-[15px]">{tag}</p>
+          </div>
+        ))}
       </div>
       <div className="w-[65rem] ml-80 items-center py-7 border-b-2">
         <p className="font-semibold text-[17px]">Price starts from:</p>
@@ -295,9 +332,7 @@ const PListPage = () => {
         name="about"
       >
         <p className="font-bold text-[30px]">About this property</p>
-        <p className="font-semibold text-[17px] py-3">
-          Description: {rental.description}
-        </p>
+        <p className="font-semibold text-[17px] py-3">{rental.description}</p>
       </div>
       <div
         className="w-[65rem] ml-80 items-center pt-10 pb-5 border-b-2"
@@ -312,9 +347,6 @@ const PListPage = () => {
             Country: {rental.country}
           </p>
         </p>
-        <div className="w-{$p.length*2} py-2 px-3 inline-block bg-gray-600 text-white border rounded-full">
-          <p className="font-semibold text-[15px]">{rental.tags[2]}</p>
-        </div>
       </div>
       <div
         className="w-[65rem] ml-80 items-center pt-10 pb-5 border-b-2"

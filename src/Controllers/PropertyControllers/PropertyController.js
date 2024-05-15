@@ -66,6 +66,52 @@ class PropertyController {
       throw error;
     }
   }
+  async incrementViewCount(propertyId) {
+    try {
+      await this.propertyEntity.incrementViewCount(propertyId);
+    } catch (error) {
+      console.error("Error in PropertyViewController: ", error);
+      throw error;
+    }
+  }
+  async getViewCount(propertyId) {
+    try {
+      const viewCount = await this.propertyEntity.getViewCount(propertyId);
+      return viewCount;
+    } catch (error) {
+      console.error("Error in PropertyController: ", error);
+      throw error;
+    }
+  }
+  async incrementShortlistCount(propertyId) {
+    try {
+      await this.propertyEntity.incrementShortlistCount(propertyId);
+      console.log("Property added to shortlist!");
+    } catch (error) {
+      console.error("Error in PropertyController: ", error);
+      throw error;
+    }
+  }
+  async getNumberOfShortlist(propertyId) {
+    try {
+      const shortlistCount = await this.propertyEntity.getNumberOfShortlist(
+        propertyId
+      );
+      return shortlistCount;
+    } catch (error) {
+      console.error("Error in PropertyController: ", error);
+      throw error;
+    }
+  }
+  async deleteProperty(propertyId) {
+    try {
+      await this.propertyEntity.deleteProperty(propertyId);
+      console.log("Property deleted successfully");
+    } catch (error) {
+      console.error("Error deleting property: ", error);
+      throw error;
+    }
+  }
 }
 
 export default PropertyController;

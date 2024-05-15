@@ -153,6 +153,16 @@ export default function BasicMenu() {
                   Logout
                 </MenuItem>,
               ]
+            : userType === "Admin"
+            ? [
+                <MenuItem
+                  key="logout"
+                  onClick={handleLogout}
+                  className="menu-items"
+                >
+                  Logout
+                </MenuItem>,
+              ]
             : userType === "realEstateAgent"
             ? [
                 <Link to={"/profileUpdatePage"}>

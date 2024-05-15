@@ -5,7 +5,7 @@ import { BsFillEyeFill } from "react-icons/bs";
 const UpdateRental = ({ Id, title, image, price, views, tag }) => {
   return (
     <div classname="">
-      <Link to={`/updateProperty/${Id}`}>
+      <Link to={`/updatePropertyDetail/${Id}`}>
         <div className="relative">
           <div className="grad absolute h-full w-full rounded-b-[1.3rem]"></div>
           <div className="flex">

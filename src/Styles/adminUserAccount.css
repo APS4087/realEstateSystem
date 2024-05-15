@@ -1,0 +1,52 @@
+/* styles.css */
+
+
+  
+  .UserAcctFeat {
+    display: flex;
+    justify-content: space-around; /* Spread the images evenly */
+    width: 80%; /* Adjusted width */
+    margin: 0 auto; /* Center the images */
+  }
+  
+  .AcctFeat {
+    text-align: center;
+    margin: 20px; /* Adjusted margin */
+    width: 150px; /* Adjusted image width */
+  }
+  
+  .AcctFeat img {
+    width: 70%;
+    height: auto;
+    border-radius: 15px;
+  }
+  
+  .AcctFeat p {
+    margin-top: 10px;
+  }
+  
+  .buttons-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .buttons-container button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .buttons-container button.logOutController {
+    background-color: red;
+    color: white;
+  }
+  
+  .buttons-container button.go-back-button {
+    background-color: #3498db;
+    color: white;
+  }
+  
