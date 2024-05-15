@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 import AccountPic from "../../Assets/adminPhotos/Account.jpg";
 import AdminProfile from "../../Assets/adminPhotos/Profile.png";
 
-const SellerHomePage = () => {
+const SystemAdminHomePage = () => {
   const { currentUser } = useContext(AuthContext);
 
   const [selectedFilter, setSelectedFilter] = useState(0);
@@ -56,4 +56,4 @@ const SellerHomePage = () => {
   );
 };
 
-export default SellerHomePage;
+export default SystemAdminHomePage;

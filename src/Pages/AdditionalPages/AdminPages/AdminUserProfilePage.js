@@ -68,7 +68,7 @@ const AdminUserProfilePage = () => {
           <button className="logOutController" name="logout">
             Logout
           </button>
-          <Link to={navigate("/systemAdminHomePage")}>
+          <Link to={"/systemAdminHomePage"}>
             <button className="go-back-button">Back</button>
           </Link>
         </div>

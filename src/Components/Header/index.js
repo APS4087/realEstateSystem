@@ -23,6 +23,10 @@ function Header() {
           <Link to="/sellerHomePage">
             <img src={logo} alt="logo" className="h-[4rem] flex object-cover" />
           </Link>
+        ) : userType === "Admin" ? (
+          <Link to="/systemAdminHomePage">
+            <img src={logo} alt="logo" className="h-[4rem] flex object-cover" />
+          </Link>
         ) : userType === "realEstateAgent" ? (
           <Link to="/realEstateAgentHomePage">
             <img src={logo} alt="logo" className="h-[4rem] flex object-cover" />
@@ -45,7 +49,8 @@ function Header() {
       </Link>
       <div className="profile-container">
         <div className="showUserName">
-          Welcome {currentUser ? currentUser.username : ""}
+          Welcome {currentUser ? currentUser.username : ""} ({" "}
+          {currentUser ? currentUser.userType : ""} )
         </div>
         <div className="showUserName">
           <LanguageIcon sx={{ fontSize: "1.3rem" }} />

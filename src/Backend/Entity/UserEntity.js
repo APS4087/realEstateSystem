@@ -25,8 +25,15 @@ class UserEntity {
   async createUser(userData) {
     try {
       // unwrap the user data
-      const { email, password, userType, userName, profilePic, licenses } =
-        userData;
+      const {
+        email,
+        password,
+        userType,
+        userName,
+        profilePic,
+        licenses,
+        phone,
+      } = userData;
 
       // for firebase authentication
       const res = await createUserWithEmailAndPassword(auth, email, password);
@@ -38,6 +45,7 @@ class UserEntity {
         userName: userName,
         profilePicture: profilePic,
         userType: userType,
+        phone: phone,
       });
 
       return res.user.uid; // Return the ID of the created user document
