@@ -46,6 +46,7 @@ class UserEntity {
         profilePicture: profilePic,
         userType: userType,
         phone: phone,
+        isSuppend: false,
       });
 
       return res.user.uid; // Return the ID of the created user document

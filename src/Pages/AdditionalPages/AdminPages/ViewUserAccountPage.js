@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import "../../../Styles/adminViewUserAccount.css";
 import { useContext } from "react";
 import { AuthContext } from "../../../Context/AuthContext";
 
@@ -21,6 +20,7 @@ const ViewUserAccountPage = () => {
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const [selectedFilter, setSelectedFilter] = useState(0);
+
   const [userAccounts, setUserAccounts] = useState([
     {
       User_ID: "1",
@@ -30,6 +30,7 @@ const ViewUserAccountPage = () => {
       Phone_Number: "123-456-7890",
       Status: "Active",
       Role: "System Admin",
+      img: "https://docs.material-tailwind.com/img/logos/logo-spotify.svg",
     },
     {
       User_ID: "2",
@@ -39,6 +40,7 @@ const ViewUserAccountPage = () => {
       Phone_Number: "987-654-3210",
       Status: "Suspended",
       Role: "Real Estate Agent",
+      img: "https://docs.material-tailwind.com/img/logos/logo-spotify.svg",
     },
     {
       User_ID: "3",
@@ -48,6 +50,7 @@ const ViewUserAccountPage = () => {
       Phone_Number: "555-123-4567",
       Status: "Active",
       Role: "Seller",
+      img: "https://docs.material-tailwind.com/img/logos/logo-spotify.svg",
     },
     {
       User_ID: "4",
@@ -57,9 +60,19 @@ const ViewUserAccountPage = () => {
       Phone_Number: "444-567-8901",
       Status: "Active",
       Role: "Buyer",
+      img: "https://docs.material-tailwind.com/img/logos/logo-spotify.svg",
     },
   ]);
 
+  const TABLE_HEAD = [
+    "User ID",
+    "Name",
+    "Email",
+    "License ID",
+    "Phone Number",
+    "UserTy",
+    "Status",
+  ];
   const handleLogout = (event) => {
     console.log("Logging out...");
   };
