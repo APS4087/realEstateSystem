@@ -7,6 +7,7 @@ class UpdateUserController {
 
   async updateUser(userId, userData) {
     try {
+      console.log("userData: ", userData);
       await this.userEntity.updateUser(userId, userData);
     } catch (error) {
       console.error("Error updating user:", error);

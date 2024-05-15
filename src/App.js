@@ -34,6 +34,7 @@ import SearchUserProfilePage from "./Pages/AdditionalPages/AdminPages/SearchUser
 import SuspendUserProfilePage from "./Pages/AdditionalPages/AdminPages/SuspendUserProfilePage";
 import ViewUserProfilePage from "./Pages/AdditionalPages/AdminPages/ViewUserProfilePage";
 import LoadingAnimation from "./Components/LoadingAnimation";
+import AdminUpdateAccountPage from "./Pages/AdditionalPages/AdminPages/AdminUpdateAccountPage";
 
 const App = () => {
   const { currentUser } = useContext(AuthContext);
@@ -243,6 +244,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <PendingPropertyListPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/adminUpdateAccount/:Id"
+          element={
+            <ProtectedRoute>
+              <AdminUpdateAccountPage />
             </ProtectedRoute>
           }
         />

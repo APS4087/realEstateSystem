@@ -47,7 +47,7 @@ class UserEntity {
         profilePicture: profilePic,
         userType: userType,
         phone: phone,
-        isSuppend: false,
+        isSuspended: false,
       });
 
       return res.user.uid; // Return the ID of the created user document
@@ -150,12 +150,49 @@ class UserEntity {
       throw error;
     }
   }
+  async updateOtherUserDetails(userId, newDetails) {
+    try {
+      // Get a reference to the user document
+      const userDocRef = doc(db, "users", userId);
+
+      // Update the user document
+      await updateDoc(userDocRef, newDetails);
+    } catch (error) {
+      console.error("Error updating user details:", error);
+      throw error;
+    }
+  }
   async getAllUsers() {
     try {
       const querySnapshot = await getDocs(collection(db, "users"));
       return querySnapshot.docs.map((doc) => doc.data());
     } catch (error) {
       console.error("Error fetching all users:", error);
+      throw error;
+    }
+  }
+  async suspendUser(userId) {
+    try {
+      // Get a reference to the user document
+      const userDocRef = doc(db, "users", userId);
+
+      // Update the isSuspended field to true, or create it if it doesn't exist
+      await setDoc(userDocRef, { isSuspended: true }, { merge: true });
+    } catch (error) {
+      console.error("Error suspending user:", error);
+      throw error;
+    }
+  }
+
+  async reactivateUser(userId) {
+    try {
+      // Get a reference to the user document
+      const userDocRef = doc(db, "users", userId);
+
+      // Update the isSuspended field to false
+      await setDoc(userDocRef, { isSuspended: false }, { merge: true });
+    } catch (error) {
+      console.error("Error reactivating user:", error);
       throw error;
     }
   }
