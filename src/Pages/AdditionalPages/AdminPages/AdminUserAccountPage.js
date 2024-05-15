@@ -50,25 +50,9 @@ const AdminUserAccountPage = () => {
             </Link>
             <p>Search User Account</p>
           </div>
-
-          <div className="AcctFeat">
-            <Link to="/adminSuspendUserAccountPage">
-              <img src={SuspendUserPic} alt="Suspend User" />
-            </Link>
-            <p>Suspend User Account</p>
-          </div>
-
-          <div className="AcctFeat">
-            <img src={UpdateUserPic} alt="Update User" />
-
-            <p>Update User Account</p>
-          </div>
         </div>
 
         <div className="buttons-container">
-          <button className="logOutController" name="logout">
-            Logout
-          </button>
           <Link to={navigate("/systemAdminHomePage")}>
             <button className="go-back-button">Back</button>
           </Link>

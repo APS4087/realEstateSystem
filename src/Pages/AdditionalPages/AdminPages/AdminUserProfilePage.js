@@ -37,30 +37,10 @@ const AdminUserProfilePage = () => {
           </div>
 
           <div className="AcctFeat">
-            <Link to="/adminViewUserProfilePage">
-              <img src={ViewUserPic} alt="View User" />
-            </Link>
-            <p>View User Profile</p>
-          </div>
-
-          <div className="AcctFeat">
             <Link to="/adminSearchUserProfilPage">
               <img src={SearchUserPic} alt="Search User" />
             </Link>
             <p>Search User Profile</p>
-          </div>
-
-          <div className="AcctFeat">
-            <Link to="/adminSuspendUserProfilePage">
-              <img src={SuspendUserPic} alt="Suspend User" />
-            </Link>
-            <p>Suspend User Profile</p>
-          </div>
-
-          <div className="AcctFeat">
-            <img src={UpdateUserPic} alt="Update User" />
-
-            <p>Update User Profile</p>
           </div>
         </div>
 
