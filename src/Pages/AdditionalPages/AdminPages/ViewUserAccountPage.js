@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import "../../../Styles/adminViewUserAccount.css";
 import { useContext } from "react";
 import { AuthContext } from "../../../Context/AuthContext";
 
@@ -21,6 +20,7 @@ const ViewUserAccountPage = () => {
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const [selectedFilter, setSelectedFilter] = useState(0);
+
   const [userAccounts, setUserAccounts] = useState([
     {
       User_ID: "1",
@@ -60,6 +60,15 @@ const ViewUserAccountPage = () => {
     },
   ]);
 
+  const TABLE_HEAD = [
+    "User ID",
+    "Name",
+    "Email",
+    "License ID",
+    "Phone Number",
+    "UserTy",
+    "Status",
+  ];
   const handleLogout = (event) => {
     console.log("Logging out...");
   };
