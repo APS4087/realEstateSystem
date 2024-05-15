@@ -124,7 +124,7 @@ const SearchUserAccountPage = () => {
                       <td>{user.email}</td>
                       <td>
                         <Link to="/updateAccount">
-                          <button>Update</button>
+                          <button className="px-3 py-2 border border-gray-900 rounded-full bg-blue-500 text-[15px] text-white hover:bg-blue-700">Update</button>
                         </Link>
                       </td>
                     </tr>
