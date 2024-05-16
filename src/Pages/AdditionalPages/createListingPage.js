@@ -1,6 +1,6 @@
 import "../../Styles/CreateListing.scss";
 import Header from "../../Components/Header";
-import { categories, types, facilities } from "../../Assets/data";
+import { categories, facilities } from "../../Assets/data";
 import { RemoveCircleOutline, AddCircleOutline } from "@mui/icons-material";
 import variables from "../../Styles/variables.scss";
 import { IoIosImages } from "react-icons/io";

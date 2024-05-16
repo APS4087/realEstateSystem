@@ -1,7 +1,5 @@
 import React from "react";
-import house1 from "../../Assets/house1.png";
-import house2 from "../../Assets/house2.png";
-import house3 from "../../Assets/house3.png";
+
 import Rental from "./Rental";
 
 const Rentals = ({ properties }) => {
