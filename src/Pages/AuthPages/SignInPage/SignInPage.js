@@ -28,16 +28,16 @@ function SignInPage() {
           values.password
         );
 
-        toast.promise(Promise.resolve(response), {
-          loading: <b>Signing In...</b>,
-          success: <b>SignIn Successfully...!</b>,
-          error: <b>Could not SignIn. Invalid credentials</b>,
-        });
         console.log("Response from entity: ", response);
         const userType = response.userType;
         const isSuspended = response.isSuspended;
 
         if (!isSuspended) {
+          toast.promise(Promise.resolve(response), {
+            loading: <b>Signing In...</b>,
+            success: <b>SignIn Successfully...!</b>,
+            error: <b>Could not SignIn. Invalid credentials</b>,
+          });
           handleUserTypeNavigation(userType);
         } else {
           toast.error(
