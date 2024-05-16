@@ -123,11 +123,6 @@ const PListPage = () => {
         timer: 1500,
       });
       console.log("Property added to shortlist!");
-
-      const shortListCount = await propertyController.getNumberOfShortlist(
-        propertyId
-      );
-      setShortListCount(shortListCount);
     } catch (error) {
       console.error("Error adding property to shortlist:", error);
       Swal.fire({
@@ -135,6 +130,16 @@ const PListPage = () => {
         title: "Oops...",
         text: "Property was not shortlisted!",
       });
+    }
+  }
+
+  async function getNumberOfShortlists(propertyId) {
+    try {
+      const count = await propertyController.getNumberOfShortlist(propertyId);
+      //console.log("Shortlist count:", count);
+      setShortListCount(count);
+    } catch (error) {
+      console.error("Error getting shortlist count:", error);
     }
   }
 
@@ -187,6 +192,8 @@ const PListPage = () => {
     const fetchProperties = async () => {
       const viewPropertyController = new ViewPropertyController();
       const properties = await viewPropertyController.getProperties();
+      getNumberOfShortlists(Id);
+      console.log(shortListCount);
       setProperties(properties);
       setIsLoading(false); // Add this line
     };
@@ -196,6 +203,7 @@ const PListPage = () => {
   const dataToUse = properties;
   const rental = dataToUse.find((rental) => rental.id === Id);
 
+  // runs when page loads
   useEffect(() => {
     const fetchAgentData = async () => {
       if (!rental || !rental.agentID) {
@@ -225,7 +233,7 @@ const PListPage = () => {
   if (isLoading) {
     return <LoadingAnimation />;
   }
-  console.log("View count:", rental.viewCount);
+  // console.log("View count:", rental.viewCount);
 
   return (
     <div>
