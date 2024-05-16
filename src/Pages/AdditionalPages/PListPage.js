@@ -16,7 +16,7 @@ import BasicMenu from "../../Components/Header/ProfileMenu";
 
 import { Checkbox, Label, Modal, TextInput } from "flowbite-react";
 import avatar from "../../Assets/profile.png";
-import logo from "../../Assets/logo/logo-title.png";
+import logo from "../../Assets/logo/logo-title.jpg";
 import { useNavigate } from "react-router-dom";
 import { TiBookmark } from "react-icons/ti";
 import { BsFillEyeFill } from "react-icons/bs";
