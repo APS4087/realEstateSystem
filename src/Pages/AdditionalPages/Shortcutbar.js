@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../Assets/logo/logo-title.png";
+import logo from "../../Assets/logo/logo-title.jpg";
 import { Link } from "react-router-dom";
 import { BsFlag } from "react-icons/bs";
 import { TiBookmark } from "react-icons/ti";
