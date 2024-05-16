@@ -80,6 +80,7 @@ class UserEntity {
               username: userData.userName,
               profilePic: userData.profilePicture,
               userType: userData.userType,
+              isSuspended: userData.isSuspended,
             };
           }
         } catch (error) {

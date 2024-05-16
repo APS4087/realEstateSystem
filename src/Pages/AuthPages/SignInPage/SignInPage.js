@@ -35,8 +35,15 @@ function SignInPage() {
         });
         console.log("Response from entity: ", response);
         const userType = response.userType;
+        const isSuspended = response.isSuspended;
 
-        handleUserTypeNavigation(userType);
+        if (!isSuspended) {
+          handleUserTypeNavigation(userType);
+        } else {
+          toast.error(
+            "Your account has been suspended. Please contact the admin."
+          );
+        }
       } catch (error) {
         console.error("Error during SignIn:", error);
         toast.error("Could not Sign In. Please try again.");
