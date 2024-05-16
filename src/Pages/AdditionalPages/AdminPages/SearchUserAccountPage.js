@@ -81,8 +81,10 @@ const SearchUserAccountPage = () => {
   const handleSearch = () => {
     setSearchTerm(searchTerm);
     const searchResults = users.filter((user) =>
-      Object.values(user).some((value) =>
-        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      Object.values(user).some(
+        (value) =>
+          value !== null &&
+          value.toString().toLowerCase().includes(searchTerm.toLowerCase())
       )
     );
     setRefreshData((prevState) => !prevState);
@@ -100,6 +102,8 @@ const SearchUserAccountPage = () => {
 
     fetchUsers();
   }, [refreshData]);
+  console.log(users);
+  console.log(searchTerm);
 
   return (
     <div className="App">
