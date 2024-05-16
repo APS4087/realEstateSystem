@@ -46,7 +46,7 @@ class UserEntity {
         userName: userName,
         profilePicture: profilePic,
         userType: userType,
-        phone: phone,
+        phone: phone || null,
         isSuspended: false,
       });
 
