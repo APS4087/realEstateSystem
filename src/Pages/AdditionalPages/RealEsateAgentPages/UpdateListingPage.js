@@ -479,7 +479,7 @@ const UpdateListingPage = () => {
               <p>Now, set your PRICE</p>
               <span>S$</span>
               <input
-                type="number"
+                type="text"
                 placeholder={rental.price}
                 name="price"
                 value={formDescription.price}
