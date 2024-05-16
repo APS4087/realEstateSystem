@@ -35,6 +35,7 @@ const SellerSoldPropertiesListPage = () => {
 
   const [soldProperties, setSoldProperties] = useState([]);
   const [shortListCount, setShortListCount] = useState(0);
+  const [viewCount, setViewCount] = useState(0);
 
   const propertyController = new PropertyController();
 
@@ -52,6 +53,13 @@ const SellerSoldPropertiesListPage = () => {
         setSoldRentalDataIDs(soldProperties);
       }
     };
+
+    const fetchViewCount = async () => {
+      const count = await propertyController.getViewCount(Id);
+      setViewCount(count);
+    };
+
+    fetchViewCount();
     getNumberOfShortlists(Id);
 
     fetchPendingProperties();
@@ -149,23 +157,26 @@ const SellerSoldPropertiesListPage = () => {
         <div className="flex">
           <div className="flex items-center w-{$p.length*2} gap-2 py-1 px-3">
             <BsFillEyeFill className="" />
-            <p className="font-semibold text-[19px]">
-              Views: {rental.viewCount}
-            </p>
+            <p className="font-semibold text-[19px]">Views: {viewCount}</p>
           </div>
           <div className="flex items-center w-{$p.length*2} gap-2 py-1 px-3">
             <TiBookmark className="" />
             <p className="font-semibold text-[19px]">
-              Shortlists: {rental.shortCount}
+              Shortlists: {shortListCount}
             </p>
           </div>
         </div>
       </div>
       <div className="w-[65rem] ml-80 items-center pb-4 font-bold text-[30px] border-b-2">
         <p className="pb-1">{rental.title}</p>
-        <div className="w-{$p.length*2} py-2 px-3 inline-block bg-gray-600 text-white border rounded-full">
-          <p className="font-semibold text-[15px]">{rental.tags[1]}</p>
-        </div>
+        {rental.tags.map((tag, index) => (
+          <div
+            key={index}
+            className="w-{$p.length*2} py-2 px-3 inline-block bg-gray-600 text-white border rounded-full display:flex mr-2"
+          >
+            <p className="font-semibold text-[15px]">{tag}</p>
+          </div>
+        ))}
       </div>
       <div className="w-[65rem] ml-80 items-center py-7 border-b-2">
         <p className="font-semibold text-[17px]">Price starts from:</p>
