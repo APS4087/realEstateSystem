@@ -54,7 +54,7 @@ class PropertyEntity {
 
         if (tagIndex !== -1) {
           // If "Available Property" tag is found, replace it with "Not Available"
-          propertyData.tags[tagIndex] = "Not Available";
+          propertyData.tags[tagIndex] = "Sold Property";
         } else {
           // If "Available Property" tag is not found, add "Not Available" tag
           propertyData.tags.push("Sold Property");
