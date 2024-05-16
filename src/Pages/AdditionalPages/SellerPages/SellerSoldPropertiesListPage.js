@@ -21,6 +21,7 @@ import { Button, Checkbox, Label, Modal, TextInput } from "flowbite-react";
 import avatar from "../../../Assets/profile.png";
 import { Create } from "@mui/icons-material";
 import CreateReviewController from "../../../Controllers/ReviewControllers/CreateReviewController";
+import PropertyController from "../../../Controllers/PropertyControllers/PropertyController";
 
 const SellerSoldPropertiesListPage = () => {
   const { Id } = useParams(); // Retrieve the rental ID from the URL
@@ -33,6 +34,9 @@ const SellerSoldPropertiesListPage = () => {
   const [review, setReview] = useState("");
 
   const [soldProperties, setSoldProperties] = useState([]);
+  const [shortListCount, setShortListCount] = useState(0);
+
+  const propertyController = new PropertyController();
 
   function onCloseModal() {
     setOpenModal(false);
@@ -48,9 +52,19 @@ const SellerSoldPropertiesListPage = () => {
         setSoldRentalDataIDs(soldProperties);
       }
     };
+    getNumberOfShortlists(Id);
 
     fetchPendingProperties();
   }, [currentUser]);
+  async function getNumberOfShortlists(propertyId) {
+    try {
+      const count = await propertyController.getNumberOfShortlist(propertyId);
+      //console.log("Shortlist count:", count);
+      setShortListCount(count);
+    } catch (error) {
+      console.error("Error getting shortlist count:", error);
+    }
+  }
 
   // Use pendingRentalData if currentUser is a realEstateAgent, otherwise use rentalsData
   const dataToUseIDs = soldRentalDataIDs;
