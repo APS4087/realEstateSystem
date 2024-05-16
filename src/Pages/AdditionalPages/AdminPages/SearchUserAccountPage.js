@@ -35,10 +35,12 @@ const SearchUserAccountPage = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const suspendUserController = new SuspendUserController();
+  const [refreshData, setRefreshData] = useState(false);
 
   const handleSuspendUser = async (userId) => {
     try {
       await suspendUserController.suspendUser(userId);
+      setRefreshData((prevState) => !prevState);
       Swal.fire({
         icon: "success",
         title: "User suspended successfully",
@@ -58,6 +60,7 @@ const SearchUserAccountPage = () => {
   const handleReActivateUser = async (userId) => {
     try {
       await suspendUserController.reactivateUser(userId);
+      setRefreshData((prevState) => !prevState);
       Swal.fire({
         icon: "success",
         title: "User re-activated successfully",
@@ -82,6 +85,7 @@ const SearchUserAccountPage = () => {
         value.toString().toLowerCase().includes(searchTerm.toLowerCase())
       )
     );
+    setRefreshData((prevState) => !prevState);
     setFilteredUsers(searchResults);
     console.log(searchResults);
   };
@@ -95,7 +99,7 @@ const SearchUserAccountPage = () => {
     };
 
     fetchUsers();
-  }, []);
+  }, [refreshData]);
 
   return (
     <div className="App">

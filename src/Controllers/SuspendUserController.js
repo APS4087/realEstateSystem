@@ -1,5 +1,5 @@
 import UserEntity from "../Backend/Entity/UserEntity";
-import MetaDataEntity from "../Backend/Entity/TheCreatorEntity";
+import MetaDataEntity from "../Backend/Entity/MetaDataEntity";
 
 class SuspendUserController {
   constructor() {

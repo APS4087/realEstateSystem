@@ -98,6 +98,30 @@ class MetaDataEntity {
       throw error;
     }
   }
+
+  async updateUserName(oldName, newName) {
+    const collectionsDocRef = doc(db, "metadata", "collections");
+    const collectionsDoc = await getDoc(collectionsDocRef);
+
+    if (collectionsDoc.exists()) {
+      let userProfiles = collectionsDoc.data().userProfiles;
+      const oldProfileExists = userProfiles.some(
+        (profile) => profile.name === oldName
+      );
+
+      if (!oldProfileExists) {
+        throw new Error(`Profile with name ${oldName} does not exist.`);
+      }
+
+      userProfiles = userProfiles.map((profile) =>
+        profile.name === oldName ? { ...profile, name: newName } : profile
+      );
+
+      await updateDoc(collectionsDocRef, { userProfiles });
+    } else {
+      throw new Error("Collections document does not exist.");
+    }
+  }
 }
 
 export default MetaDataEntity;

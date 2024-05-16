@@ -27,11 +27,14 @@ const SearchUserProfilePage = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const suspendUserController = new SuspendUserController();
+  const [editingIndex, setEditingIndex] = useState(null);
 
   const [currentUserProfiles, setCurrentUserProfiles] = useState([]);
   const [userProfileForEdit, setUserProfileForEdit] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState("");
+  const theCreatorController = new TheCreatorController();
+  const [refreshData, setRefreshData] = useState(false);
 
   useEffect(() => {
     const fetchProfiles = async () => {
@@ -41,11 +44,12 @@ const SearchUserProfilePage = () => {
     };
 
     fetchProfiles();
-  }, []);
+  }, [refreshData]);
 
   const handleSuspendUser = async (profileName) => {
     try {
       await suspendUserController.suspendUserProfile(profileName);
+      setRefreshData((prevState) => !prevState);
       Swal.fire({
         icon: "success",
         title: "User suspended successfully",
@@ -66,6 +70,7 @@ const SearchUserProfilePage = () => {
   const handleReActivateUser = async (profileName) => {
     try {
       await suspendUserController.reactivateUserProfile(profileName);
+      setRefreshData((prevState) => !prevState);
       Swal.fire({
         icon: "success",
         title: "User re-activated successfully",
@@ -90,13 +95,29 @@ const SearchUserProfilePage = () => {
         value.toString().toLowerCase().includes(searchTerm.toLowerCase())
       )
     );
+    setRefreshData((prevState) => !prevState);
     setFilteredUserProfiles(searchResults);
     console.log(searchResults);
   };
 
   const handleEditUser = () => {
-    setEditedName(userProfileForEdit.name);
     setIsEditing(true);
+  };
+
+  const handleEdited = async (oldName) => {
+    console.log("Edited");
+    console.log(editedName);
+
+    try {
+      // Update the user profile name
+      await theCreatorController.updateUserProfileName(oldName, editedName);
+      setRefreshData((prevState) => !prevState);
+    } catch (error) {
+      console.error("Error updating user profile name:", error);
+    }
+
+    setIsEditing(false);
+    setEditingIndex(null);
   };
 
   const handleSave = () => {
@@ -200,11 +221,16 @@ const SearchUserProfilePage = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      {isEditing ? (
+                      {editingIndex === index ? (
                         <input
                           type="text"
                           value={editedName}
                           onChange={(e) => setEditedName(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              handleEdited(userProfile.name);
+                            }
+                          }}
                         />
                       ) : (
                         userProfile.name
@@ -224,10 +250,14 @@ const SearchUserProfilePage = () => {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex space-x-4">
+                        {/*Edit button*/}
                         <button
                           onClick={() => {
                             setUserProfileForEdit(userProfile);
-                            (isEditing ? handleSave : handleEditUser)();
+                            setEditingIndex(index);
+                            (editingIndex === index
+                              ? handleSave
+                              : handleEditUser)();
                           }}
                           className="flex p-2.5 bg-yellow-500 rounded-xl hover:rounded-3xl hover:bg-yellow-600 transition-all duration-300 text-white"
                         >

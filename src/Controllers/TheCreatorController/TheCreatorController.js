@@ -1,4 +1,4 @@
-import MetaDataEntity from "../../Backend/Entity/TheCreatorEntity";
+import MetaDataEntity from "../../Backend/Entity/MetaDataEntity";
 
 class TheCreatorController {
   constructor() {
@@ -19,6 +19,15 @@ class TheCreatorController {
       return await this.metaDataEntity.fetchUserProfiles();
     } catch (error) {
       console.error("Error fetching user profiles:", error);
+      throw error;
+    }
+  }
+
+  async updateUserProfileName(oldName, newName) {
+    try {
+      await this.metaDataEntity.updateUserName(oldName, newName);
+    } catch (error) {
+      console.error("Error updating user profile name:", error);
       throw error;
     }
   }
