@@ -31,7 +31,7 @@ npm test
 👤 **Aung Pyae Soe**
 
 * Github: [@APS4087](https://github.com/APS4087)
-* LinkedIn: [@https:\/\/www.linkedin.com\/in\/aungps\/](https://linkedin.com/in/https:\/\/www.linkedin.com\/in\/aungps\/)
+* LinkedIn: [@AungPyaeSoe](https://www.linkedin.com/in/aungps/)
 
 ## Show your support
 
