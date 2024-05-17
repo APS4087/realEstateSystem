@@ -26,7 +26,9 @@ const AdminUserProfilePage = () => {
       <div>
         <Header />
       </div>
-      <div>Admin user profile page</div>
+      <div className="w-[17rem] ml-[45rem] text-[20px] font-bold py-9">
+        Admin user account page
+      </div>
       <div>
         <div className="UserAcctFeat">
           <div className="AcctFeat">
