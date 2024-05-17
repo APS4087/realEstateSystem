@@ -158,6 +158,7 @@ function SignUpPage() {
                 <select
                   {...formik.getFieldProps("userType")}
                   className={styles.textbox}
+                  id="userType"
                 >
                   <option value="">Select User Type</option>
                   <option value="realEstateAgent">Real Estate Agent</option>
