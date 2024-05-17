@@ -42,5 +42,3 @@ Give a ⭐️ if this project helped you!
 Copyright © 2024 [Aung Pyae Soe](https://github.com/APS4087).<br />
 This project is [MIT](https://github.com/APS4087/realEstateSystem/blob/main/LICENSE) licensed.
 
-***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
