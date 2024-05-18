@@ -14,6 +14,14 @@ class UpdateUserController {
       throw error;
     }
   }
+  async updateOtherUserDetails(userId, userData) {
+    try {
+      await this.userEntity.updateOtherUserDetails(userId, userData);
+    } catch (error) {
+      console.error("Error updating user details:", error);
+      throw error;
+    }
+  }
 }
 
 export default UpdateUserController;

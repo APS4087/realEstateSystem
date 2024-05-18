@@ -12,9 +12,54 @@ describe("SignInController", () => {
     signInController = new SignInController();
   });
 
-  it("should sign in a user correctly", async () => {
+  it("should sign in Admin User correctly", async () => {
     const mockEmail = "firstAdmin@gmail.com";
     const mockPassword = "admin123@";
+
+    // Set the mock implementation of the signInUser method
+    mockSignInUser.mockResolvedValue({
+      email: mockEmail,
+    });
+
+    const response = await signInController.signInUser(mockEmail, mockPassword);
+
+    // Check if the signInUser method was called
+    expect(mockSignInUser).toHaveBeenCalledWith(mockEmail, mockPassword);
+  });
+
+  it("should sign in Seller User correctly", async () => {
+    const mockEmail = "secondSeller@gmail.com";
+    const mockPassword = "aaaaaaaaa@";
+
+    // Set the mock implementation of the signInUser method
+    mockSignInUser.mockResolvedValue({
+      email: mockEmail,
+    });
+
+    const response = await signInController.signInUser(mockEmail, mockPassword);
+
+    // Check if the signInUser method was called
+    expect(mockSignInUser).toHaveBeenCalledWith(mockEmail, mockPassword);
+  });
+
+  it("should sign in Buyer User correctly", async () => {
+    const mockEmail = "secondBuyer@gmail.com";
+    const mockPassword = "aaaaaaaa@";
+
+    // Set the mock implementation of the signInUser method
+    mockSignInUser.mockResolvedValue({
+      email: mockEmail,
+    });
+
+    const response = await signInController.signInUser(mockEmail, mockPassword);
+
+    // Check if the signInUser method was called
+    expect(mockSignInUser).toHaveBeenCalledWith(mockEmail, mockPassword);
+  });
+
+  it("should sign in Real Estate Agent User correctly", async () => {
+    const mockEmail = "thirdAgent@gmail.com";
+    const mockPassword = "aaaaaaaa@";
 
     // Set the mock implementation of the signInUser method
     mockSignInUser.mockResolvedValue({

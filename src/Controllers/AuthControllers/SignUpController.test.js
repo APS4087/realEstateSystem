@@ -16,7 +16,7 @@ describe("SignUpController", () => {
     const mockData = {
       email: `test${timestamp}@gmail.com`,
       userName: `testUser${timestamp}`,
-      password: "password@123",
+      password: "password@1223",
       profilePic: "",
       licenses: "",
       phone: "1234567890",
