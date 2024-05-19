@@ -31,6 +31,8 @@ import {
   deleteObject,
 } from "firebase/storage";
 
+import AddPendingPropertyController from "../../Controllers/AgentControllers/AddPendingProperties";
+
 const CreateListingPage = () => {
   const { currentUser } = useContext(AuthContext);
   const [category, setCategory] = useState("");
@@ -174,7 +176,6 @@ const CreateListingPage = () => {
   const handlePost = async (e) => {
     e.preventDefault();
 
-    // TODO: CHANGE TO BCE STRUCTURE
     try {
       /* Create a new object to handle data */
       const listingData = {
@@ -195,9 +196,12 @@ const CreateListingPage = () => {
         listingPhotos: photos,
       };
 
-      const realEstateAgent = new RealEstateAgentEntity();
+      const addPendingPropertyController = new AddPendingPropertyController();
 
-      await realEstateAgent.addPendingProperty(selectedAgent.uid, listingData);
+      await addPendingPropertyController.addPendingProperty(
+        selectedAgent.uid,
+        listingData
+      );
 
       Swal.fire({
         title: "Success!",
